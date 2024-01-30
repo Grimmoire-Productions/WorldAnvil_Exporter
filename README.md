@@ -47,7 +47,7 @@ Do Not:
 
     ```bash
     cd {your filepath here}/WorldAnvil_Exporter
-    export .env
+    source .env
     ```
 
     Confirm you've loaded the variables correctly with the following command, the output of which should match what's in your .env file.
