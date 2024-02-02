@@ -29,7 +29,7 @@ h2 {
   color: black;
 }
 
-.user-css .article-content-left h3 {
+h3 {
   font-family: Bellefair, serif;
   font-style: italic;
   color: black;
@@ -38,22 +38,54 @@ h2 {
   padding-bottom: 0.25em;
 }
 
-.user-css .article-content-left h4 {
+h4 {
   font-family: Bellefair, serif;
   font-style: italic;
   color: black;
 }
 
-.user-css .article-content-left p {
+p {
   font-family: Bellefair, serif;
   color: black;
 }
 
-.user-css .article-content-left li {
+li {
   font-family: Bellefair, serif;
   text-align: justify;
   color: black;
-  list-style-image: url(https://upload.wikimedia.org/wikipedia/commons/b/b0/Quartered_diamond_symbol_%28filled%29.svg);
+  list-style-type: none;
+}
+
+li::marker {
+  content: "❖  "
+}
+
+.subtitle p {
+  font-style: italic;
+}
+
+.mycvvsf p {
+  font-style: italic;
+}
+
+.plots p,
+.summary p,
+.alittlebirdtoldme p {
+  text-indent: 30px;
+  text-align: justify;
+}
+
+.plots li {
+  margin-left: 30px
+}
+
+.skillsSecretsWishes p {
+  font-style: italic;
+  text-align: justify;
+}
+
+.stats p {
+  text-align: center;
 }
 
 .quote {
@@ -67,19 +99,21 @@ h2 {
  -webkit-box-shadow: none;
 }
 
-.plots p,
-.summary p,
-.alittlebirdtoldme p {
-  text-indent: 30px;
-  text-align: justify;
+blockquote {
+  font-family: Bellefair, serif;
+  text-align: center;
+  color: black;
+  background: transparent ;
+  padding: 20px;
+  margin: 10px;
+  border-left: none;
+  box-shadow: none;
+ -webkit-box-shadow: none;
 }
 
-
-.plots li {
-  margin-left: 30px
-}
-
-.skillsSecretsWishes p {
-  font-style: italic;
-  text-align: justify;
+blockquote .author {
+  font-family: Bellefair, serif;
+  text-align: center;
+  color: black;
+  padding: 0.5em;
 }
