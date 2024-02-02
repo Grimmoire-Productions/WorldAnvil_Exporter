@@ -21,12 +21,14 @@ h1 {
   text-transform: none;
   font-family: Bellefair, serif;
   color: black;
+  break-after: avoid;
 }
 
 h2 {
   text-transform: none;
   font-family: Bellefair, serif;
   color: black;
+  break-after: avoid;
 }
 
 .user-css .article-content-left h3 {
@@ -36,12 +38,14 @@ h2 {
   font-size: 1.25em;
   padding-top: 1.25em;
   padding-bottom: 0.25em;
+  break-after: avoid;
 }
 
 .user-css .article-content-left h4 {
   font-family: Bellefair, serif;
   font-style: italic;
   color: black;
+  break-after: avoid;
 }
 
 .user-css .article-content-left p {
