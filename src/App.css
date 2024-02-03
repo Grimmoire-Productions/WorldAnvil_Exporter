@@ -2,10 +2,45 @@
   #userInput {
     display: none;
   }
+  li, blockquote {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5 {
+    page-break-after: avoid;
+  }
+  header, .header-space,
+  footer, .footer-space {
+      height: 100px;
+      width: 100%;
+      padding: 10pt;
+      margin: 10pt auto;
+  }
+
+  header {
+      position: fixed;
+      top: 0;
+  }
+
+  footer {
+      position: fixed;
+      bottom: 0;
+  }
+
+  thead {display: table-header-group;} 
+  tfoot {display: table-footer-group;}
+
+  .characterSheetContent {
+    margin-left: 1in;
+    margin-right: 1in;
+  }
 }
 
 .center {
   text-align: center;
+}
+
+img {
+  max-inline-size: 95%;
 }
 
 @font-face {
@@ -21,44 +56,56 @@ h1 {
   text-transform: none;
   font-family: Bellefair, serif;
   color: black;
+  font-size: 22pt;
+  line-height: 1.15;
 }
 
 h2 {
   text-transform: none;
   font-family: Bellefair, serif;
-  color: black;
-}
-
-h3 {
-  font-family: Bellefair, serif;
   font-style: italic;
   color: black;
-  font-size: 1.25em;
+  font-size: 16pt;
   padding-top: 1.25em;
   padding-bottom: 0.25em;
 }
 
-h4 {
+h3 {
   font-family: Bellefair, serif;
-  font-style: italic;
+  font-size: 14pt;
   color: black;
 }
 
 p {
   font-family: Bellefair, serif;
   color: black;
+  font-size: 13pt;
+  line-height: 1.5;
+  text-align: justify;
+  orphans: 2;
+  widows: 2;
+}
+
+ul {
+  list-style-type: none;
 }
 
 li {
   font-family: Bellefair, serif;
   text-align: justify;
   color: black;
-  list-style-type: none;
+  line-height: 1.15;
 }
 
-li::marker {
-  content: "❖  "
+li::before {
+  margin-left: -18pt;
+  white-space: nowrap;
+  display: inline-block;
+  min-width: 18pt;
+  content: "\002756 ";
 }
+
+hr { margin: 20px 0 20px 0; }
 
 .subtitle p {
   font-style: italic;
@@ -66,49 +113,44 @@ li::marker {
 
 .mycvvsf p {
   font-style: italic;
+  page-break-inside: avoid;
 }
 
 .plots p,
 .summary p,
 .alittlebirdtoldme p {
   text-indent: 30px;
-  text-align: justify;
 }
 
 .plots li {
-  margin-left: 30px
+  margin-left: 30px;
 }
 
 .skillsSecretsWishes p {
   font-style: italic;
-  text-align: justify;
+  page-break-inside: avoid;
 }
 
 .stats p {
   text-align: center;
+  font-size: 14pt;
 }
 
 .quote {
   font-family: Bellefair, serif;
   color: black;
-  background: transparent ;
   padding: 20px;
   margin: 10px;
-  border-left: none;
-  box-shadow: none;
- -webkit-box-shadow: none;
+  font-size: 14pt;
 }
 
 blockquote {
   font-family: Bellefair, serif;
   text-align: center;
+  font-size: 14pt;
   color: black;
-  background: transparent ;
   padding: 20px;
   margin: 10px;
-  border-left: none;
-  box-shadow: none;
- -webkit-box-shadow: none;
 }
 
 blockquote .author {
