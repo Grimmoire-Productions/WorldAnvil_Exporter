@@ -64,12 +64,6 @@ h1 {
 h2 {
   text-transform: none;
   font-family: Bellefair, serif;
-  color: black;
-  break-after: avoid;
-}
-
-.user-css .article-content-left h3 {
-  font-family: Bellefair, serif;
   font-style: italic;
   color: black;
   font-size: 16pt;
