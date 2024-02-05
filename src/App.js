@@ -3,13 +3,13 @@ import { useRef, useState } from 'react';
 import headerImage from './media/headerImage.png';
 import footerImage from './media/footerImage.png';
 
-async function FetchCharacter(charId, auth, key, setActiveCharacter) {
+async function FetchCharacter(charId, setActiveCharacter) {
   const response = await fetch("https://www.worldanvil.com/api/external/boromir/article?id=" + charId + "&granularity=1", {
     method: "GET",
     headers: {
       "accept": "application/json",
-      "x-auth-token": auth,
-      "x-application-key": key
+      "x-auth-token": process.env.REACT_APP_WA_GP_API_TOKEN,
+      "x-application-key": process.env.REACT_APP_WA_API_KEY
     }
   })
 
@@ -67,18 +67,12 @@ function ProcessArticle(content) {
 
 function UserInput(setActiveCharacter) {
   const refArticleId = useRef(null);
-  const refApiKey = useRef(null);
-  const refAuthToken = useRef(null);
 
   return (
     <div id='userInput'>
       <label>Article ID: <input type='text' id='articleId' name='Article ID' ref={refArticleId}/></label>
       <br/>
-      <label>API Key: <input type='text' id='apiKey' name='API Key' ref={refApiKey}/></label>
-      <br/>
-      <label>Auth Token: <input type='text' id='authenticationToken' name='Authentication Token' ref={refAuthToken}/></label>
-      <br/>
-      <button onClick={() => FetchCharacter(refArticleId.current.value, refAuthToken.current.value, refApiKey.current.value, setActiveCharacter)}>Submit</button>
+      <button onClick={() => FetchCharacter(refArticleId.current.value, setActiveCharacter)}>Submit</button>
     </div>
   )
 }
