@@ -41,17 +41,12 @@ Do Not:
 
     This will copy your API key and token into a new .env file that will stay only on your machine. This is to prevent our API keys from being made public on the github repo.
 
-## Running the tool
+## Running the tool locally
 
-1. Before you run the tool, you want to make the World Anvil API key and API token stored in the .env file available. To do this, open your shell and run the following commands:
-
-    ```bash
-    cd {your filepath here}/WorldAnvil_Exporter
-    source .env
-    ```
-
-    Confirm you've loaded the variables correctly with the following command, the output of which should match what's in your .env file.
+1. In the root of the project folder, run the following command:
 
     ```bash
-    echo "WA_API_KEY=$WA_API_KEY, WA_GP_API_TOKEN=$WA_GP_API_TOKEN"
+    make start
     ```
+
+2. localhost:3000 should open in your chrome web browser. If you get errors when you click "submit" it may be because you didn't run `make dev-setup` first.
