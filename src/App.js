@@ -48,7 +48,10 @@ function ProcessArticle(content) {
   content = content.replaceAll(" - ", " &ndash; "); /* replace hypen with emdash */
   content = content.replaceAll(" .", ".") /* Fixes formatting issue caused by prior replaces*/
   content = content.replaceAll(/\s*\|\s*/g, `&emsp;&emsp;|&emsp;&emsp;`)
-
+  content = content.replaceAll(/"(?=(?:(?:[^"]*"){2})*[^"]*"[^"]*$)/g, `“`) /* Replaces opening straight qutoes with curly */
+  content = content.replaceAll(/"/g, `”`) /* Replaces closing straight qutoes with curly */
+  content = content.replaceAll(/'/g, `’`) /* Replaces straight single quote with curly */
+  
   /* Format Secrets */
   content = content.replace(/\s*\[secret.*?\]\s*/g, 'Secret Placeholder');
 
