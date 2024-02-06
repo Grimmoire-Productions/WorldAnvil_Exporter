@@ -37,10 +37,12 @@
 
 .center {
   text-align: center;
+  max-width: 95%;
+  margin: 0px auto;
 }
 
 img {
-  max-inline-size: 95%;
+  max-inline-size: 100%;
 }
 
 @font-face {
