@@ -20,6 +20,9 @@ async function FetchCharacter(charId, setActiveCharacter) {
 function ProcessArticle(content) {
   content = content.replaceAll("@", "");
   content = content.replaceAll("\r", "");
+  content = content.replaceAll("[img:5090045]", "");
+
+  /* Transform BBCode tags to HTML equivalents */
   content = content.replaceAll("[p]", "<p>").replaceAll("[/p]", "</p>");
   content = content.replaceAll("[b]", "<b>").replaceAll("[/b]", "</b>");
   content = content.replaceAll("[i]", "<i>").replaceAll("[/i]", "</i>");
@@ -28,20 +31,45 @@ function ProcessArticle(content) {
   content = content.replaceAll("[h2]", "<h2>").replaceAll("[/h2]", "</h2>");
   content = content.replaceAll("[ul]", "<ul>").replaceAll("[/ul]", "</ul>");
   content = content.replaceAll("[li]", "<li>").replaceAll("[/li]", "</li>");
-  content = content.replaceAll("[quote]", '<div class="center quote">').replaceAll("[/quote]", "</div>");
+  content = content.replaceAll("[br]", "<br>").replaceAll("[/li]", "</li>");
+  content = content.replaceAll("[quote]", '<blockquote>').replaceAll("[/quote]", "</blockquote>");
   content = content.replaceAll("[center]", '<div class="center">').replaceAll("[/center]", "</div>");
+  content = content.replaceAll("[/container]", "</div>");
+
+  /* Format footnotes */
   content = content.replaceAll("[var:ton-grimmoireproductions]", "Ton");
 
-  content = content.replace(/\s*\(person.*?\)\s*/g, '')
-  content = content.replace(/\s*\(organization.*?\)\s*/g, '')
-  content = content.replace(/\s*\(landmark.*?\)\s*/g, '')
+  /* Format World Anvil links */
+  content = content.replace(/\s*\(person.*?\)\s*/g, ' ')
+  content = content.replace(/\s*\(organization.*?\)\s*/g, ' ')
+  content = content.replace(/\s*\(landmark.*?\)\s*/g, ' ')
+
+  /* Punctuation correction */
+  content = content.replaceAll(" - ", " &ndash; "); /* replace hypen with emdash */
+  content = content.replaceAll(" .", ".") /* Fixes formatting issue caused by prior replaces*/
+  content = content.replaceAll(/\s*\|\s*/g, `&emsp;&emsp;|&emsp;&emsp;`)
+
+  /* Format Secrets */
   content = content.replace(/\s*\[secret.*?\]\s*/g, 'Secret Placeholder');
 
+  /* Handle special cases */
   var arrayContent = content.split("\n");
-  arrayContent.shift();
-  arrayContent = arrayContent.filter(function (str) { return !str.includes("[Plot")});
-  arrayContent = arrayContent.filter(function (str) { return !str.includes("[container")});
-  arrayContent = arrayContent.filter(function (str) { return !str.includes("[/container") });
+  arrayContent.forEach((str, idx) => {
+
+    // Create divs from containers
+    if (str.includes("[container:")) {
+      arrayContent[idx] = str.replace("[container: ", `<div class="`).replace("[container:", `<div class="`).replace("]", `">`);
+    }
+
+    // apply quote class correctly
+    if (str.includes(`”|`) || str.includes(`"|`)) {
+      arrayContent[idx] = str.replace(`|`, `<div class="author">— `).concat('</div>');
+    }
+  })
+
+  arrayContent = arrayContent.filter(function (str) { return !str.includes("[Plot") });
+  
+  // Add header and footer images around the main character sheet content
   arrayContent.unshift(`<header class="center"><img src="${headerImage}"/></header>
   <table>
     <thead><tr><td><div class="header-space">&nbsp;</div></td></tr></thead>

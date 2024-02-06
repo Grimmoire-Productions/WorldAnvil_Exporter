@@ -50,3 +50,4 @@ Do Not:
     ```
 
 2. localhost:3000 should open in your chrome web browser. If you get errors when you click "submit" it may be because you didn't run `make dev-setup` first.
+    Mr. John Radcliffe is a great character to test with. Article ID: `49170f44-a961-45ed-b860-bcf612b4d55d`
