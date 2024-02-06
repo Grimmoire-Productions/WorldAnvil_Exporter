@@ -4,7 +4,7 @@ import headerImage from './media/headerImage.png';
 import footerImage from './media/footerImage.png';
 
 async function FetchCharacter(charId, setActiveCharacter) {
-  const response = await fetch("https://www.worldanvil.com/api/external/boromir/article?id=" + charId + "&granularity=1", {
+  const response = await fetch(`https://www.worldanvil.com/api/external/boromir/article?id=${charId}&granularity=1`, {
     method: "GET",
     headers: {
       "accept": "application/json",
@@ -14,10 +14,23 @@ async function FetchCharacter(charId, setActiveCharacter) {
   })
 
   const data = await response.json();
-  setActiveCharacter(ProcessArticle(data.content));
+  setActiveCharacter(await ProcessArticle(data.content));
 }
 
-function ProcessArticle(content) {
+async function FetchSecret(secretId) {
+  const response = await fetch(`https://www.worldanvil.com/api/external/boromir/secret?id=${secretId}&granularity=0`, {
+    headers: {
+      "accept": "application/json",
+      "x-auth-token": process.env.REACT_APP_WA_GP_API_TOKEN,
+      "x-application-key": process.env.REACT_APP_WA_API_KEY
+    }
+  })
+
+  const data = await response.json();
+  return data.content;
+}
+
+async function ProcessArticle(content) {
   content = content.replaceAll("@", "");
   content = content.replaceAll("\r", "");
   content = content.replaceAll("[p]", "<p>").replaceAll("[/p]", "</p>");
@@ -35,12 +48,13 @@ function ProcessArticle(content) {
   content = content.replace(/\s*\(person.*?\)\s*/g, '')
   content = content.replace(/\s*\(organization.*?\)\s*/g, '')
   content = content.replace(/\s*\(landmark.*?\)\s*/g, '')
-  content = content.replace(/\s*\[secret.*?\]\s*/g, 'Secret Placeholder');
 
   var arrayContent = content.split("\n");
   arrayContent.shift();
-  arrayContent = arrayContent.filter(function (str) { return !str.includes("[Plot")});
-  arrayContent = arrayContent.filter(function (str) { return !str.includes("[container")});
+  arrayContent = await processSecrets(arrayContent);
+  console.log("Moving past secrets")
+  arrayContent = arrayContent.filter(function (str) { return !str.includes("[Plot") });
+  arrayContent = arrayContent.filter(function (str) { return !str.includes("[container") });
   arrayContent = arrayContent.filter(function (str) { return !str.includes("[/container") });
   arrayContent.unshift(`<header class="center"><img src="${headerImage}"/></header>
   <table>
@@ -65,20 +79,36 @@ function ProcessArticle(content) {
   )
 }
 
+async function processSecrets(arrayContent) {
+  arrayContent.forEach(async (element, index) => {
+    if(element.includes("secret:")) {
+      const secretId = element.substring(
+        element.indexOf(":")+1,
+        element.indexOf("]")
+      )
+      const secretText = await FetchSecret(secretId);
+      console.log("Secret fetched");
+      arrayContent[index] = `<p>${secretText}</p>`
+    }
+  });
+
+  return arrayContent;
+}
+
 function UserInput(setActiveCharacter) {
   const refArticleId = useRef(null);
 
   return (
     <div id='userInput'>
-      <label>Article ID: <input type='text' id='articleId' name='Article ID' ref={refArticleId}/></label>
-      <br/>
+      <label>Article ID: <input type='text' id='articleId' name='Article ID' ref={refArticleId} /></label>
+      <br />
       <button onClick={() => FetchCharacter(refArticleId.current.value, setActiveCharacter)}>Submit</button>
     </div>
   )
 }
 
 function createHtml(activeCharacter) {
-  return {__html: activeCharacter}
+  return { __html: activeCharacter }
 }
 
 function CharacterSheet(activeCharacter) {
