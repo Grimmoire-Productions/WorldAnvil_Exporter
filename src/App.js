@@ -120,7 +120,7 @@ async function ProcessArticle(data) {
       /* Determine if this variable has already gotten a footnote */
       const firstInstance = !arrayFootnotes.find((note) => note.includes(description))
       const contentText = firstInstance ? `${term}<sup>${footnoteNum}</sup>` : term
-      const footnoteText = `<sup>${footnoteNum}</sup> ${description}`
+      const footnoteText = `<p><sup>${footnoteNum}</sup> ${description}</p>`
 
       /* Update the variable reference in the content */
       arrayContent[idx] = text.replace(`[var:${name}]`, contentText)
