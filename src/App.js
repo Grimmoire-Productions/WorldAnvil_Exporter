@@ -69,40 +69,55 @@ function ProcessArticle(data) {
 
     /* Format footnotes */
     if (str.includes`[sup]`) {
+      const strAlsoHasVar = str.includes(`[var]`)
+
+      // figure out of the Sup or Var is first
+      // then call the respective functions in order
+
       const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(str.slice(str.indexOf("[sup]"), str.indexOf("[/sup]"))))
 
       arrayContent[idx] = str.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
-      
       
       arrayFootnotes[footnoteIdx] = arrayFootnotes[footnoteIdx].replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
         
       footnoteNum += 1;
     }
-    if (str.includes`[var:marquess-grimmoireproductions]`) {
-      const noteText = `<sup>${footnoteNum}</sup> Pronounced "MAR-kwess" not "mar-KEY"`
-      const noteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
-      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum}</sup>`))
 
-      arrayContent[idx] = str.replace("[var:marquess-grimmoireproductions]", `Marquess<sup>${footnoteNum}</sup>`)
+    function replaceVar(str, variabe, varKey, footnoteText) {
+      const LiesVars = [
+        {
+          varName: "[var:ton-grimmoireproductions]",
+          varKey: "Ton",
+          varText: "The Ton was the high society in the United Kingdom during the Regency era."
+        },
+        {
+          varName: "[var:marquess-grimmoireproductions]",
+          varKey: "Marquess",
+          varText: "Pronounced “MAR-kwess” not “mar-KEY”"
+        }
+      ]
+    
+      const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum+1}</sup>`))
+
+      arrayContent[idx] = str.replace(variabe, `${varKey}<sup>${footnoteNum+1}</sup>`)
 
       if (footnoteIdx <= 0) {
-        arrayFootnotes.splice(noteHeaderIdx + 1, 0, noteText)
+        arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, footnoteText)
       } else {
-        arrayFootnotes.splice(footnoteIdx, 0, noteText)
+        arrayFootnotes.splice(footnoteIdx, 0, footnoteText)
       }
-
-      footnoteNum += 1;
     }
 
     if (str.includes`[var:ton-grimmoireproductions]`) {
       const noteText = `<sup>${footnoteNum}</sup> The Ton was the high society in the United Kingdom during the Regency era.`
-      const noteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+      const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
       const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum+1}</sup>`))
 
       arrayContent[idx] = str.replace("[var:ton-grimmoireproductions]", `Ton<sup>${footnoteNum+1}</sup>`)
 
       if (footnoteIdx <= 0) {
-        arrayFootnotes.splice(noteHeaderIdx + 1, 0, noteText)
+        arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, noteText)
       } else {
         arrayFootnotes.splice(footnoteIdx, 0, noteText)
       }
@@ -110,6 +125,23 @@ function ProcessArticle(data) {
       footnoteNum += 1;
 
     }
+  // if (str.includes`[var:marquess-grimmoireproductions]`) {
+  //   const noteText = `<sup>${footnoteNum}</sup> Pronounced "MAR-kwess" not "mar-KEY"`
+  //   const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+  //   const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum}</sup>`))
+
+  //   arrayContent[idx] = str.replace("[var:marquess-grimmoireproductions]", `Marquess<sup>${footnoteNum}</sup>`)
+
+  //   if (footnoteIdx <= 0) {
+  //     arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, noteText)
+  //   } else {
+  //     arrayFootnotes.splice(footnoteIdx, 0, noteText)
+  //   }
+
+  //   footnoteNum += 1;
+  // }
+
+
   })
 
   const joinedFootnotes = arrayFootnotes.join("\n")
