@@ -61,7 +61,6 @@ async function ProcessArticle(data) {
   let arrayContent = content.split("\n");
   const arrayFootnotes = footnotes.split("\n")
   arrayContent = await processSecrets(arrayContent);
-  console.log("Moving past secrets")
 
   let footnoteNum = 1;
   arrayContent.forEach((str, idx) => {
@@ -189,7 +188,6 @@ async function processSecrets(arrayContent) {
         str.indexOf("]")
       )
       let secretText = await FetchSecret(secretId);
-      console.log("Secret fetched");
       secretText = transformBBCode(secretText)
       secretText = transformWorldAnvilLinks(secretText)
       secretText = correctPunctuation(secretText)
@@ -233,9 +231,11 @@ function correctPunctuation(data) {
   data = data.replaceAll(" - ", " &ndash; "); /* replace hypen with emdash */
   data = data.replaceAll(" .", ".") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(" ,", ",") /* Fixes formatting issue caused by prior replaces*/
+  data = data.replaceAll(" </b>", "</b>") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(/"(?=(?:(?:[^"]*"){2})*[^"]*"[^"]*$)/g, `“`) /* Replaces opening straight qutoes with curly */
   data = data.replaceAll(/"/g, `”`) /* Replaces closing straight qutoes with curly */
   data = data.replaceAll(/'/g, `’`) /* Replaces straight single quote with curly */
+  data = data.replaceAll(" ’", "’") /* Fixes formatting issue caused by prior replaces*/
   return data;
 }
 
