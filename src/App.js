@@ -2,6 +2,8 @@ import './App.css';
 import { useRef, useState } from 'react';
 import headerImage from './media/headerImage.png';
 import footerImage from './media/footerImage.png';
+import { LIES_VARS } from './consts'
+
 
 async function FetchCharacter(charId, setActiveCharacter) {
   const response = await fetch("https://www.worldanvil.com/api/external/boromir/article?id=" + charId + "&granularity=2", {
@@ -69,79 +71,72 @@ function ProcessArticle(data) {
 
     /* Format footnotes */
     if (str.includes`[sup]`) {
-      const strAlsoHasVar = str.includes(`[var]`)
-
-      // figure out of the Sup or Var is first
-      // then call the respective functions in order
-
-      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(str.slice(str.indexOf("[sup]"), str.indexOf("[/sup]"))))
-
-      arrayContent[idx] = str.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
+      const hasVariableBeforeFootnote = str.includes(`[var:`) && str.indexOf("[var:") < str.indexOf("[sup]")
       
+      /*
+        if there is both a regular footnote and a variable in the same string of text
+        and the variable comes first, execute replaceVar first
+      */
+      if (hasVariableBeforeFootnote) {
+        replaceVariable(arrayContent[idx], LIES_VARS);
+        replaceFootnote(arrayContent[idx]);
+      } else {
+        replaceFootnote(arrayContent[idx]);
+      }
+    }
+
+    /* Format variables */
+    /* using arrayContent[idx] to account for the fact that str may have been altered by the above code block */
+    if (arrayContent[idx].includes(`[var:`)) {
+      replaceVariable(arrayContent[idx], LIES_VARS)
+    }
+
+    function replaceFootnote(text) {
+      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(text.slice(text.indexOf("[sup]"), text.indexOf("[/sup]"))))
+      arrayContent[idx] = text.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
       arrayFootnotes[footnoteIdx] = arrayFootnotes[footnoteIdx].replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
         
       footnoteNum += 1;
     }
 
-    function replaceVar(str, variabe, varKey, footnoteText) {
-      const LiesVars = [
-        {
-          varName: "[var:ton-grimmoireproductions]",
-          varKey: "Ton",
-          varText: "The Ton was the high society in the United Kingdom during the Regency era."
-        },
-        {
-          varName: "[var:marquess-grimmoireproductions]",
-          varKey: "Marquess",
-          varText: "Pronounced “MAR-kwess” not “mar-KEY”"
+    function replaceVariable(text, varList) {
+
+      /* Get the correct variable data from the list of variabels */
+      const varName = text.substring(text.indexOf(":", text.indexOf("var"))+1,text.indexOf("]",text.indexOf("var")))
+
+      const {name, term, description} = varList.find((obj) => obj.name === varName)
+
+      /* Determine if this variable has already gotten a footnote */
+      const firstInstance = !arrayFootnotes.find((note) => note.includes(description))
+      const contentText = firstInstance ? `${term}<sup>${footnoteNum}</sup>` : term
+      const footnoteText = `<sup>${footnoteNum}</sup> ${description}`
+
+      /* Update the variable reference in the content */
+      arrayContent[idx] = text.replace(`[var:${name}]`, contentText)
+
+      /* Only add a new footnote if this is there isn't already one for this variable */
+
+      if (firstInstance) {
+        /* Determine if the index of the "Notes" header so we don't put any footnotes before it */
+        const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+
+        /* Determine the index of the footnote that will come before this one */
+        const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum-1}</sup>`))
+
+        /*
+          If no footnotes come before this one, add new footnote after header
+          Otherwise, add after preceeding footnote
+        */
+        if (footnoteIdx <= 0) {
+          arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, footnoteText)
+        } else {
+          arrayFootnotes.splice(footnoteIdx, 0, footnoteText)
         }
-      ]
-    
-      const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
-      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum+1}</sup>`))
 
-      arrayContent[idx] = str.replace(variabe, `${varKey}<sup>${footnoteNum+1}</sup>`)
-
-      if (footnoteIdx <= 0) {
-        arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, footnoteText)
-      } else {
-        arrayFootnotes.splice(footnoteIdx, 0, footnoteText)
+        
+        footnoteNum += 1
       }
     }
-
-    if (str.includes`[var:ton-grimmoireproductions]`) {
-      const noteText = `<sup>${footnoteNum}</sup> The Ton was the high society in the United Kingdom during the Regency era.`
-      const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
-      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum+1}</sup>`))
-
-      arrayContent[idx] = str.replace("[var:ton-grimmoireproductions]", `Ton<sup>${footnoteNum+1}</sup>`)
-
-      if (footnoteIdx <= 0) {
-        arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, noteText)
-      } else {
-        arrayFootnotes.splice(footnoteIdx, 0, noteText)
-      }
-
-      footnoteNum += 1;
-
-    }
-  // if (str.includes`[var:marquess-grimmoireproductions]`) {
-  //   const noteText = `<sup>${footnoteNum}</sup> Pronounced "MAR-kwess" not "mar-KEY"`
-  //   const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
-  //   const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum}</sup>`))
-
-  //   arrayContent[idx] = str.replace("[var:marquess-grimmoireproductions]", `Marquess<sup>${footnoteNum}</sup>`)
-
-  //   if (footnoteIdx <= 0) {
-  //     arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, noteText)
-  //   } else {
-  //     arrayFootnotes.splice(footnoteIdx, 0, noteText)
-  //   }
-
-  //   footnoteNum += 1;
-  // }
-
-
   })
 
   const joinedFootnotes = arrayFootnotes.join("\n")
