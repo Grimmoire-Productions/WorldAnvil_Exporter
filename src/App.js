@@ -6,7 +6,7 @@ import { LIES_VARS } from './consts'
 
 
 async function FetchCharacter(charId, setActiveCharacter) {
-  const response = await fetch("https://www.worldanvil.com/api/external/boromir/article?id=" + charId + "&granularity=2", {
+  const response = await fetch(`https://www.worldanvil.com/api/external/boromir/article?id=${charId}&granularity=2`, {
     method: "GET",
     headers: {
       "accept": "application/json",
@@ -16,10 +16,23 @@ async function FetchCharacter(charId, setActiveCharacter) {
   })
 
   const data = await response.json();
-  setActiveCharacter(ProcessArticle(data));
+  setActiveCharacter(await ProcessArticle(data));
 }
 
-function ProcessArticle(data) {
+async function FetchSecret(secretId) {
+  const response = await fetch(`https://www.worldanvil.com/api/external/boromir/secret?id=${secretId}&granularity=0`, {
+    headers: {
+      "accept": "application/json",
+      "x-auth-token": process.env.REACT_APP_WA_GP_API_TOKEN,
+      "x-application-key": process.env.REACT_APP_WA_API_KEY
+    }
+  })
+
+  const data = await response.json();
+  return data.content;
+}
+
+async function ProcessArticle(data) {
   let content = data.content;
   let footnotes = data.footnotes;
 
@@ -39,17 +52,16 @@ function ProcessArticle(data) {
   content = correctPunctuation(content)
   footnotes = correctPunctuation(footnotes)
 
-  /* Format Secrets */
-  content = content.replace(/\s*\[secret.*?\]\s*/g, 'Secret Placeholder');
-
   /* Enclose any footnotes in a div */
   if (footnotes.trim().length > 0) {
     footnotes = '<div class="notes"><h2>Notes</h2>'.concat(footnotes, '</div>')
   }
 
   /* Handle special cases */
-  const arrayContent = content.split("\n");
+  let arrayContent = content.split("\n");
   const arrayFootnotes = footnotes.split("\n")
+  arrayContent = await processSecrets(arrayContent);
+  console.log("Moving past secrets")
 
   let footnoteNum = 1;
   arrayContent.forEach((str, idx) => {
@@ -166,6 +178,29 @@ function ProcessArticle(data) {
   )
 }
 
+async function processSecrets(arrayContent) {
+
+  let i = 0;
+
+  for (const str of arrayContent) {
+    if(str.includes("secret:")) {
+      const secretId = str.substring(
+        str.indexOf(":")+1,
+        str.indexOf("]")
+      )
+      let secretText = await FetchSecret(secretId);
+      console.log("Secret fetched");
+      secretText = transformBBCode(secretText)
+      secretText = transformWorldAnvilLinks(secretText)
+      secretText = correctPunctuation(secretText)
+      arrayContent[i] = `<p>${secretText}</p>`
+    }
+    i++;
+  }
+
+  return arrayContent;
+}
+
 function transformBBCode(data) {
   data = data.replaceAll("@", "");
   data = data.replaceAll("\r", "");
@@ -209,15 +244,15 @@ function UserInput(setActiveCharacter) {
 
   return (
     <div id='userInput'>
-      <label>Article ID: <input type='text' id='articleId' name='Article ID' ref={refArticleId}/></label>
-      <br/>
+      <label>Article ID: <input type='text' id='articleId' name='Article ID' ref={refArticleId} /></label>
+      <br />
       <button onClick={() => FetchCharacter(refArticleId.current.value, setActiveCharacter)}>Submit</button>
     </div>
   )
 }
 
 function createHtml(activeCharacter) {
-  return {__html: activeCharacter}
+  return { __html: activeCharacter }
 }
 
 function CharacterSheet(activeCharacter) {
