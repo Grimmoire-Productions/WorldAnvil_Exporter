@@ -1,3 +1,4 @@
+/* Author permits use for commercial projects */
 @font-face {
   font-family: 'Born';
   src: url('./media/Born.otf') format('opentype');
@@ -5,6 +6,7 @@
   font-size: normal;
 }
 
+/* Licensed under SIL Open Font License */
 @font-face {
   font-family: 'Munson';
   src: url('./media/Munson_Roman.otf'), format('opentype');
