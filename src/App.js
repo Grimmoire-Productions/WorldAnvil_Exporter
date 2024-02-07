@@ -80,17 +80,21 @@ async function ProcessArticle(content) {
 }
 
 async function processSecrets(arrayContent) {
-  arrayContent.forEach(async (element, index) => {
-    if(element.includes("secret:")) {
-      const secretId = element.substring(
-        element.indexOf(":")+1,
-        element.indexOf("]")
+
+  let i = 0;
+
+  for (const str of arrayContent) {
+    if(str.includes("secret:")) {
+      const secretId = str.substring(
+        str.indexOf(":")+1,
+        str.indexOf("]")
       )
       const secretText = await FetchSecret(secretId);
       console.log("Secret fetched");
-      arrayContent[index] = `<p>${secretText}</p>`
+      arrayContent[i] = `<p>${secretText}</p>`
     }
-  });
+    i++;
+  }
 
   return arrayContent;
 }
