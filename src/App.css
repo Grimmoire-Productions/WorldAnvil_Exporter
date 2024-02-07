@@ -1,10 +1,15 @@
 @font-face {
-  font-family: Bellefair;
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/bellefair/v14/kJExBuYY6AAuhiXUxG1N-Po3huR_DQ.woff2);
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  font-family: 'Born';
+  src: url('./media/Born.otf') format('opentype');
+  font-weight: normal;
+  font-size: normal;
+}
+
+@font-face {
+  font-family: 'Munson';
+  src: url('./media/Munson_Roman.otf'), format('opentype');
+  font-weight: normal;
+  font-size: normal;
 }
 
 /* Print specific styling */
@@ -67,7 +72,7 @@ img {
 
 h1 {
   text-transform: none;
-  font-family: Bellefair, serif;
+  font-family: 'Munson';
   color: black;
   break-after: avoid;
   font-size: 22pt;
@@ -77,7 +82,7 @@ h1 {
 
 h2 {
   text-transform: none;
-  font-family: Bellefair, serif;
+  font-family: 'Munson';
   font-style: italic;
   color: black;
   font-size: 16pt;
@@ -87,7 +92,7 @@ h2 {
 }
 
 h3 {
-  font-family: Bellefair, serif;
+  font-family: 'Munson';
   font-size: 14pt;
   color: black;
   break-after: avoid;
@@ -95,7 +100,7 @@ h3 {
 }
 
 p {
-  font-family: Bellefair, serif;
+  font-family: 'Born';
   color: black;
   font-size: 13pt;
   line-height: 1.5;
@@ -111,7 +116,7 @@ ul {
 }
 
 li {
-  font-family: Bellefair, serif;
+  font-family: 'Born';
   text-align: justify;
   color: black;
   line-height: 1.15;
@@ -173,7 +178,7 @@ hr {
 }
 
 .flavorQuote {
-  font-family: Bellefair, serif;
+  font-family: 'Born';
   color: black;
   padding: 20px;
   margin: 10px;
@@ -184,7 +189,7 @@ hr {
 }
 
 blockquote .author {
-  font-family: Bellefair, serif;
+  font-family: 'Born';
   padding: 0.5em;
   font-size: 0.8em;
 }
