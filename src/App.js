@@ -2,9 +2,11 @@ import './App.css';
 import { useRef, useState } from 'react';
 import headerImage from './media/headerImage.png';
 import footerImage from './media/footerImage.png';
+import { LIES_VARS } from './consts'
+
 
 async function FetchCharacter(charId, setActiveCharacter) {
-  const response = await fetch("https://www.worldanvil.com/api/external/boromir/article?id=" + charId + "&granularity=1", {
+  const response = await fetch("https://www.worldanvil.com/api/external/boromir/article?id=" + charId + "&granularity=2", {
     method: "GET",
     headers: {
       "accept": "application/json",
@@ -14,51 +16,42 @@ async function FetchCharacter(charId, setActiveCharacter) {
   })
 
   const data = await response.json();
-  setActiveCharacter(ProcessArticle(data.content));
+  setActiveCharacter(ProcessArticle(data));
 }
 
-function ProcessArticle(content) {
-  content = content.replaceAll("@", "");
-  content = content.replaceAll("\r", "");
-  content = content.replaceAll("[img:5090045]", "");
+function ProcessArticle(data) {
+  let content = data.content;
+  let footnotes = data.footnotes;
 
   /* Transform BBCode tags to HTML equivalents */
-  content = content.replaceAll("[p]", "<p>").replaceAll("[/p]", "</p>");
-  content = content.replaceAll("[b]", "<b>").replaceAll("[/b]", "</b>");
-  content = content.replaceAll("[i]", "<i>").replaceAll("[/i]", "</i>");
-  content = content.replaceAll("[hr]", "<hr/>");
-  content = content.replaceAll("[h1]", "<h1>").replaceAll("[/h1]", "</h1>");
-  content = content.replaceAll("[h2]", "<h2>").replaceAll("[/h2]", "</h2>");
-  content = content.replaceAll("[ul]", "<ul>").replaceAll("[/ul]", "</ul>");
-  content = content.replaceAll("[li]", "<li>").replaceAll("[/li]", "</li>");
-  content = content.replaceAll("[br]", "")
-  content = content.replaceAll("[quote]", '<blockquote>').replaceAll("[/quote]", "</blockquote>");
+  content = transformBBCode(content)
+  footnotes = transformBBCode(footnotes)
+  
+  /* Misc handling */
   content = content.replaceAll("[center]", "").replaceAll("[/center]", ""); /* Will be handled with class styling to ensure standardization */
   content = content.replaceAll("[/container]", "</div>");
 
-  /* Format footnotes */
-  content = content.replaceAll("[var:ton-grimmoireproductions]", "Ton");
-
-  /* Format World Anvil links */
-  content = content.replace(/\s*\(person.*?\)\s*/g, ' ')
-  content = content.replace(/\s*\(organization.*?\)\s*/g, ' ')
-  content = content.replace(/\s*\(landmark.*?\)\s*/g, ' ')
-  content = content.replace(/\s*\[Plot.*?\]\s*/g, '');
-  content = content.replace(/\s*\(plot.*?\)\s*/g, '');
+  /* Transform World Anvil links */
+  content = transformWorldAnvilLinks(content)
+  footnotes = transformWorldAnvilLinks(footnotes)
 
   /* Punctuation correction */
-  content = content.replaceAll(" - ", " &ndash; "); /* replace hypen with emdash */
-  content = content.replaceAll(" .", ".") /* Fixes formatting issue caused by prior replaces*/
-  content = content.replaceAll(" ,", ",") /* Fixes formatting issue caused by prior replaces*/
-  content = content.replaceAll(/"(?=(?:(?:[^"]*"){2})*[^"]*"[^"]*$)/g, `“`) /* Replaces opening straight qutoes with curly */
-  content = content.replaceAll(/"/g, `”`) /* Replaces closing straight qutoes with curly */
-  content = content.replaceAll(/'/g, `’`) /* Replaces straight single quote with curly */
+  content = correctPunctuation(content)
+  footnotes = correctPunctuation(footnotes)
 
   /* Format Secrets */
   content = content.replace(/\s*\[secret.*?\]\s*/g, 'Secret Placeholder');
 
+  /* Enclose any footnotes in a div */
+  if (footnotes.trim().length > 0) {
+    footnotes = '<div class="notes"><h2>Notes</h2>'.concat(footnotes, '</div>')
+  }
+
   /* Handle special cases */
-  var arrayContent = content.split("\n");
+  const arrayContent = content.split("\n");
+  const arrayFootnotes = footnotes.split("\n")
+
+  let footnoteNum = 1;
   arrayContent.forEach((str, idx) => {
 
     // Create divs from containers
@@ -75,7 +68,78 @@ function ProcessArticle(content) {
     if (str.includes(`”|`) || str.includes(`"|`)) {
       arrayContent[idx] = str.replace(`|`, `<div class="author">&ndash; `).concat('</div>');
     }
+
+    /* Format footnotes */
+    if (str.includes`[sup]`) {
+      const hasVariableBeforeFootnote = str.includes(`[var:`) && str.indexOf("[var:") < str.indexOf("[sup]")
+      
+      /*
+        if there is both a regular footnote and a variable in the same string of text
+        and the variable comes first, execute replaceVar first
+      */
+      if (hasVariableBeforeFootnote) {
+        replaceVariable(arrayContent[idx], LIES_VARS);
+        replaceFootnote(arrayContent[idx]);
+      } else {
+        replaceFootnote(arrayContent[idx]);
+      }
+    }
+
+    /* Format variables */
+    /* using arrayContent[idx] to account for the fact that str may have been altered by the above code block */
+    if (arrayContent[idx].includes(`[var:`)) {
+      replaceVariable(arrayContent[idx], LIES_VARS)
+    }
+
+    function replaceFootnote(text) {
+      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(text.slice(text.indexOf("[sup]"), text.indexOf("[/sup]"))))
+      arrayContent[idx] = text.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
+      arrayFootnotes[footnoteIdx] = arrayFootnotes[footnoteIdx].replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
+        
+      footnoteNum += 1;
+    }
+
+    function replaceVariable(text, varList) {
+
+      /* Get the correct variable data from the list of variabels */
+      const varName = text.substring(text.indexOf(":", text.indexOf("var"))+1,text.indexOf("]",text.indexOf("var")))
+
+      const {name, term, description} = varList.find((obj) => obj.name === varName)
+
+      /* Determine if this variable has already gotten a footnote */
+      const firstInstance = !arrayFootnotes.find((note) => note.includes(description))
+      const contentText = firstInstance ? `${term}<sup>${footnoteNum}</sup>` : term
+      const footnoteText = `<sup>${footnoteNum}</sup> ${description}`
+
+      /* Update the variable reference in the content */
+      arrayContent[idx] = text.replace(`[var:${name}]`, contentText)
+
+      /* Only add a new footnote if this is there isn't already one for this variable */
+
+      if (firstInstance) {
+        /* Determine if the index of the "Notes" header so we don't put any footnotes before it */
+        const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+
+        /* Determine the index of the footnote that will come before this one */
+        const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum-1}</sup>`))
+
+        /*
+          If no footnotes come before this one, add new footnote after header
+          Otherwise, add after preceeding footnote
+        */
+        if (footnoteIdx <= 0) {
+          arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, footnoteText)
+        } else {
+          arrayFootnotes.splice(footnoteIdx, 0, footnoteText)
+        }
+
+        
+        footnoteNum += 1
+      }
+    }
   })
+
+  const joinedFootnotes = arrayFootnotes.join("\n")
   
   // Add header and footer images around the main character sheet content
   arrayContent.unshift(`<header class="center"><img src="${headerImage}"/></header>
@@ -83,6 +147,7 @@ function ProcessArticle(content) {
     <thead><tr><td><div class="header-space">&nbsp;</div></td></tr></thead>
     <tbody>
     <tr><td><div class="characterSheetContent">`)
+  arrayContent.push(joinedFootnotes)
   arrayContent.push(`</div></td></tr>
     </tbody>
     <tfoot><tr><td><div class="footer-space">&nbsp;</div></td></tr></tfoot>
@@ -99,6 +164,44 @@ function ProcessArticle(content) {
   return (
     joinedContent
   )
+}
+
+function transformBBCode(data) {
+  data = data.replaceAll("@", "");
+  data = data.replaceAll("\r", "");
+  data = data.replaceAll("[img:5090045]", ""); /* World Anvil header image */
+  data = data.replace("[img:5090046]", "") /* World Anvil footer image */
+  data = data.replaceAll("[p]", "<p>").replaceAll("[/p]", "</p>");
+  data = data.replaceAll("[b]", "<b>").replaceAll("[/b]", "</b>");
+  data = data.replaceAll("[i]", "<i>").replaceAll("[/i]", "</i>");
+  data = data.replaceAll("[b]", "<b>").replaceAll("[/b]", "</b>");
+  data = data.replaceAll("[hr]", "<hr/>");
+  data = data.replaceAll("[h1]", "<h1>").replaceAll("[/h1]", "</h1>");
+  data = data.replaceAll("[h2]", "<h2>").replaceAll("[/h2]", "</h2>");
+  data = data.replaceAll("[ul]", "<ul>").replaceAll("[/ul]", "</ul>");
+  data = data.replaceAll("[li]", "<li>").replaceAll("[/li]", "</li>");
+  data = data.replaceAll("[br]", "")
+  data = data.replaceAll("[quote]", '<blockquote>').replaceAll("[/quote]", "</blockquote>");
+  return data;
+}
+
+function transformWorldAnvilLinks(data) {
+  data = data.replace(/\s*\(person.*?\)\s*/g, ' ')
+  data = data.replace(/\s*\(organization.*?\)\s*/g, ' ')
+  data = data.replace(/\s*\(landmark.*?\)\s*/g, ' ')
+  data = data.replace(/\s*\[Plot.*?\]\s*/g, '');
+  data = data.replace(/\s*\(plot.*?\)\s*/g, '');
+  return data;
+}
+
+function correctPunctuation(data) {
+  data = data.replaceAll(" - ", " &ndash; "); /* replace hypen with emdash */
+  data = data.replaceAll(" .", ".") /* Fixes formatting issue caused by prior replaces*/
+  data = data.replaceAll(" ,", ",") /* Fixes formatting issue caused by prior replaces*/
+  data = data.replaceAll(/"(?=(?:(?:[^"]*"){2})*[^"]*"[^"]*$)/g, `“`) /* Replaces opening straight qutoes with curly */
+  data = data.replaceAll(/"/g, `”`) /* Replaces closing straight qutoes with curly */
+  data = data.replaceAll(/'/g, `’`) /* Replaces straight single quote with curly */
+  return data;
 }
 
 function UserInput(setActiveCharacter) {
