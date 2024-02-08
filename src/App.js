@@ -52,11 +52,6 @@ async function ProcessArticle(data) {
   content = correctPunctuation(content)
   footnotes = correctPunctuation(footnotes)
 
-  /* Enclose any footnotes in a div */
-  if (footnotes.trim().length > 0) {
-    footnotes = '<div class="notes"><h2>Notes</h2>'.concat(footnotes, '</div>')
-  }
-
   /* Handle special cases */
   let arrayContent = content.split("\n");
   const arrayFootnotes = footnotes.split("\n")
@@ -106,6 +101,14 @@ async function ProcessArticle(data) {
       const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(text.slice(text.indexOf("[sup]"), text.indexOf("[/sup]"))))
       arrayContent[idx] = text.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
       arrayFootnotes[footnoteIdx] = `<p>${arrayFootnotes[footnoteIdx]}</p>`.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
+      
+      /* Add "Notes" header if not already present */
+      const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+
+      if (footnoteHeaderIdx === -1) {
+        arrayFootnotes.unshift('<h2>Notes</h2>');
+      }
+      
         
       footnoteNum += 1;
     }
@@ -129,7 +132,13 @@ async function ProcessArticle(data) {
 
       if (firstInstance) {
         /* Determine if the index of the "Notes" header so we don't put any footnotes before it */
-        const footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+        let footnoteHeaderIdx = arrayFootnotes.findIndex((note) => note.includes(`<h2>Notes</h2>`))
+
+        /* Add "Notes" header if not already present */
+        if (footnoteHeaderIdx === -1) {
+          arrayFootnotes.unshift('<h2>Notes</h2>');
+          footnoteHeaderIdx = 0;
+        }
 
         /* Determine the index of the footnote that will come before this one */
         const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(`<sup>${footnoteNum-1}</sup>`))
@@ -150,6 +159,12 @@ async function ProcessArticle(data) {
     }
   })
 
+  /* Enclose any footnotes in a div */
+  if (arrayFootnotes.length > 0) {
+    const lastFootnote = arrayFootnotes[arrayFootnotes.length - 1]
+    arrayFootnotes[0] =  '<div class="notes">'.concat(arrayFootnotes[0]) 
+    arrayFootnotes[arrayFootnotes.length-1] = lastFootnote.concat("</div>")
+  }
   const joinedFootnotes = arrayFootnotes.join("\n")
   
   // Add header and footer images around the main character sheet content
