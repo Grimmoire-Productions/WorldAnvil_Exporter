@@ -222,6 +222,7 @@ function transformBBCode(data) {
   data = data.replaceAll("[ul]", "<ul>").replaceAll("[/ul]", "</ul>");
   data = data.replaceAll("[li]", "<li>").replaceAll("[/li]", "</li>");
   data = data.replaceAll("[quote]", '<blockquote>').replaceAll("[/quote]", "</blockquote>");
+  data = data.replaceAll("/*", "<!--").replaceAll("*/", "-->");
   return data;
 }
 
