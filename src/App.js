@@ -105,7 +105,7 @@ async function ProcessArticle(data) {
     function replaceFootnote(text) {
       const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(text.slice(text.indexOf("[sup]"), text.indexOf("[/sup]"))))
       arrayContent[idx] = text.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
-      arrayFootnotes[footnoteIdx] = arrayFootnotes[footnoteIdx].replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
+      arrayFootnotes[footnoteIdx] = `<p>${arrayFootnotes[footnoteIdx]}</p>`.replace(/(\[sup\][0-9]+\[\/sup\])/g, `<sup>${footnoteNum}</sup>`)
         
       footnoteNum += 1;
     }
@@ -141,7 +141,7 @@ async function ProcessArticle(data) {
         if (footnoteIdx <= 0) {
           arrayFootnotes.splice(footnoteHeaderIdx + 1, 0, footnoteText)
         } else {
-          arrayFootnotes.splice(footnoteIdx, 0, footnoteText)
+          arrayFootnotes.splice(footnoteIdx + 1, 0, footnoteText)
         }
 
         
