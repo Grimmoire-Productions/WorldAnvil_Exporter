@@ -204,16 +204,23 @@ function transformBBCode(data) {
   data = data.replaceAll("\r", "");
   data = data.replaceAll("[img:5090045]", ""); /* World Anvil header image */
   data = data.replace("[img:5090046]", "") /* World Anvil footer image */
-  data = data.replaceAll("[p]", "<p>").replaceAll("[/p]", "</p>");
-  data = data.replaceAll("[b]", "<b>").replaceAll("[/b]", "</b>");
+
+  /* catch weird spacing within tags */
+  data = data.replaceAll("[b] ", " <b>").replaceAll(" [/b]", "</b> ");
+  data = data.replaceAll("[i] ", " <i>").replaceAll(" [/i]", "</i> ");
+
+  /* Formatting tags */
   data = data.replaceAll("[i]", "<i>").replaceAll("[/i]", "</i>");
   data = data.replaceAll("[b]", "<b>").replaceAll("[/b]", "</b>");
+  data = data.replaceAll("[br]", "\n")
+
+  /* Text type tags */
+  data = data.replaceAll("[p]", "<p>").replaceAll("[/p]", "</p>");
   data = data.replaceAll("[hr]", "<hr/>");
   data = data.replaceAll("[h1]", "<h1>").replaceAll("[/h1]", "</h1>");
   data = data.replaceAll("[h2]", "<h2>").replaceAll("[/h2]", "</h2>");
   data = data.replaceAll("[ul]", "<ul>").replaceAll("[/ul]", "</ul>");
   data = data.replaceAll("[li]", "<li>").replaceAll("[/li]", "</li>");
-  data = data.replaceAll("[br]", "")
   data = data.replaceAll("[quote]", '<blockquote>').replaceAll("[/quote]", "</blockquote>");
   return data;
 }
