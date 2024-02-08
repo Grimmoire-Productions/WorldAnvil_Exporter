@@ -150,10 +150,14 @@ hr {
   margin: 0px auto;
 }
 
-.mycvvsf,
+.mycvvsf {
+  break-inside: avoid;
+}
+
 .alittlebirdtoldme,
 .skillsSecretsWishes {
-  break-inside: avoid;
+  orphans: 3;
+  widows: 3;
 }
 
 .subtitle p,
