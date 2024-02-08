@@ -33,8 +33,9 @@ async function FetchSecret(secretId) {
 }
 
 async function ProcessArticle(data) {
+
   let content = data.content;
-  let footnotes = data.footnotes;
+  let footnotes = data.footnotes ? data.footnotes : ""
 
   /* Transform BBCode tags to HTML equivalents */
   content = transformBBCode(content)
