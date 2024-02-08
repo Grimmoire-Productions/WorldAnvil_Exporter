@@ -238,6 +238,7 @@ function correctPunctuation(data) {
   data = data.replaceAll(" - ", " &ndash; "); /* replace hypen with emdash */
   data = data.replaceAll(" .", ".") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(" ,", ",") /* Fixes formatting issue caused by prior replaces*/
+  data = data.replaceAll(" !", "!") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(" </b>", "</b>") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(/"(?=(?:(?:[^"]*"){2})*[^"]*"[^"]*$)/g, `“`) /* Replaces opening straight qutoes with curly */
   data = data.replaceAll(/"/g, `”`) /* Replaces closing straight qutoes with curly */
