@@ -247,6 +247,7 @@ function transformWorldAnvilLinks(data) {
   data = data.replace(/\s*\(landmark.*?\)\s*/g, ' ')
   data = data.replace(/\s*\[Plot.*?\]\s*/g, '');
   data = data.replace(/\s*\(plot.*?\)\s*/g, '');
+  data = data.replace(/\s*\(item.*?\)\s*/g, ' ');
   return data;
 }
 
