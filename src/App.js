@@ -33,9 +33,8 @@ async function FetchSecret(secretId) {
 }
 
 async function ProcessArticle(data) {
-
   let content = data.content;
-  let footnotes = data.footnotes ? data.footnotes : ""
+  let footnotes = data.footnotes;
 
   /* Transform BBCode tags to HTML equivalents */
   content = transformBBCode(content)
@@ -73,7 +72,13 @@ async function ProcessArticle(data) {
 
     // Apply quote class correctly
     if (str.includes(`”|`) || str.includes(`"|`)) {
-      arrayContent[idx] = str.replace(`|`, `<div class="author">&ndash; `).concat('</div>');
+      arrayContent[idx] = str.replace(`|`, `<div class="author">&ndash; `)
+        
+      if (str.includes('</blockquote>')) {
+        arrayContent[idx] = arrayContent[idx].replace('</blockquote>', '</div></blockquote>')
+      } else {
+        arrayContent[idx] = arrayContent[idx].concat('</div>');
+      }
     }
 
     /* Format footnotes */
