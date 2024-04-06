@@ -19,6 +19,13 @@
   #userInput {
     display: none;
   }
+  .manualInput {
+  display: none;
+}
+
+.apiInput {
+  display: none;
+}
 
   header,
   .header-space {
@@ -58,6 +65,30 @@
     margin-right: 1in;
   }
 }
+
+/* User Input styling */
+@media only screen {
+#userInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  margin: 0;
+}
+
+.manualInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.apiInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 50px;
+}
+}
+
 
 /* Element styling */
 header,

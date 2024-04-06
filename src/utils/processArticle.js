@@ -4,7 +4,7 @@ import { transformBBCode, transformWorldAnvilLinks, correctPunctuation } from '.
 import { processSecrets } from './processSecrets';
 import { processFootnotes } from './processFootnotes';
 
-export async function ProcessArticle(data) {
+export async function ProcessArticle(data, type) {
   let content = data.content;
   let footnotes = data.footnotes ? data.footnotes : ""
 
@@ -27,7 +27,7 @@ export async function ProcessArticle(data) {
   /* Handle special cases */
   let arrayContent = content.split("\n");
   const arrayFootnotes = footnotes.split("\n")
-  arrayContent = await processSecrets(arrayContent);
+  arrayContent = await processSecrets(arrayContent, type);
 
   arrayContent.forEach((str, idx) => {
 
