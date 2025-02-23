@@ -6,8 +6,8 @@ async function FetchCharacter(charId, setActiveCharacter) {
     method: "GET",
     headers: {
       "accept": "application/json",
-      "x-auth-token": process.env.REACT_APP_WA_GP_API_TOKEN,
-      "x-application-key": process.env.REACT_APP_WA_API_KEY
+      "x-auth-token": process.env.NEXT_PUBLIC_WA_GP_API_TOKEN,
+      "x-application-key": process.env.NEXT_PUBLIC_WA_API_KEY
     }
   })
 
@@ -20,7 +20,7 @@ function UserInput(setActiveCharacter) {
 
   return (
     <div id='userInput'>
-      <label>Article ID: <input type='text' id='articleId' name='Article ID' ref={refArticleId} /></label>
+      <label>Article ID: <input type='text' id='articleId' data-testid="articleId" name='Article ID' ref={refArticleId} /></label>
       <br />
       <button onClick={() => FetchCharacter(refArticleId.current.value, setActiveCharacter)}>Submit</button>
     </div>

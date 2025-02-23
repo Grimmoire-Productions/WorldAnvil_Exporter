@@ -4,8 +4,8 @@ export async function FetchSecret(secretId) {
   const response = await fetch(`https://www.worldanvil.com/api/external/boromir/secret?id=${secretId}&granularity=0`, {
     headers: {
       "accept": "application/json",
-      "x-auth-token": process.env.REACT_APP_WA_GP_API_TOKEN,
-      "x-application-key": process.env.REACT_APP_WA_API_KEY
+      "x-auth-token": process.env.NEXT_PUBLIC_WA_GP_API_TOKEN,
+      "x-application-key": process.env.NEXT_PUBLIC_WA_API_KEY
     }
   })
 
