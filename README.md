@@ -70,6 +70,13 @@ If you've never worked with command line tools before, here's what you need to g
 6. Install GitHub desktop following [these instructions](https://docs.github.com/en/desktop/installing-and-authenticating-to-github-desktop/setting-up-github-desktop)
     You could do everything GitHub desktop does with command line prompts, but this gives you a user interface that might be less intimidating.
 
+7. Install gettext
+    - For MacOS, install [homebrew](https://brew.sh/) via it's instructions. Then, in your terminal, run `brew install gettext`
+    - For Windows:
+        - Download the [precompiled binary installer](https://mlocati.github.io/articles/gettext-iconv-windows.html). Download the "static" flavor of your Operating System (32bit or 64bit) and simple run the installer.
+        - Update the system PATH: `Control Panel > System > Advanced > Environment Variables`
+        - In the System variables list, click Path, click Edit and then New. Add `C:\Program Files\gettext-iconv\bin` value.
+
 ## Setting up local dev environment
 
 1. Clone the `WorldAnvil_Exporter` repository using [these instructions](https://docs.github.com/en/desktop/adding-and-cloning-repositories/cloning-a-repository-from-github-to-github-desktop)

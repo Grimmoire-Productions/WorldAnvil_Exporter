@@ -71,7 +71,7 @@ export async function ProcessArticle(data) {
   arrayContent = arrayContent.concat(arrayFootnotes)
   
   // Add header and footer images around the main character sheet content
-  arrayContent.unshift(`<header class="center"><img src="${headerImage}"/></header>
+  arrayContent.unshift(`<header class="center"><img src="${headerImage.src}"/></header>
   <table>
     <thead><tr><td><div class="header-space">&nbsp;</div></td></tr></thead>
     <tbody>
@@ -81,7 +81,7 @@ export async function ProcessArticle(data) {
     <tfoot><tr><td><div class="footer-space">&nbsp;</div></td></tr></tfoot>
     </table>
     <footer class="center">
-        <img src="${footerImage}"/>
+        <img src="${footerImage.src}"/>
     </footer>`)
 
   var joinedContent = arrayContent.join("\n");
