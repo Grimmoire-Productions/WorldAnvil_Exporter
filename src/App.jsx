@@ -6,8 +6,8 @@ async function FetchCharacter(charId, setActiveCharacter) {
     method: "GET",
     headers: {
       "accept": "application/json",
-      "x-auth-token": process.env.NEXT_PUBLIC_WA_GP_API_TOKEN,
-      "x-application-key": process.env.NEXT_PUBLIC_WA_API_KEY
+      "x-auth-token": import.meta.env.VITE_PUBLIC_WA_GP_API_TOKEN,
+      "x-application-key": import.meta.env.VITE_PUBLIC_WA_API_KEY
     }
   })
 
