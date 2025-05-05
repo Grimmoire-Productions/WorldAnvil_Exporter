@@ -3,11 +3,14 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import pluginJest from 'eslint-plugin-jest';
 
 export default [
-  { ignores: ['dist'] },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    ignores: ['dist', 'coverage', 'node_modules'] },
+  {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -30,6 +33,20 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-focused-tests': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/prefer-to-have-length': 'warn',
+      'jest/valid-expect': 'error',
     },
+    "overrides": [
+      {
+        "files": ["tests/**/*"],
+        "plugins": ["jest"],
+        "env": {
+          "jest/globals": true
+        }
+      }
+    ]
   },
 ]
