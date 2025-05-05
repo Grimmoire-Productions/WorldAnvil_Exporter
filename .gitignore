@@ -44,6 +44,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vscode
 
 # OS
 .DS_Store
@@ -433,8 +434,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
-
 
 # Local History for Visual Studio Code
 .history/
