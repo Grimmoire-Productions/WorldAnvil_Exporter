@@ -24,7 +24,7 @@ export function processFootnotes(arrayContent, arrayFootnotes) {
       if (hasVariableBeforeFootnote) {
         const varName = getVariableName(newString);
         const varData = getVarData(varName, LIES_VARS)
-        const isFirstInstance = checkIfFirstInstance(arrayFootnotes, varData.text)
+        const isFirstInstance = checkIfFirstInstance(arrayFootnotes, varData.description)
         
         newString = replaceVariable(newString, varData, footnoteNum, isFirstInstance)
 
