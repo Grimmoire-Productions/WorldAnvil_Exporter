@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders main page unchanged 1`] = `
+<div>
+  <div
+    class="App"
+  >
+    <div
+      id="userInput"
+    >
+      <label>
+        Article ID: 
+        <input
+          data-testid="articleId"
+          id="articleId"
+          name="Article ID"
+          type="text"
+        />
+      </label>
+      <br />
+      <button>
+        Submit
+      </button>
+    </div>
+    <div />
+  </div>
+</div>
+`;
