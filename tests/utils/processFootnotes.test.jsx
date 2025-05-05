@@ -21,5 +21,6 @@ describe('processFootnotes', () => {
     processFootnotes(mockArrayContent, mockArrayFootnotes)
 
     expect(mockArrayContent[0]).toEqual("<p>As well-regarded members of the Ton<sup>1</sup>, you and your sister have acted as chaperones for social events for the Waldock sisters.</p>")
+    expect(mockArrayContent[2]).toEqual("<b>Mrs. Huxley</b> meets with <i>the</i> important women of the Ton to discuss important goings on, to occasionally do a bit of light gambling, and, of course, to decide on which marriages are suitable and which marriages are <i>not</i>. It is an exclusive gathering, and there is just such a tea planned for this very Saturday.<sup>2</sup></p>")
   })
 })

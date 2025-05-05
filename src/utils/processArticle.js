@@ -1,5 +1,5 @@
-import headerImage from '../assets/headerImage.png'
-import footerImage from '../assets/footerImage.png';
+import headerImage from '../assets/LiesAndLiability/header.png'
+import footerImage from '../assets/LiesAndLiability/footer.png';
 import { transformBBCode, transformWorldAnvilLinks, correctPunctuation } from './formatter';
 import { processSecrets } from './processSecrets';
 import { processFootnotes } from './processFootnotes';
