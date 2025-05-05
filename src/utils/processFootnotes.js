@@ -24,7 +24,7 @@ export function processFootnotes(arrayContent, arrayFootnotes) {
       if (hasVariableBeforeFootnote) {
         const varName = getVariableName(newString);
         const varData = getVarData(varName, LIES_VARS)
-        const isFirstInstance = checkIfFirstInstance(arrayFootnotes, varData.text)
+        const isFirstInstance = checkIfFirstInstance(arrayFootnotes, varData.description)
         
         newString = replaceVariable(newString, varData, footnoteNum, isFirstInstance)
 
@@ -43,8 +43,7 @@ export function processFootnotes(arrayContent, arrayFootnotes) {
         arrayFootnotes[footnoteIdx] = '<p>'.concat(arrayFootnotes[footnoteIdx], '</p>')
       }
       footnoteNum += 1;
-    }
-    if (hasVariable) {
+    } else if (hasVariable) {
       const varName = getVariableName(newString);
       const varData = getVarData(varName, LIES_VARS)
       const isFirstInstance = checkIfFirstInstance(arrayFootnotes, varData.description)
