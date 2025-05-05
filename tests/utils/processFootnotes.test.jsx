@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { processFootnotes } from '../processFootnotes'
+import { processFootnotes } from '../../src/utils/processFootnotes'
 
 describe('processFootnotes', () => {
   it('processes footnotes correctly', () => {
@@ -20,6 +20,6 @@ describe('processFootnotes', () => {
 
     processFootnotes(mockArrayContent, mockArrayFootnotes)
 
-    expect(mockArrayContent[0]).to.eq("<p>As well-regarded members of the Ton[sup]1[/sup], you and your sister have acted as chaperones for social events for the Waldock sisters.</p>")
+    expect(mockArrayContent[0]).toEqual("<p>As well-regarded members of the Ton<sup>1</sup>, you and your sister have acted as chaperones for social events for the Waldock sisters.</p>")
   })
 })
