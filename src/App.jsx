@@ -1,13 +1,14 @@
 import './App.css';
 import { useRef, useState } from 'react';
 import { ProcessArticle } from './utils/processArticle';
+
 async function FetchCharacter(charId, setActiveCharacter) {
   const response = await fetch(`https://www.worldanvil.com/api/external/boromir/article?id=${charId}&granularity=2`, {
     method: "GET",
     headers: {
       "accept": "application/json",
-      "x-auth-token": import.meta.env.VITE_PUBLIC_WA_GP_API_TOKEN,
-      "x-application-key": import.meta.env.VITE_PUBLIC_WA_API_KEY
+      "x-auth-token": import.meta.env.VITE_PUBLIC_WA_API_TOKEN,
+      "x-application-key": import.meta.env.VITE_PUBLIC_APPLICATION_KEY
     }
   })
 
@@ -38,8 +39,15 @@ function CharacterSheet(activeCharacter) {
   )
 }
 
-function App() {
+function AppOld() {
   const [activeCharacter, setActiveCharacter] = useState('');
+
+  const userInitialValues = {
+    isLoggedIn: false,
+    user: null,
+    accessToken: null,
+    expiresAt: null,
+  };
 
   return (
     <div className="App">
@@ -49,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppOld;
