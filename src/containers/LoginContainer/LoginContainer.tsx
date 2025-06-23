@@ -6,9 +6,7 @@ import LoginBar from '../../components/LoginBar/LoginBar.tsx';
 
 function LoginContainer() {
   const {
-    isLoggedIn,
     setIsLoggedIn,
-    user,
     setUser,
     accessToken,
     setAccessToken,
@@ -63,17 +61,19 @@ function LoginContainer() {
 
   return (
     <div id="login" className={'login'}>
-      {isLoggedIn ? (
-        <div className={'username'}>
-          <p>Logged in as {user?.displayName}</p>
-        </div>
-      ) : (
-          <LoginBar
-            accessToken={accessToken}
-            onLogin={handleLogin}
-            onUpdateAccessToken={handleAccessTokenChange}
-          />
-      )}
+      <header>
+        <h1>World Anvil Character Sheet Export Tool</h1>
+      </header>
+      <main>
+        <LoginBar
+          accessToken={accessToken}
+          onLogin={handleLogin}
+          onUpdateAccessToken={handleAccessTokenChange}
+        />
+      </main>
+      <footer>
+        <p>Kelsey Morse-Brown 2024</p>
+      </footer>
     </div>
   );
 }
