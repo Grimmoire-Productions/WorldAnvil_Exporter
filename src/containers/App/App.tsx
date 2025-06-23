@@ -5,7 +5,6 @@ import type { UserInitialValues } from '../../utils/types';
 import MainContainer from '../MainContainer/MainContainer';
 
 function App() {
-
   const initUserToken = getUserToken();
 
   const userInitialValues: UserInitialValues = {
@@ -18,14 +17,8 @@ function App() {
   return (
     <div>
       <UserProvider initialValues={userInitialValues}>
-        <header>
-          <h1>World Anvil Character Sheet Export Tool</h1>
-        </header>
         <MainContainer/>
       </UserProvider>
-      <footer>
-        <p>Kelsey Morse-Brown 2024</p>
-      </footer>
     </div>
   );
 }

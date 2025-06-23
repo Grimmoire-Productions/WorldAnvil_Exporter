@@ -3,6 +3,7 @@ import styles from './MainContainer.module.css';
 import { UserContext } from '../../context/UserContext';
 import type { UserContextType } from '../../utils/types';
 import LoginContainer from '../LoginContainer/LoginContainer';
+import ExportToolContainer from '../ExportToolContainer/ExportToolContainer';
 import worldAnvilAPI from '../../utils/worldAnvilAPI';
 
 function MainContainer() {
@@ -27,19 +28,18 @@ function MainContainer() {
     }
   });
 
+  const getInitialScreen = () => {
+    if (!isLoading) {
+      return isLoggedIn ? <ExportToolContainer /> : <LoginContainer />
+    } else {
+      return <div />
+    }
+  }
+
   return (
-    <main className={styles.main}>
-      {!isLoading ? (
-        <LoginContainer />
-      ) : (
-        <div />
-      )}
-      {isLoggedIn ? (
-        <div>
-          <p>CONTENT</p>
-        </div>
-      ) : (<div />)}
-    </main>
+    <div className={styles.main}>
+      {getInitialScreen()}
+    </div>
   );
 }
 
