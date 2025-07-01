@@ -1,0 +1,11 @@
+.Exporter {
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+}
+
+.ExportHeader {
+  display: flex;
+  justify-content: space-around;
+  align-items:center;
+}

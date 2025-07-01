@@ -1,0 +1,177 @@
+/* Hawkins styling */
+.Hawkins {
+  --grey-text-color: #cdd6dd;
+  --main-background-color: RGBA(11, 15, 18, 1);
+  --medium-background-color: RGB(46, 56, 65);
+  --dark-red: RGB(81, 18, 12);
+  --red-text-color: #dd1d0a;
+  --transparent-background: RGBA(11, 15, 18, 0.8);
+  --red-link-glow: 1px 1px 1px #a31b0a, -1px -1px 1px #a31b0a,
+    1px 1px 8px #ed2b12, -1px -1px 8px #ed2b12;
+  --red-text-glow: -0.05rem -0.05rem 1px #ed2b12, 0.05rem -0.05rem 1px #ed2b12,
+    -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
+    0 0 20px #450100;
+  --red-panel-glow: -0.05rem -0.05rem 1px #ed2b12, 0.05rem -0.05rem 10px #ed2b12,
+    -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
+    0 0 20px #450100;
+  
+  header,
+  footer {
+    text-align: center;
+    max-width: 95%;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-around;
+  }
+  
+  img {
+    max-inline-size: 100%;
+  }
+
+  h1 {
+    text-transform: none;
+    font-family: Libre Baskerville, serif;
+    color: var(--red-text-color);
+    break-after: avoid;
+    font-size: 22pt;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+  
+  h2 {
+    text-transform: none;
+    font-family: Libre Baskerville, serif;
+    color: black;
+    font-size: 16pt;
+    padding-top: 1.25em;
+    break-after: avoid;
+    font-weight: 700;
+  }
+  
+  h3 {
+    font-family: Libre Baskerville, serif;
+    font-size: 14pt;
+    color: black;
+    break-after: avoid;
+    font-weight: 700;
+  }
+  
+  p {
+    font-family: Helvetica, Sans-Serif;
+    color: black;
+    font-size: 13pt;
+    line-height: 1.5;
+    orphans: 2;
+    widows: 2;
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
+    font-weight: 400;
+  }
+  
+  ul {
+    list-style-type: none;
+  }
+  
+  li {
+    font-family: Helvetica, Sans-Serif;
+    text-align: justify;
+    color: black;
+    line-height: 1.15;
+    break-inside: avoid;
+  }
+  
+  li::before {
+    margin-left: -18pt;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: 18pt;
+    content: "\00301C ";
+  }
+  
+  hr {
+    margin: 20px 0 20px 0;
+    break-before: avoid;
+  }
+  
+  /* Custom Class Styling */
+
+  .name {
+    h2 {
+     border: none;
+     font-size: 24px;
+   }
+  }
+
+  .center {
+    text-align: center;
+    max-width: 95%;
+    margin: 0px auto;
+  }
+
+  .tagline {
+    font-style: italic;
+  }
+  
+  .goals {
+    break-inside: avoid;
+  }
+  
+  .goals {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  .subtitle p {
+    font-style: italic;
+    text-align: justify;
+  }
+  
+  .plots p,
+  .summary p,
+  .goals p {
+    text-indent: 30px;
+    text-align: justify;
+  }
+  
+  .plots li {
+    margin-left: 30px;
+    margin-bottom: .5em;
+  }
+  
+  .plots li:last-child {
+   margin-bottom: 0px;
+  }
+
+  .goals li {
+    margin-left: 30px;
+    margin-bottom: .5em;
+  }
+
+  .goals li:last-child {
+    margin-bottom: 0px;
+   }
+
+  .song {
+    color: black;
+    font-family: "Kalam", cursive;
+    font-weight: 300;
+    padding: 20px;
+    margin: 10px;
+    font-size: 14pt;
+    text-align: center;
+    font-style: italic;
+    break-inside: avoid;
+  }
+  
+  blockquote .author {
+    font-family: "Kalam", cursive;
+    font-weight: 300;
+    padding: 0.5em;
+    font-size: 0.8em;
+  }
+  
+  .notes p {
+    margin-left: 20px;
+  }
+}

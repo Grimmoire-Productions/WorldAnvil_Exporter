@@ -3,6 +3,7 @@ import UserProvider from '../../context/UserContext';
 import { getUserToken } from '../../utils/userToken';
 import type { UserInitialValues } from '../../utils/types';
 import MainContainer from '../MainContainer/MainContainer';
+import './App.css'
 
 function App() {
   const initUserToken = getUserToken();

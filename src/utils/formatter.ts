@@ -1,4 +1,4 @@
-export function transformBBCode(data) {
+export function transformBBCode(data: string) {
   data = data.replaceAll("@", "");
   data = data.replaceAll("\r", "");
   data = data.replaceAll("[img:5090045]", ""); /* World Anvil header image */
@@ -25,7 +25,7 @@ export function transformBBCode(data) {
   return data;
 }
 
-export function transformWorldAnvilLinks(data) {
+export function transformWorldAnvilLinks(data: string) {
   data = data.replace(/\s*\(person.*?\)\s*/g, ' ')
   data = data.replace(/\s*\(organization.*?\)\s*/g, ' ')
   data = data.replace(/\s*\(landmark.*?\)\s*/g, ' ')
@@ -35,7 +35,7 @@ export function transformWorldAnvilLinks(data) {
   return data;
 }
 
-export function correctPunctuation(data) {
+export function correctPunctuation(data: string) {
   data = data.replaceAll(" - ", " &ndash; "); /* replace hypen with emdash */
   data = data.replaceAll(" .", ".") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(" ,", ",") /* Fixes formatting issue caused by prior replaces*/

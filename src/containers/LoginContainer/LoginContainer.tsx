@@ -38,7 +38,10 @@ function LoginContainer() {
     try {
       const userResponse = await worldAnvilAPI.logIn(accessToken);
       if (userResponse.displayName) {
-        setUser(userResponse);
+        const worlds = await worldAnvilAPI.getWorlds(accessToken, userResponse.id)
+        const user = userResponse;
+        user.worlds = worlds;
+        setUser(user);
         setIsLoggedIn(true)
       }
     } catch (err) {

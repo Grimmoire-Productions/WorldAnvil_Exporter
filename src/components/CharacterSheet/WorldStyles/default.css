@@ -1,0 +1,12 @@
+/* Default styling */
+.default {
+  header,
+  footer {
+    text-align: center;
+    max-width: 95%;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-around;
+  }
+}

@@ -1,10 +1,11 @@
 import headerImage from '../assets/LiesAndLiability/header.png'
 import footerImage from '../assets/LiesAndLiability/footer.png';
-import { transformBBCode, transformWorldAnvilLinks, correctPunctuation } from './formatter';
-import { processSecrets } from './processSecrets';
-import { processFootnotes } from './processFootnotes';
+import { transformBBCode, transformWorldAnvilLinks, correctPunctuation } from './formatter.ts';
+import { processSecrets } from './processSecrets.ts';
+import { processFootnotes } from './processFootnotes.ts';
+import type { ArticleResponse, UserContextType } from './types.ts';
 
-export async function ProcessArticle(data) {
+export async function ProcessArticle(userToken: UserContextType['accessToken'], data: ArticleResponse) {
   let content = data.content;
   let footnotes = data.footnotes ? data.footnotes : ""
 
@@ -27,7 +28,7 @@ export async function ProcessArticle(data) {
   /* Handle special cases */
   let arrayContent = content.split("\n");
   const arrayFootnotes = footnotes.split("\n")
-  arrayContent = await processSecrets(arrayContent);
+  arrayContent = await processSecrets(userToken, arrayContent);
 
   arrayContent.forEach((str, idx) => {
 
@@ -36,13 +37,13 @@ export async function ProcessArticle(data) {
       arrayContent[idx] = str.replace("[container: ", `<div class="`).replace("[container:", `<div class="`).replace("]", `">`);
     }
 
-    // Stats formatting
+    // Stats formatting for Lies & Liability
     if (str.includes("Rank:")) {
       arrayContent[idx] = str.replace(/\s\s*\|\s*/g, `&emsp;&emsp;|&emsp;&emsp;`).replaceAll(/>\s+/g, '>&emsp;')
     }
 
     // Apply quote class correctly
-    if (str.includes(`”|`) || str.includes(`"|`)) {
+    if (str.includes(`”|`) || str.includes(`"|`) || (str.startsWith("|") && str.endsWith("</blockquote>"))) {
       arrayContent[idx] = str.replace(`|`, `<div class="author">&ndash; `)
 
       if (str.includes('</blockquote>')) {
@@ -92,4 +93,3 @@ export async function ProcessArticle(data) {
     joinedContent
   )
 }
-

@@ -17,3 +17,8 @@ export const LIES_VARS = [
     description: "Pronounced “MAR-kwess” not “mar-KEY”"
   }
 ]
+
+export const WORLD_CSS_STYLE_MAPPING = {
+  'Lies & Liability': 'liesAndLiability',
+  'Hawkins': 'hawkins'
+}
