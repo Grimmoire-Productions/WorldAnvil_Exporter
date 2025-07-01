@@ -1,21 +1,25 @@
 import { LIES_VARS } from './consts';
 
-export function processFootnotes(arrayContent, arrayFootnotes) {
+export function processFootnotes(arrayContent: string[], arrayFootnotes: string[]) {
   let idx = 0;
   let footnoteNum = 1;
 
   for (const str of arrayContent) {
-    const hasVariable = str.includes(`[var:`);
-    const hasFootnote = str.includes`[sup]`
+    const hasVariable = str.includes('[var:');
+    const hasFootnote = str.includes('[sup]')
     let newString = str;
 
     if (hasFootnote) {
       const superscript = getOriginalSuperscript(newString);
 
+      if (typeof superscript === 'string') {
+
+      
+
       const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
       const footnoteHasParagraphTags = arrayFootnotes[footnoteIdx].includes('<p>') && arrayFootnotes[footnoteIdx].includes('</p>')
 
-      const hasVariableBeforeFootnote = hasVariable && str.indexOf("[var:") < str.indexOf("[sup]");
+      const hasVariableBeforeFootnote = hasVariable && str.indexOf('[var:') < str.indexOf('[sup]');
 
       /*
         if there is both a regular footnote and a variable in the same string of text
@@ -42,7 +46,8 @@ export function processFootnotes(arrayContent, arrayFootnotes) {
       if (!footnoteHasParagraphTags) {
         arrayFootnotes[footnoteIdx] = '<p>'.concat(arrayFootnotes[footnoteIdx], '</p>')
       }
-      footnoteNum += 1;
+        footnoteNum += 1;
+      }
     } else if (hasVariable) {
       const varName = getVariableName(newString);
       const varData = getVarData(varName, LIES_VARS)
@@ -63,27 +68,30 @@ export function processFootnotes(arrayContent, arrayFootnotes) {
   }
 }
 
-function getOriginalSuperscript(text) {
-  return text.match(/(\[sup\][0-9]+\[\/sup\])/g).toString()
+function getOriginalSuperscript(text: string) {
+  return text.match(/(\[sup\][0-9]+\[\/sup\])/g)?.toString()
 }
 
-function getVarData(varName, varsArray) {
+function getVarData(varName: string, varsArray: typeof LIES_VARS) {
   return varsArray.find((obj) => obj.name === varName)
 }
 
-function checkIfFirstInstance(array, text) {
+function checkIfFirstInstance(array: string[], text: string) {
   return !array.find((note) => note.includes(text))
 }
 
-function getVariableName(text) {
+function getVariableName(text: string) {
   return text.substring(text.indexOf(":", text.indexOf("var"))+1,text.indexOf("]",text.indexOf("var")))
 }
 
-function replaceVariable(string, varData, footnoteNum, isFirstInstance) {
-    return isFirstInstance ? string.replace(`[var:${varData.name}]`, `${varData.term}<sup>${footnoteNum}</sup>`) : string.replace(`[var:${varData.name}]`, varData.term)
+function replaceVariable(text: string, varData: ReturnType<typeof getVarData>, footnoteNum: number, isFirstInstance: boolean) {
+  if (varData) {
+    return isFirstInstance ? text.replace(`[var:${varData.name}]`, `${varData?.term}<sup>${footnoteNum}</sup>`) : text.replace(`[var:${varData.name}]`, varData?.term)
+  }
+  return text;
 }
 
-function addVariableFootnote(array, footnoteNum, description) {
+function addVariableFootnote(array: string[], footnoteNum: number, description: string) {
 
   const footnoteText = `<p><sup>${footnoteNum}</sup> ${description}</p>`
 

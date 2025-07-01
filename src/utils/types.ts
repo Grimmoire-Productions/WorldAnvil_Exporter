@@ -1,6 +1,7 @@
 export interface User {
   displayName: string;
   id: string;
+  worlds: World[] | null;
 }
 
 export interface UserInitialValues {
@@ -21,13 +22,89 @@ export interface UserContextType {
   setExpiresAt: (value: React.SetStateAction<number | null>) => void;
 }
 
-export interface UserIdentityResponse {
+export interface UserToken {
+  expiry: number;
+  value: string;
+}
+
+export interface World {
+  id: string,
+  title: string,
+  cssClassName: string,
+}
+
+export interface WorldInitialValues {
+  selectedWorld: World | null;
+}
+
+export interface WorldContextType {
+  selectedWorld: World | null;
+  setSelectedWorld: (value: React.SetStateAction<World | null>) => void;
+}
+
+export interface ArticleContextType {
+  articleId: string;
+  setArticleId: (value: React.SetStateAction<string>) => void;
+  activeCharacter: string;
+  setActiveCharacter: (value: React.SetStateAction<string>) => void;
+  errorMessage: string | null;
+  setErrorMessage: (value: React.SetStateAction<string | null>) => void;
+  fetchCharacter: (
+    userToken: string,
+    articleId: string
+  ) => void;
+}
+
+export interface ArticleInitialValues {
+  errorMessage: string | null;
+  articleId: string;
+  activeCharacter: string;
+}
+
+// World Anvil Response Data
+
+export interface BaseWorldAnvilResponse {
   success: boolean;
+}
+
+export interface UserWorldsResponse extends BaseWorldAnvilResponse {
+  entities: World[]
+}
+
+export interface UserIdentityResponse extends BaseWorldAnvilResponse {
   username: string;
   id: string;
 }
 
-export interface UserToken {
-  expiry: number;
-  value: string;
+export interface ArticleResponse {
+  id: string,
+  title: string,
+  slug: string,
+  state: 'public' | 'private',
+  entityClass: string,
+  icon: string | null,
+  url: string,
+  folderId: string,
+  tags: string | null,
+  templateType: string,
+  customArticleTemplate?: string | null,
+  content: string,
+  category: {
+    id: string,
+    title: string,
+    slug: string,
+    url: string,
+    tags: string | null,
+  },
+  footnotes: string,
+  fullfooter: string,
+  subheading: string | null,
+  secrets: SecretResponse[]
+}
+
+export interface SecretResponse {
+  id: string,
+  title: string,
+  url: string,
+  content?: string,
 }
