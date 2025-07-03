@@ -21,7 +21,7 @@ function ExportHeader({ articleId, handleArticleIdChange, onSubmit }: ExportHead
   const refArticleId = useRef(null);
 
   return (
-    <div className={styles.ExportHeader}>
+    <div className={styles.ExportHeader} id='exportHeader'>
       <div className={'worldSelector'}>
         {worlds && <WorldSelector worlds={worlds} />}
       </div>

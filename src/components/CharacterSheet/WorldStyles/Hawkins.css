@@ -24,15 +24,21 @@
     flex-direction: column-reverse;
     justify-content: space-around;
   }
+
+  body {
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
   
   img {
     max-inline-size: 100%;
   }
 
   h1 {
-    text-transform: none;
+    text-transform: uppercase;
     font-family: Libre Baskerville, serif;
-    color: var(--red-text-color);
     break-after: avoid;
     font-size: 22pt;
     line-height: 1.15;
@@ -58,7 +64,7 @@
   }
   
   p {
-    font-family: Helvetica, Sans-Serif;
+    font-family: "EB Garamond", serif;
     color: black;
     font-size: 13pt;
     line-height: 1.5;
@@ -74,7 +80,7 @@
   }
   
   li {
-    font-family: Helvetica, Sans-Serif;
+    font-family: "EB Garamond", serif;
     text-align: justify;
     color: black;
     line-height: 1.15;
@@ -92,6 +98,7 @@
   hr {
     margin: 20px 0 20px 0;
     break-before: avoid;
+    color: var(--red-text-color);
   }
   
   /* Custom Class Styling */

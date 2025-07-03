@@ -14,8 +14,6 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
 
       if (typeof superscript === 'string') {
 
-      
-
       const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
       const footnoteHasParagraphTags = arrayFootnotes[footnoteIdx].includes('<p>') && arrayFootnotes[footnoteIdx].includes('</p>')
 
