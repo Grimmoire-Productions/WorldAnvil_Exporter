@@ -23,14 +23,15 @@ const ArticleProvider: React.FC<{
   );
   const [articleId, setArticleId] = useState(initialValues.articleId);
 
-  const fetchCharacter = async (
+  const fetchAndProcessCharacter = async (
     userToken: UserContextType['accessToken'],
-    articleId: string
+    articleId: string,
+    selectedWorldKey: string,
   ) => {
     const results: ArticleResponse = await worldAnvilAPI.fetchCharacter(userToken, articleId)
 
     if (results?.id) {
-      setActiveCharacter(await ProcessArticle(userToken, results));
+      setActiveCharacter(await ProcessArticle(userToken, results, selectedWorldKey));
     }
 
     if (!activeCharacter) {
@@ -50,7 +51,7 @@ const ArticleProvider: React.FC<{
         setActiveCharacter,
         errorMessage,
         setErrorMessage,
-        fetchCharacter
+        fetchAndProcessCharacter
       }}
     >
       {children}

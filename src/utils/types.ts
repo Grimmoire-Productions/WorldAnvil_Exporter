@@ -49,9 +49,10 @@ export interface ArticleContextType {
   setActiveCharacter: (value: React.SetStateAction<string>) => void;
   errorMessage: string | null;
   setErrorMessage: (value: React.SetStateAction<string | null>) => void;
-  fetchCharacter: (
+  fetchAndProcessCharacter: (
     userToken: string,
-    articleId: string
+    articleId: string,
+    selectedWorldKey: string,
   ) => void;
 }
 

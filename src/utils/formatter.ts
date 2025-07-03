@@ -32,6 +32,8 @@ export function transformWorldAnvilLinks(data: string) {
   data = data.replace(/\s*\[Plot.*?\]\s*/g, '');
   data = data.replace(/\s*\(plot.*?\)\s*/g, '');
   data = data.replace(/\s*\(item.*?\)\s*/g, ' ');
+  data = data.replace(/\s*\(condition.*?\)\s*/g, ' ');
+  data = data.replace(/\s*\(location.*?\)\s*/g, ' ');
   return data;
 }
 
@@ -42,7 +44,7 @@ export function correctPunctuation(data: string) {
   data = data.replaceAll(" !", "!") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(" </b>", "</b>") /* Fixes formatting issue caused by prior replaces*/
   data = data.replaceAll(/"(?=(?:(?:[^"]*"){2})*[^"]*"[^"]*$)/g, `“`) /* Replaces opening straight qutoes with curly */
-  data = data.replaceAll(/"/g, `”`) /* Replaces closing straight qutoes with curly */
+  data = data.replaceAll(/"/g, `”`) /* Replaces closing straight quotes with curly */
   data = data.replaceAll(/'/g, `’`) /* Replaces straight single quote with curly */
   data = data.replaceAll(" ’", "’") /* Fixes formatting issue caused by prior replaces*/
   return data;

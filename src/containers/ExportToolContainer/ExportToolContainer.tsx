@@ -12,7 +12,7 @@ function ExportToolContainer() {
     articleId,
     setArticleId,
     activeCharacter,
-    fetchCharacter,
+    fetchAndProcessCharacter,
   } = React.useContext(ArticleContext) as ArticleContextType;
 
   const {
@@ -23,6 +23,7 @@ function ExportToolContainer() {
     accessToken
   } = React.useContext(UserContext) as UserContextType;
   
+  const selectedWorldKey = selectedWorld?.cssClassName || 'default'
   const handleArticleIdChange  = (e: React.FormEvent<HTMLInputElement>) =>
     setArticleId(e.currentTarget.value);
 
@@ -35,17 +36,16 @@ function ExportToolContainer() {
         return;
       }
     
-    fetchCharacter(accessToken, articleId)
+      fetchAndProcessCharacter(accessToken, articleId, selectedWorldKey)
   };
 
   return (
     <div className={styles.Exporter}>
-
       <div>
         <ExportHeader articleId={articleId} handleArticleIdChange={handleArticleIdChange} onSubmit={handleSubmit} />
       </div>
-      <div>
-        <CharacterSheet activeCharacter={activeCharacter} cssClassName={selectedWorld?.cssClassName || 'default'} />
+      <div className={styles.CharacterSheet}>
+        <CharacterSheet activeCharacter={activeCharacter} cssClassName={selectedWorldKey} />
       </div>
     </div>
   );
