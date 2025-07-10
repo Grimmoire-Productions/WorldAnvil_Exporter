@@ -59,10 +59,9 @@ function SearchDropdown({
   };
 
   return (
-    <>
+    <div data-testid={id}>
       {isMultiSelect ? (
         <Select<DropdownOption, true>
-          id={id}
           className={className}
           classNames={customClassNames}
           placeholder={placeholder}
@@ -75,7 +74,6 @@ function SearchDropdown({
         />
       ) : (
         <Select<DropdownOption>
-          id={id}
           className={className}
           classNames={customClassNames}
           placeholder={placeholder}
@@ -86,7 +84,7 @@ function SearchDropdown({
           noOptionsMessage={() => error}
         />
       )}
-    </>
+    </div>
   );
 }
 
