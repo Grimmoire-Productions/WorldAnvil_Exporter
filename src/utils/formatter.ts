@@ -11,6 +11,7 @@ export function transformBBCode(data: string) {
   /* Formatting tags */
   data = data.replaceAll("[i]", "<i>").replaceAll("[/i]", "</i>");
   data = data.replaceAll("[b]", "<b>").replaceAll("[/b]", "</b>");
+  data = data.replaceAll("[u]", "<u>").replaceAll("[/u]", "</u>");
   data = data.replaceAll("[br]", "\n")
 
   /* Text type tags */
@@ -18,6 +19,7 @@ export function transformBBCode(data: string) {
   data = data.replaceAll("[hr]", "<hr/>");
   data = data.replaceAll("[h1]", "<h1>").replaceAll("[/h1]", "</h1>");
   data = data.replaceAll("[h2]", "<h2>").replaceAll("[/h2]", "</h2>");
+  data = data.replaceAll("[ol]", "<ol>").replaceAll("[/ol]", "</ol>");
   data = data.replaceAll("[ul]", "<ul>").replaceAll("[/ul]", "</ul>");
   data = data.replaceAll("[li]", "<li>").replaceAll("[/li]", "</li>");
   data = data.replaceAll("[quote]", '<blockquote>').replaceAll("[/quote]", "</blockquote>");
