@@ -1,9 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import type { MultiValue } from 'react-select';
 
-import type { ArticleContextType, DropdownOption, UserContextType, World, WorldContextType } from '../../../utils/types';
+import type { ArticleContextType, DropdownOption, UserContextType, World, WorldContextType, CharacterSheet } from '../../../utils/types';
 import SearchDropdown from '../../../components/SearchDropdown/SearchDropdown';
-import Dropdown from '../../../components/Dropdown/Dropdown';
 
 import { ArticleContext } from '../../../context/ArticleContext';
 import { UserContext } from '../../../context/UserContext';
@@ -19,6 +18,7 @@ function ExportHeader() {
     articleId,
     setArticleId,
     fetchAndProcessCharacter,
+    setActiveCharacter
   } = React.useContext(ArticleContext) as ArticleContextType;
 
   const {
@@ -36,11 +36,8 @@ function ExportHeader() {
     setUser
   } = React.useContext(UserContext) as UserContextType;
 
-  const {
-    setSelectedTags
-  } = React.useContext(WorldContext) as WorldContextType
-
-  const refArticleId = useRef(null);
+  const [articlesList, setArticlesList] = useState<DropdownOption[]>([]);
+  const [currentCharacter, setCurrentCharacter] = useState<DropdownOption | null>(null);
 
   useEffect(() => {
     if (selectedWorld?.id && user?.worlds) {
@@ -56,18 +53,33 @@ function ExportHeader() {
           worlds: updatedWorlds
         }
       })
+      setArticleDropdownOptions(selectedWorld.characterSheets);
     };
+    setCurrentCharacter(null);
+    setArticleId('')
+    setActiveCharacter('')
     setSelectedTags([])
+    
   }, [selectedWorld])
 
+  useEffect(() => {
+    if (selectedWorld) {
+      setArticleDropdownOptions(selectedWorld.characterSheets);
+    }
+  }, [selectedTags])
+
+  useEffect(() => {
+    if (articleId && selectedWorld) {
+      const selectedWorldKey = selectedWorld?.cssClassName || "default";
+      fetchAndProcessCharacter(accessToken, articleId, selectedWorldKey);
+    }
+  }, [articleId])
   const handleSelectedTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
     setSelectedTags(options as DropdownOption[])
   };
 
-  const handleSelectedWorldChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const selectedOption = event.target.selectedOptions[0];
+  const handleSelectedWorldChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
+    const selectedOption = options as DropdownOption;
 
     // Only proceed if a different world is selected
     if (selectedWorld?.id === selectedOption.id) {
@@ -100,16 +112,22 @@ function ExportHeader() {
         }
       }
     }
-  };
+  }
 
   const handleArticleIdChange = (e: React.FormEvent<HTMLInputElement>) =>
     setArticleId(e.currentTarget.value);
+
+  const handleArticleChangeV2 = (options: DropdownOption | MultiValue<DropdownOption>) => {
+    const selectedOption = options as DropdownOption;
+    setCurrentCharacter(selectedOption)
+    setArticleId(selectedOption.id)
+  }
 
   const onSubmit = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-
+ 
     if (articleId === '') {
       return;
     }
@@ -121,11 +139,7 @@ function ExportHeader() {
 
   const worldDropdownOptions = (worlds: World[]): DropdownOption[] => {
 
-    const options = [{
-        value: "",
-      id: 'default',
-      label: "--Choose a world--"
-    }]
+    const options: DropdownOption[] = [];
     worlds.forEach((world: World) => {
       options.push({
         value: world.title,
@@ -151,17 +165,48 @@ function ExportHeader() {
     return options;
   }
 
+  const setArticleDropdownOptions = (characterSheets: CharacterSheet[] | undefined | null) => {
+    const options: DropdownOption[] = [];
+
+    if (characterSheets) {
+      characterSheets.filter((character) => {
+        if (selectedTags && selectedTags.length > 0) {
+          const tagsArray = selectedTags.map((tag) => tag.value);
+          return tagsArray.every((tag) => character.tags.includes(tag));
+        }
+        return true
+      }).forEach(character => {
+        options.push({
+          value: character.title,
+          id: character.articleId,
+          label: character.title,
+        });
+      })
+    }
+    setArticlesList(options);
+  }
+
   return (
-    <div className={styles.ExportHeader} id='exportHeader'>
-      <div className={'worldDropdown'}>
-        {user?.worlds && <Dropdown id="world" items={worldDropdownOptions(user.worlds)} onChange={handleSelectedWorldChange} error="No words available" />}
-      </div>
+    <div className={styles.ExportHeader} id="exportHeader">
+      {user?.worlds && (
+        <SearchDropdown
+          id="select-world"
+          className="select-world"
+          placeholder="--Choose a World--"
+          items={worldDropdownOptions(user.worlds)}
+          isMultiSelect={false}
+          error="No words available"
+          handleChange={handleSelectedWorldChange}
+        />
+      )}
+
       {worldIsLoading ? (
         <div className={styles.Loading}>Tags Loading</div>
       ) : (
         selectedWorld && (
           <SearchDropdown
-            id="tags"
+            id="select-tags"
+            className="select-tags"
             placeholder="--Choose a tag--"
             items={tagDropdownOptions(selectedWorld.tags)}
             isMultiSelect={true}
@@ -172,6 +217,22 @@ function ExportHeader() {
         )
       )}
       {worldIsLoading ? (
+        <div className={styles.Loading}>Articles Loading</div>
+      ) : (
+        selectedWorld && (
+          <SearchDropdown
+            id="select-article"
+            className="select-article"
+            placeholder="--Select a Character--"
+            items={articlesList}
+            isMultiSelect={false}
+            error="Cannot find character sheets"
+            handleChange={handleArticleChangeV2}
+            currentSelection={currentCharacter as DropdownOption}
+          />
+        )
+      )}
+      {/* {worldIsLoading ? (
         <div className={styles.Loading}>Articles Loading</div>
       ) : (
         <div id="userInput">
@@ -189,19 +250,20 @@ function ExportHeader() {
             />
           </label>
           <button
-          className={'submit'}
+            className={"submit"}
             onClick={onSubmit}
             data-testid="set-article-id-button"
           >
             <span>Submit</span>
           </button>
-      </div>)}
+        </div>
+      )} */}
 
-      <div className={'username'}>
+      <div className={"username"}>
         <p>Logged in as {user?.displayName}</p>
       </div>
     </div>
-  )
+  );
 };
 
 export default ExportHeader;

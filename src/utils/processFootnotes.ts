@@ -14,7 +14,13 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
 
       if (typeof superscript === 'string') {
 
-      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
+      let footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
+      
+      if (footnoteIdx < 0) {
+        arrayFootnotes.push(`<p><sup>${footnoteNum}</sup> TK</p>`)
+        footnoteIdx = arrayFootnotes.length - 1;
+      }
+      
       const footnoteHasParagraphTags = arrayFootnotes[footnoteIdx].includes('<p>') && arrayFootnotes[footnoteIdx].includes('</p>')
 
       const hasVariableBeforeFootnote = hasVariable && str.indexOf('[var:') < str.indexOf('[sup]');

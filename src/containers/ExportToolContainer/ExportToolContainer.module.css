@@ -9,9 +9,13 @@
   justify-content: space-around;
   align-items:center;
   background-color: darkslategrey;
-  color: white;
+  color: black;
   padding-top: 10px;
   padding-bottom: 10px;
+
+  p, label {
+    color: white;
+  }
 }
 
 .CharacterSheet {

@@ -1,0 +1,81 @@
+/* Styles for the main container of react-select */
+.container {
+  width: 200px;
+}
+
+/* Styles for the control (the input part) */
+.control {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: none;
+  background-color: #f8f8f8;
+}
+
+.control:hover {
+  border-color: #999;
+}
+
+.control--is-focused {
+  outline-offset: 0px;
+  border: -webkit-focus-ring-color auto 1px;
+}
+
+/* Styles for the menu (dropdown list) */
+.menu {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for individual options */
+.option {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.option--is-focused {
+  background-color: #e6f2ff;
+}
+
+.option--is-selected {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Styles for the value container (where selected items appear in multi-select) */
+.valueContainer {
+  padding: 2px 8px;
+  overflow-y: auto !important; /* Enable vertical scrolling */
+  flex-wrap: wrap; /* Ensure tags wrap to new lines */
+}
+
+/* Styles for multi-value items (the little tags) */
+.multiValue {
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  display: flex;
+  margin: 2px;
+  padding: 2px;
+}
+
+.multiValueLabel {
+  color: #333;
+  font-size: 0.9em;
+  padding: 2px 4px;
+}
+
+.multiValueRemove {
+  color: #999;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.multiValueRemove:hover {
+  color: #666;
+}
+
+.input {
+  margin: 0;
+  padding: 0;
+}

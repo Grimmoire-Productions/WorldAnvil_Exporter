@@ -74,13 +74,20 @@ export async function ProcessArticle(userToken: UserContextType['accessToken'], 
     }
 
     // Apply quote class correctly
-    if (str.includes(`”|`) || str.includes(`"|`) ||  (str.startsWith("|") && str.endsWith("</blockquote>"))) {
-      arrayContent[idx] = str.replace(`|`, `<div class="author">&ndash; `)
+    if (
+      str.includes(`”|`) ||
+      str.includes(`"|`) ||
+      (str.includes("|") && str.includes("</blockquote>"))
+    ) {
+      arrayContent[idx] = str.replace(`|`, `<div class="author">&ndash; `);
 
-      if (str.includes('</blockquote>')) {
-        arrayContent[idx] = arrayContent[idx].replace('</blockquote>', '</div></blockquote>')
+      if (str.includes("</blockquote>")) {
+        arrayContent[idx] = arrayContent[idx].replace(
+          "</blockquote>",
+          "</div></blockquote>",
+        );
       } else {
-        arrayContent[idx] = arrayContent[idx].concat('</div>');
+        arrayContent[idx] = arrayContent[idx].concat("</div>");
       }
     }
   })
