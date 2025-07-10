@@ -44,7 +44,7 @@
     "build/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/WorldSelector"  ],
   "exclude": [
     "node_modules"
   ]

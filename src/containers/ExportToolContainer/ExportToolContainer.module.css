@@ -1,0 +1,17 @@
+.Exporter {
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+}
+
+.ExportHeader {
+  display: flex;
+  justify-content: space-around;
+  align-items:center;
+  background-color: darkslategrey;
+}
+
+.CharacterSheet {
+  margin-left: 20px;
+  margin-right: 20px;
+}

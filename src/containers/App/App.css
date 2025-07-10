@@ -1,0 +1,51 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: stretch;
+}
+
+/* Print specific styling */
+@media print {
+  #exportHeader {
+    display: none;
+  }
+
+  header,
+  .header-space {
+    height: 100px;
+    width: 100%;
+    padding: 10pt auto;
+    margin: 10pt auto;
+  }
+  footer,
+  .footer-space {
+    height: 100px;
+    width: 100%;
+    padding: 10pt;
+    margin: auto 10pt;
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  .characterSheetContent {
+    margin-left: 1in;
+    margin-right: 1in;
+  }
+}
