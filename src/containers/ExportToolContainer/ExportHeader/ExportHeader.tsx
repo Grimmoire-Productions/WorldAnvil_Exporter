@@ -25,8 +25,10 @@ function ExportHeader() {
     worldIsLoading,
     setWorldIsLoading,
     selectedWorld,
-    setSelectedWorld
-  } = React.useContext(WorldContext) as WorldContextType
+    setSelectedWorld,
+    selectedTags,
+    setSelectedTags,
+  } = React.useContext(WorldContext) as WorldContextType;
 
   const {
     accessToken,
@@ -62,8 +64,16 @@ function ExportHeader() {
     setSelectedTags(options as DropdownOption[])
   };
 
-  const handleSelectedWorldChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOption = event.target.selectedOptions[0]
+  const handleSelectedWorldChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const selectedOption = event.target.selectedOptions[0];
+
+    // Only proceed if a different world is selected
+    if (selectedWorld?.id === selectedOption.id) {
+      return; // Do nothing if the same world is selected
+    }
+
     if (user && user.worlds) {
       const worldIndex = user.worlds.findIndex(world => world.id === selectedOption.id)
 
@@ -74,16 +84,16 @@ function ExportHeader() {
           setWorldIsLoading(true);
 
           worldAnvilAPI.getCharacterSheets(accessToken, world.id).then((results) => {
-            if (results.length > 0) {
-              world.characterSheets = results;
+              if (results.length > 0) {
+                world.characterSheets = results;
 
-              // get set of unique tags
+                // get set of unique tags
               const tagSet = new Set(results.map((sheet) => sheet.tags).flat())
 
               world.tags = [...tagSet]
-            }
-            setSelectedWorld(world);
-            setWorldIsLoading(false);
+              }
+              setSelectedWorld(world);
+              setWorldIsLoading(false);
           })
         } else {
           setSelectedWorld(world);
@@ -112,7 +122,7 @@ function ExportHeader() {
   const worldDropdownOptions = (worlds: World[]): DropdownOption[] => {
 
     const options = [{
-      value: "",
+        value: "",
       id: 'default',
       label: "--Choose a world--"
     }]
@@ -146,16 +156,45 @@ function ExportHeader() {
       <div className={'worldDropdown'}>
         {user?.worlds && <Dropdown id="world" items={worldDropdownOptions(user.worlds)} onChange={handleSelectedWorldChange} error="No words available" />}
       </div>
-      {worldIsLoading ? (<div className={styles.Loading}>Tags Loading</div>) : selectedWorld && <SearchDropdown id="tags" placeholder="--Choose a tag--" items={tagDropdownOptions(selectedWorld.tags)} isMultiSelect={true} error="No tags available for the selected world." handleChange={handleSelectedTagChange} />}
-      {worldIsLoading ? (<div className={styles.Loading}>Articles Loading</div>) : (<div id='userInput'>
-        <label>Article ID: <input type='text' id='articleId' data-testid="articleId" name='Article ID' ref={refArticleId} value={articleId} onChange={handleArticleIdChange} placeholder="enter an article Id" /></label>
-        <button
+      {worldIsLoading ? (
+        <div className={styles.Loading}>Tags Loading</div>
+      ) : (
+        selectedWorld && (
+          <SearchDropdown
+            id="tags"
+            placeholder="--Choose a tag--"
+            items={tagDropdownOptions(selectedWorld.tags)}
+            isMultiSelect={true}
+            error="No tags available for the selected world."
+            handleChange={handleSelectedTagChange}
+            currentSelection={selectedTags as MultiValue<DropdownOption>}
+          />
+        )
+      )}
+      {worldIsLoading ? (
+        <div className={styles.Loading}>Articles Loading</div>
+      ) : (
+        <div id="userInput">
+          <label>
+            Article ID:{" "}
+            <input
+              type="text"
+              id="articleId"
+              data-testid="articleId"
+              name="Article ID"
+              ref={refArticleId}
+              value={articleId}
+              onChange={handleArticleIdChange}
+              placeholder="enter an article Id"
+            />
+          </label>
+          <button
           className={'submit'}
-          onClick={onSubmit}
-          data-testid="set-article-id-button"
-        >
-          <span>Submit</span>
-        </button>
+            onClick={onSubmit}
+            data-testid="set-article-id-button"
+          >
+            <span>Submit</span>
+          </button>
       </div>)}
 
       <div className={'username'}>

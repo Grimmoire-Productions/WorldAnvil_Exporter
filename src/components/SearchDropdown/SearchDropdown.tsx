@@ -1,22 +1,29 @@
-import React, {useState} from 'react';
-import Select, { ActionMeta, SingleValue, MultiValue } from 'react-select';
-
-import type { DropdownOption } from '../../utils/types';
+import Select from "react-select";
+import type { MultiValue } from "react-select";
+import type { DropdownOption } from "../../utils/types";
 
 type SearchDropdownProps = {
-  id: string,
-  placeholder: string,
-  items: DropdownOption[],
-  isMultiSelect: boolean,
+  id: string;
+  placeholder: string;
+  items: DropdownOption[];
+  isMultiSelect: boolean;
   error: string;
   handleChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
-  currentSelection?: DropdownOption | MultiValue<DropdownOption>
+  currentSelection?: DropdownOption | MultiValue<DropdownOption>;
+};
 
-}
-
-function SearchDropdown({ id, placeholder, items, isMultiSelect, error, handleChange, currentSelection }: SearchDropdownProps) {
-
-  const handleSelectionChange = (options: DropdownOption | MultiValue<DropdownOption> | null) => {
+function SearchDropdown({
+  id,
+  placeholder,
+  items,
+  isMultiSelect,
+  error,
+  handleChange,
+  currentSelection,
+}: SearchDropdownProps) {
+  const handleSelectionChange = (
+    options: DropdownOption | MultiValue<DropdownOption> | null,
+  ) => {
     if (options) {
       handleChange(options);
     }
@@ -24,8 +31,8 @@ function SearchDropdown({ id, placeholder, items, isMultiSelect, error, handleCh
 
   return (
     <>
-      {isMultiSelect ?
-        (<Select<DropdownOption, true>
+      {isMultiSelect ? (
+        <Select<DropdownOption, true>
           id={id}
           placeholder={placeholder}
           value={currentSelection}
@@ -33,20 +40,21 @@ function SearchDropdown({ id, placeholder, items, isMultiSelect, error, handleCh
           options={items}
           isSearchable={true}
           isMulti
-          noOptionsMessage={() => error }
-        />) :
-        (<Select<DropdownOption>
+          noOptionsMessage={() => error}
+        />
+      ) : (
+        <Select<DropdownOption>
           id={id}
           placeholder={placeholder}
           value={currentSelection}
           onChange={handleSelectionChange}
           options={items}
           isSearchable={true}
-          noOptionsMessage={() => error }
-        />)
-      }
+          noOptionsMessage={() => error}
+        />
+      )}
     </>
-  )
+  );
 }
 
 export default SearchDropdown;
