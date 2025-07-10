@@ -181,3 +181,5 @@ If you've never worked with command line tools before, here's what you need to g
 
 4. localhost:3000 should open in your chrome web browser. If you get errors when you click "submit" it may be because you didn't run `make dev-setup` first.
     Mr. John Radcliffe is a great character to test with. Article ID: `49170f44-a961-45ed-b860-bcf612b4d55d`
+
+    To test a Hawkins character, use: `b48e173f-7e04-46cd-a3f3-00c461965431`
