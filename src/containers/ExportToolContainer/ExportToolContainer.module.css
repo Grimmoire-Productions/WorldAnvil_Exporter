@@ -9,9 +9,42 @@
   justify-content: space-around;
   align-items:center;
   background-color: darkslategrey;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .CharacterSheet {
   margin-left: 20px;
   margin-right: 20px;
+}
+
+.Loading {
+  min-width: 180px;
+  display: flex;
+  justify-content: left;
+}
+
+.Loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis-animation steps(4, end) 900ms infinite;
+  animation: ellipsis-animation steps(4, end) 900ms infinite;
+  content: "\2026";
+  /* ascii code for the ellipsis character */
+  width: 0px; /* Start at 0 width */
+  white-space: nowrap; /* Prevent ellipsis from wrapping */
+}
+
+@keyframes ellipsis-animation {
+  to {
+    width: 1.25em;    
+  }
+}
+
+@-webkit-keyframes ellipsis-animation {
+  to {
+    width: 1.25em;    
+  }
 }

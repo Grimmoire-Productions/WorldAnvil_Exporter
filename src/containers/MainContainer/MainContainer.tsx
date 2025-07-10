@@ -11,7 +11,9 @@ function MainContainer() {
   const { isLoggedIn, accessToken, setUser, setIsLoggedIn } = React.useContext(UserContext) as UserContextType;
 
   const worldInitialValues: WorldInitialValues = {
+    worldIsLoading: false,
     selectedWorld: null,
+    selectedTags: []
   };
 
   const articleInitialValues: ArticleInitialValues = {
@@ -28,11 +30,11 @@ function MainContainer() {
         setIsLoading(false)
       } else {
         worldAnvilAPI.logIn(accessToken).then(userResponse => {
-          const user = userResponse;
+          const newUser = userResponse;
           setIsLoggedIn(true);
           worldAnvilAPI.getWorlds(accessToken, userResponse.id).then(worldResponse => {
-            user.worlds = worldResponse
-            setUser(user)
+            newUser.worlds = worldResponse
+            setUser(newUser)
           }).catch(error => {
             console.error(error)
           })

@@ -121,12 +121,9 @@
   }
   
   .goals {
-    break-inside: avoid;
-  }
-  
-  .goals {
     orphans: 3;
     widows: 3;
+    break-inside: avoid;
   }
   
   .subtitle p {
