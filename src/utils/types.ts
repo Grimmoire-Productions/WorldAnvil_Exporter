@@ -60,9 +60,9 @@ export interface UserToken {
 }
 
 export interface World {
-  id: string,
-  title: string,
-  cssClassName: string,
+  id: string;
+  title: string;
+  cssClassName: string;
   characterSheets?: CharacterSheet[] | null;
   tags?: string[] | null;
 }
@@ -70,7 +70,7 @@ export interface World {
 export interface WorldInitialValues {
   worldIsLoading: boolean;
   selectedWorld: World | null;
-  selectedTags: string[] | null;
+  selectedTags: DropdownOption[] | null;
 }
 
 export interface WorldContextType {
@@ -79,48 +79,50 @@ export interface WorldContextType {
   selectedWorld: World | null;
   setSelectedWorld: (value: React.SetStateAction<World | null>) => void;
   selectedTags: DropdownOption[] | null;
-  setSelectedTags: (value: React.SetStateAction<DropdownOption[] | null>) => void;
+  setSelectedTags: (
+    value: React.SetStateAction<DropdownOption[] | null>,
+  ) => void;
 }
 
 // World Anvil API Response Data
 
 export interface ArticleResponse {
-  id: string,
-  title: string,
-  slug: string,
-  state: 'public' | 'private',
-  entityClass: string,
-  icon: string | null,
-  url: string,
-  folderId: string,
-  tags: string | null,
-  templateType: string,
-  customArticleTemplate?: string | null,
-  content: string,
+  id: string;
+  title: string;
+  slug: string;
+  state: "public" | "private";
+  entityClass: string;
+  icon: string | null;
+  url: string;
+  folderId: string;
+  tags: string | null;
+  templateType: string;
+  customArticleTemplate?: string | null;
+  content: string;
   category: {
-    id: string,
-    title: string,
-    slug: string,
-    url: string,
-    tags: string | null,
-  },
-  footnotes: string,
-  fullfooter: string,
-  subheading: string | null,
-  secrets: SecretResponse[]
+    id: string;
+    title: string;
+    slug: string;
+    url: string;
+    tags: string | null;
+  };
+  footnotes: string;
+  fullfooter: string;
+  subheading: string | null;
+  secrets: SecretResponse[];
 }
 export interface BaseWorldAnvilResponse {
   success: boolean;
 }
 
 export interface SecretResponse {
-  id: string,
-  title: string,
-  url: string,
-  content?: string,
+  id: string;
+  title: string;
+  url: string;
+  content?: string;
 }
 export interface UserWorldsResponse extends BaseWorldAnvilResponse {
-  entities: World[]
+  entities: World[];
 }
 
 export interface UserIdentityResponse extends BaseWorldAnvilResponse {
@@ -129,5 +131,5 @@ export interface UserIdentityResponse extends BaseWorldAnvilResponse {
 }
 
 export interface WorldArticlesResponse extends BaseWorldAnvilResponse {
-  entities: ArticleResponse[]
+  entities: ArticleResponse[];
 }

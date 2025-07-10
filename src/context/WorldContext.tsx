@@ -1,7 +1,5 @@
 import React, { createContext, useState } from 'react';
-import type { UserContextType, World, WorldContextType, WorldInitialValues } from '../utils/types';
-import worldAnvilAPI from "../utils/worldAnvilAPI";
-import type { CharacterSheet } from '../utils/types';
+import type { WorldContextType, WorldInitialValues } from '../utils/types';
 
 export const WorldContext = createContext<WorldContextType | null>(null);
 
