@@ -22,12 +22,14 @@ const ArticleProvider: React.FC<{
     initialValues.errorMessage
   );
   const [articleId, setArticleId] = useState(initialValues.articleId);
+  const [isArticleLoading, setIsArticleLoading] = useState(initialValues.isArticleLoading)
 
   const fetchAndProcessCharacter = async (
     userToken: UserContextType['accessToken'],
     articleId: string,
     selectedWorldKey: string,
   ) => {
+    setIsArticleLoading(true);
     const results: ArticleResponse = await worldAnvilAPI.fetchCharacter(userToken, articleId)
 
     if (results?.id) {
@@ -39,6 +41,7 @@ const ArticleProvider: React.FC<{
     } else {
       setErrorMessage(null);
     }
+    setIsArticleLoading(false);
     return;
   };
   
@@ -51,6 +54,8 @@ const ArticleProvider: React.FC<{
         setActiveCharacter,
         errorMessage,
         setErrorMessage,
+        isArticleLoading,
+        setIsArticleLoading,
         fetchAndProcessCharacter
       }}
     >

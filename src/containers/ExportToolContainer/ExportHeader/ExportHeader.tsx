@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { MultiValue } from 'react-select';
 
 import type { ArticleContextType, DropdownOption, UserContextType, World, WorldContextType, CharacterSheet } from '../../../utils/types';
@@ -10,6 +10,7 @@ import { WorldContext } from '../../../context/WorldContext';
 
 import styles from '../ExportToolContainer.module.css';
 import worldAnvilAPI from '../../../utils/worldAnvilAPI';
+import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation';
 
 
 function ExportHeader() {
@@ -65,8 +66,21 @@ function ExportHeader() {
   useEffect(() => {
     if (selectedWorld) {
       setArticleDropdownOptions(selectedWorld.characterSheets);
+
+      // Check if the current character is still available in the updated articlesList
+      if (currentCharacter) {
+        const isCurrentCharacterValid = articlesList.some(
+          (article) => article.id === currentCharacter.id,
+        );
+
+        if (!isCurrentCharacterValid) {
+          setCurrentCharacter(null);
+          setArticleId("");
+          setActiveCharacter("");
+        }
+      }
     }
-  }, [selectedTags])
+  }, [selectedTags, selectedWorld, currentCharacter, articlesList]);
 
   useEffect(() => {
     if (articleId && selectedWorld) {
@@ -114,28 +128,11 @@ function ExportHeader() {
     }
   }
 
-  const handleArticleIdChange = (e: React.FormEvent<HTMLInputElement>) =>
-    setArticleId(e.currentTarget.value);
-
-  const handleArticleChangeV2 = (options: DropdownOption | MultiValue<DropdownOption>) => {
+  const handleArticleChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
     const selectedOption = options as DropdownOption;
     setCurrentCharacter(selectedOption)
     setArticleId(selectedOption.id)
   }
-
-  const onSubmit = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
- 
-    if (articleId === '') {
-      return;
-    }
-
-    const selectedWorldKey = selectedWorld?.cssClassName || 'default'
-
-    fetchAndProcessCharacter(accessToken, articleId, selectedWorldKey)
-  };
 
   const worldDropdownOptions = (worlds: World[]): DropdownOption[] => {
 
@@ -199,66 +196,36 @@ function ExportHeader() {
           handleChange={handleSelectedWorldChange}
         />
       )}
-
       {worldIsLoading ? (
-        <div className={styles.Loading}>Tags Loading</div>
-      ) : (
-        selectedWorld && (
-          <SearchDropdown
-            id="select-tags"
-            className="select-tags"
-            placeholder="--Choose a tag--"
-            items={tagDropdownOptions(selectedWorld.tags)}
-            isMultiSelect={true}
-            error="No tags available for the selected world."
-            handleChange={handleSelectedTagChange}
-            currentSelection={selectedTags as MultiValue<DropdownOption>}
-          />
-        )
-      )}
-      {worldIsLoading ? (
-        <div className={styles.Loading}>Articles Loading</div>
-      ) : (
-        selectedWorld && (
-          <SearchDropdown
-            id="select-article"
-            className="select-article"
-            placeholder="--Select a Character--"
-            items={articlesList}
-            isMultiSelect={false}
-            error="Cannot find character sheets"
-            handleChange={handleArticleChangeV2}
-            currentSelection={currentCharacter as DropdownOption}
-          />
-        )
-      )}
-      {/* {worldIsLoading ? (
-        <div className={styles.Loading}>Articles Loading</div>
-      ) : (
-        <div id="userInput">
-          <label>
-            Article ID:{" "}
-            <input
-              type="text"
-              id="articleId"
-              data-testid="articleId"
-              name="Article ID"
-              ref={refArticleId}
-              value={articleId}
-              onChange={handleArticleIdChange}
-              placeholder="enter an article Id"
-            />
-          </label>
-          <button
-            className={"submit"}
-            onClick={onSubmit}
-            data-testid="set-article-id-button"
-          >
-            <span>Submit</span>
-          </button>
+        <div className={styles.LoadingWorldContainer}>
+          <LoadingAnimation />
         </div>
-      )} */}
-
+      ) : (
+        selectedWorld && (
+          <>
+            <SearchDropdown
+              id="select-tags"
+              className="select-tags"
+              placeholder="--Choose a tag--"
+              items={tagDropdownOptions(selectedWorld.tags)}
+              isMultiSelect={true}
+              error="No tags available for the selected world."
+              handleChange={handleSelectedTagChange}
+              currentSelection={selectedTags as MultiValue<DropdownOption>}
+            />
+            <SearchDropdown
+              id="select-article"
+              className="select-article"
+              placeholder="--Select a Character--"
+              items={articlesList}
+              isMultiSelect={false}
+              error="Cannot find character sheets"
+              handleChange={handleArticleChange}
+              currentSelection={currentCharacter as DropdownOption}
+            />
+          </>
+        )
+      )}
       <div className={"username"}>
         <p>Logged in as {user?.displayName}</p>
       </div>

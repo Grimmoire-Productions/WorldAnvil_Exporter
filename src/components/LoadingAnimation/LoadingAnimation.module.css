@@ -1,0 +1,63 @@
+
+.ldsEllipsis,
+.ldsEllipsis div {
+  box-sizing: border-box;
+}
+.ldsEllipsis {
+  position: relative;
+  /* Use container query units (cqw = 1% of container's width) */
+  width: 10cqw; /* Example: make it 10% of the container's width */
+  height: 10cqw; /* Keep it square relative to container width */
+  /* This 10cqw would mean 10% of the .loading-container's current computed width */
+}
+.ldsEllipsis div {
+  position: absolute;
+  /* Convert pixel values to cqw/cqh based on the ldsEllipsis's intended base size */
+  /* Assuming a base ldsEllipsis size of 80px */
+  top: calc(33.33333 / 80 * 10cqw); /* (33.33333 / 80) * the ldsEllipsis's cqw size */
+  width: calc(13.33333 / 80 * 10cqw);
+  height: calc(13.33333 / 80 * 10cqw);
+  border-radius: 50%;
+  background: currentColor;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.ldsEllipsis div:nth-child(1) {
+  left: calc(8 / 80 * 10cqw);
+  animation: ldsEllipsis1 0.6s infinite;
+}
+.ldsEllipsis div:nth-child(2) {
+  left: calc(8 / 80 * 10cqw);
+  animation: ldsEllipsis2 0.6s infinite;
+}
+.ldsEllipsis div:nth-child(3) {
+  left: calc(32 / 80 * 10cqw);
+  animation: ldsEllipsis2 0.6s infinite;
+}
+.ldsEllipsis div:nth-child(4) {
+  left: calc(56 / 80 * 10cqw);
+  animation: ldsEllipsis3 0.6s infinite;
+}
+@keyframes ldsEllipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes ldsEllipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes ldsEllipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}

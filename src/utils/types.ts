@@ -5,6 +5,8 @@ export interface ArticleContextType {
   setActiveCharacter: (value: React.SetStateAction<string>) => void;
   errorMessage: string | null;
   setErrorMessage: (value: React.SetStateAction<string | null>) => void;
+  isArticleLoading: boolean;
+  setIsArticleLoading: (value: React.SetStateAction<boolean>) => void;
   fetchAndProcessCharacter: (
     userToken: string,
     articleId: string,
@@ -16,6 +18,7 @@ export interface ArticleInitialValues {
   errorMessage: string | null;
   articleId: string;
   activeCharacter: string;
+  isArticleLoading: boolean;
 }
 
 export interface CharacterSheet {

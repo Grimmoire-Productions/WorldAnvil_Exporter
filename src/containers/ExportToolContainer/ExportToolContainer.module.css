@@ -13,7 +13,8 @@
   padding-top: 10px;
   padding-bottom: 10px;
 
-  p, label {
+  p,
+  label {
     color: white;
   }
 }
@@ -21,34 +22,38 @@
 .CharacterSheet {
   margin-left: 20px;
   margin-right: 20px;
-}
-
-.Loading {
-  min-width: 180px;
   display: flex;
-  justify-content: left;
+  justify-content: center; /* Centers children horizontally */
+  align-items: center;     /* Centers children vertically (optional, but often useful with flex) */
+  min-height: 100px; /* Example: Give the container some height */
 }
 
-.Loading:after {
-  overflow: hidden;
-  display: inline-block;
-  vertical-align: bottom;
-  -webkit-animation: ellipsis-animation steps(4, end) 900ms infinite;
-  animation: ellipsis-animation steps(4, end) 900ms infinite;
-  content: "\2026";
-  /* ascii code for the ellipsis character */
-  width: 0px; /* Start at 0 width */
-  white-space: nowrap; /* Prevent ellipsis from wrapping */
+.LoadingArticleContainer {
+  /* This is the container whose size you want to react to */
+  width: 100%; /* Example: Make it responsive */
+  height: 200px; /* Or use padding-bottom for aspect ratio */
+
+  /* Declare this element as a container */
+  container-type: size; /* Or 'size' if you care about height too */
+
+  /* Add centering for the ellipsis within this container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 
-@keyframes ellipsis-animation {
-  to {
-    width: 1.25em;    
-  }
-}
-
-@-webkit-keyframes ellipsis-animation {
-  to {
-    width: 1.25em;    
-  }
+.LoadingWorldContainer {
+    /* This is the container whose size you want to react to */
+    width: 50%; /* Example: Make it responsive */
+    height: 30px; /* Or use padding-bottom for aspect ratio */
+  
+    /* Declare this element as a container */
+    container-type: size; /* Or 'size' if you care about height too */
+  
+    /* Add centering for the ellipsis within this container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
 }
