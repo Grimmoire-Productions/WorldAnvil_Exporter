@@ -64,10 +64,12 @@ describe("ExportHeader", () => {
     articleId: "",
     setArticleId: jest.fn(),
     fetchAndProcessCharacter: jest.fn(),
-    activeCharacter: '',
+    activeCharacter: "",
     setActiveCharacter: jest.fn(),
-    errorMessage: '',
-    setErrorMessage: jest.fn()
+    errorMessage: "",
+    setErrorMessage: jest.fn(),
+    isArticleLoading: false,
+    setIsArticleLoading: jest.fn(),
   } as ArticleContextType;
 
   const mockWorldContext = {
