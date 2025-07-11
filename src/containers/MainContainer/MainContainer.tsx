@@ -20,6 +20,7 @@ function MainContainer() {
     errorMessage: null,
     articleId: '',
     activeCharacter: '',
+    isArticleLoading: false,
   }
 
   const [isLoading, setIsLoading] = useState(true);
