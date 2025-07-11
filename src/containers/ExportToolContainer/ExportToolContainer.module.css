@@ -24,17 +24,18 @@
   margin-right: 20px;
   display: flex;
   justify-content: center; /* Centers children horizontally */
-  align-items: center;     /* Centers children vertically (optional, but often useful with flex) */
-  min-height: 100px; /* Example: Give the container some height */
+  align-items: center;     /* Centers children vertically */
+  min-height: 100px;
 }
 
 .LoadingArticleContainer {
-  /* This is the container whose size you want to react to */
-  width: 100%; /* Example: Make it responsive */
-  height: 200px; /* Or use padding-bottom for aspect ratio */
+  width: 60%;
+  height: 200px;
+  margin-left:20%;
+  margin-right:20%;
 
   /* Declare this element as a container */
-  container-type: size; /* Or 'size' if you care about height too */
+  container-type: size;
 
   /* Add centering for the ellipsis within this container */
   display: flex;
@@ -44,12 +45,11 @@
 }
 
 .LoadingWorldContainer {
-    /* This is the container whose size you want to react to */
-    width: 50%; /* Example: Make it responsive */
-    height: 30px; /* Or use padding-bottom for aspect ratio */
+    width: 50%;
+    height: 30px;
   
     /* Declare this element as a container */
-    container-type: size; /* Or 'size' if you care about height too */
+    container-type: size;
   
     /* Add centering for the ellipsis within this container */
     display: flex;
