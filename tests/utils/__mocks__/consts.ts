@@ -1,4 +1,4 @@
-export const APPLICATION_KEY = '***REMOVED***';
+export const APPLICATION_KEY = 'mock-application-key-for-testing';
 
 export const WA_TOKEN = 'WA_TOKEN';
 
