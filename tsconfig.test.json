@@ -53,6 +53,6 @@
   ],
   "exclude": [
     "node_modules",
-    ["src/utils/consts.ts"]
+    "src/utils/consts.ts"
   ]
 }

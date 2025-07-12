@@ -3,7 +3,7 @@ import { waitFor, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginContainer from '../../src/containers/LoginContainer/LoginContainer';
 import UserProvider from '../../src/context/UserContext';
-import worldAnvilAPI from '../../src/utils/worldAnvilAPI';
+import backendAPI from '../../src/utils/backendAPI';
 import '@testing-library/jest-dom';
 /* eslint-disable no-empty-function, @typescript-eslint/no-empty-function */
 

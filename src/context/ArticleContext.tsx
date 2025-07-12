@@ -1,13 +1,12 @@
 import React, { createContext, useState } from 'react';
 
-import worldAnvilAPI from "../utils/worldAnvilAPI";
+import backendAPI from "../utils/backendAPI";
 import { ProcessArticle } from "../utils/processArticle"
 
 import type {
   ArticleResponse,
   ArticleContextType,
   ArticleInitialValues,
-  UserContextType
 } from '../utils/types'
 
 export const ArticleContext = createContext<ArticleContextType | null>(null);
@@ -25,16 +24,14 @@ const ArticleProvider: React.FC<{
   const [isArticleLoading, setIsArticleLoading] = useState(initialValues.isArticleLoading)
 
   const fetchAndProcessCharacter = async (
-    userToken: UserContextType['accessToken'],
     articleId: string,
     selectedWorldKey: string,
-    applicationKey?: string,
   ) => {
     setIsArticleLoading(true);
-    const results: ArticleResponse = await worldAnvilAPI.fetchCharacter(userToken, articleId, applicationKey)
+    const results: ArticleResponse = await backendAPI.fetchCharacter(articleId)
 
     if (results?.id) {
-      setActiveCharacter(await ProcessArticle(userToken, results, selectedWorldKey, applicationKey));
+      setActiveCharacter(await ProcessArticle(results, selectedWorldKey));
     }
 
     if (!activeCharacter) {

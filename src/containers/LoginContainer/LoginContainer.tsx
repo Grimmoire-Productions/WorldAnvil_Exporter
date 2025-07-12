@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { UserContext } from '../../context/UserContext';
 import type { UserContextType } from '../../utils/types.ts';
-import worldAnvilAPI from '../../utils/worldAnvilAPI.ts';
+import backendAPI from '../../utils/backendAPI.ts';
 import LoginBar from '../../components/LoginBar/LoginBar.tsx';
 import { APPLICATION_KEY } from '#consts';
 import styles from './LoginContainer.module.css';
@@ -43,10 +43,10 @@ function LoginContainer() {
 
   const login = async (accessToken: string) => {
     try {
-      const appKey = !APPLICATION_KEY ? (applicationKey || undefined) : undefined;
-      const userResponse = await worldAnvilAPI.logIn(accessToken, appKey);
+      const appKey = APPLICATION_KEY || applicationKey || undefined;
+      const userResponse = await backendAPI.logIn(accessToken, appKey);
       if (userResponse.displayName) {
-        const worlds = await worldAnvilAPI.getWorlds(accessToken, userResponse.id, appKey)
+        const worlds = await backendAPI.getWorlds(userResponse.id)
         const user = userResponse;
         user.worlds = worlds;
         setUser(user);

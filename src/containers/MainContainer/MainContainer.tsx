@@ -4,7 +4,7 @@ import { UserContext } from '../../context/UserContext';
 import type { ArticleInitialValues, UserContextType, WorldInitialValues } from '../../utils/types';
 import LoginContainer from '../LoginContainer/LoginContainer';
 import ExportToolContainer from '../ExportToolContainer/ExportToolContainer';
-import worldAnvilAPI from '../../utils/worldAnvilAPI';
+import backendAPI from '../../utils/backendAPI';
 import WorldProvider from '../../context/WorldContext';
 import ArticleProvider from '../../context/ArticleContext';
 function MainContainer() {
@@ -34,10 +34,10 @@ function MainContainer() {
       
       if (isDevMode && devApiToken) {
         // Use real API with dev token for dev mode
-        worldAnvilAPI.logIn(devApiToken, applicationKey || undefined).then(userResponse => {
+        backendAPI.logIn(devApiToken, applicationKey || undefined).then(userResponse => {
           const newUser = userResponse;
           setIsLoggedIn(true);
-          worldAnvilAPI.getWorlds(devApiToken, userResponse.id, applicationKey || undefined).then(worldResponse => {
+          backendAPI.getWorlds(userResponse.id).then(worldResponse => {
             newUser.worlds = worldResponse
             setUser(newUser)
             setIsLoading(false);
@@ -52,10 +52,10 @@ function MainContainer() {
       } else if (accessToken === '') {
         setIsLoading(false)
       } else {
-        worldAnvilAPI.logIn(accessToken, applicationKey || undefined).then(userResponse => {
+        backendAPI.logIn(accessToken, applicationKey || undefined).then(userResponse => {
           const newUser = userResponse;
           setIsLoggedIn(true);
-          worldAnvilAPI.getWorlds(accessToken, userResponse.id, applicationKey || undefined).then(worldResponse => {
+          backendAPI.getWorlds(userResponse.id).then(worldResponse => {
             newUser.worlds = worldResponse
             setUser(newUser)
           }).catch(error => {

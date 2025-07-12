@@ -13,16 +13,46 @@ import type {
 
 const baseURL = 'https://www.worldanvil.com/api/external/boromir'
 
-const worldAnvilAPI = {
+class WorldAnvilAPIService {
+  private userToken: string | null = null;
+  private appKey: string;
+
+  constructor(appKey?: string) {
+    this.appKey = appKey || APPLICATION_KEY || "";
+  }
+
+  setCredentials(userToken: string, appKey?: string) {
+    this.userToken = userToken;
+    if (appKey) {
+      this.appKey = appKey;
+    }
+  }
+
+  private getHeaders(): HeadersInit {
+    if (!this.userToken) {
+      throw new Error('User token not set. Call setCredentials() first.');
+    }
+    return {
+      "x-auth-token": this.userToken,
+      "x-application-key": this.appKey,
+      "Content-type": "application/json"
+    };
+  }
+
+  private getHeadersWithAccept(): HeadersInit {
+    return {
+      ...this.getHeaders(),
+      "accept": "application/json"
+    };
+  }
+
   logIn(userToken: string, appKey?: string) {
+    // Set credentials for subsequent calls
+    this.setCredentials(userToken, appKey);
 
     const options: RequestInit = {
       method: "GET",
-      headers: {
-        "x-auth-token": userToken,
-        "x-application-key": appKey || APPLICATION_KEY || "",
-        "Content-type": "application/json"
-      }
+      headers: this.getHeaders()
     }
 
     return fetch(`${baseURL}/identity`, options).then((response: Response) => {
@@ -35,7 +65,7 @@ const worldAnvilAPI = {
       return response.json()
     })
       .then((jsonResponse: UserIdentityResponse) => {
-        setUserToken(userToken, TOKEN_EXPIRATION_SECONDS)
+        setUserToken(this.userToken!, TOKEN_EXPIRATION_SECONDS)
         const user: User = {
           displayName: jsonResponse.username,
           id: jsonResponse.id,
@@ -43,16 +73,12 @@ const worldAnvilAPI = {
         }
         return user;
       })
-  },
-  getWorlds(userToken: string, userId: string, appKey?: string) {
+  }
+
+  getWorlds(userId: string) {
     const options: RequestInit = {
       method: "POST",
-      headers: {
-        "x-auth-token": userToken,
-        "x-application-key": appKey || APPLICATION_KEY || "",
-        "Content-type": "application/json",
-        "accept": "application/json"
-      },
+      headers: this.getHeadersWithAccept(),
       body: JSON.stringify({
         "limit": "50",
         "offset": "0"
@@ -74,7 +100,7 @@ const worldAnvilAPI = {
       return response.json()
     })
       .then((jsonResponse: UserWorldsResponse) => {
-        setUserToken(userToken, TOKEN_EXPIRATION_SECONDS)
+        setUserToken(this.userToken!, TOKEN_EXPIRATION_SECONDS)
         const worlds: World[] = jsonResponse.entities.map((world) => {
           return {
             id: world.id,
@@ -84,8 +110,9 @@ const worldAnvilAPI = {
         })
         return worlds;
       })
-  },
-  getCharacterSheets(userToken: string, worldId: string, appKey?: string) {
+  }
+
+  getCharacterSheets(worldId: string) {
     const allCharacterSheets: CharacterSheet[] = [];
     const limit = 50;
     let offset = 0;
@@ -94,12 +121,7 @@ const worldAnvilAPI = {
     const fetchPage = (): Promise<CharacterSheet[]> => {
       const options: RequestInit = {
         method: "POST",
-        headers: {
-          "x-auth-token": userToken,
-          "x-application-key": appKey || APPLICATION_KEY || "",
-          "Content-type": "application/json",
-          "accept": "application/json"
-        },
+        headers: this.getHeadersWithAccept(),
         body: JSON.stringify({
           "limit": limit.toString(),
           "offset": offset.toString()
@@ -154,16 +176,12 @@ const worldAnvilAPI = {
     }
 
     return fetchPage();
-  },
-  fetchCharacter(userToken: string, charId: string, appKey?: string) {
+  }
 
+  fetchCharacter(charId: string) {
     const options: RequestInit = {
       method: "GET",
-      headers: {
-        "x-auth-token": userToken,
-        "x-application-key": appKey || APPLICATION_KEY || "",
-        "Content-type": "application/json"
-      }
+      headers: this.getHeaders()
     }
 
     return fetch(`${baseURL}/article?id=${charId}&granularity=2`, options).then((response: Response) => {
@@ -178,16 +196,12 @@ const worldAnvilAPI = {
       .then((jsonResponse: ArticleResponse) => {
         return jsonResponse;
       })
-  },
-  fetchSecrets(userToken: string, secretId: string, appKey?: string) {
+  }
 
+  fetchSecrets(secretId: string) {
     const options: RequestInit = {
       method: "GET",
-      headers: {
-        "x-auth-token": userToken,
-        "x-application-key": appKey || APPLICATION_KEY || "",
-        "Content-type": "application/json"
-      }
+      headers: this.getHeaders()
     }
 
     return fetch(`${baseURL}/secret?id=${secretId}&granularity=0`, options).then((response: Response) => {
@@ -202,7 +216,9 @@ const worldAnvilAPI = {
       .then((jsonResponse: SecretResponse) => {
         return jsonResponse.content;
       })
-  },
+  }
 }
 
+// Create and export a singleton instance
+const worldAnvilAPI = new WorldAnvilAPIService();
 export default worldAnvilAPI;

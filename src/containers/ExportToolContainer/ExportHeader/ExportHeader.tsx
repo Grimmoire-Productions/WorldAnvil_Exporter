@@ -9,7 +9,7 @@ import { UserContext } from '../../../context/UserContext';
 import { WorldContext } from '../../../context/WorldContext';
 
 import styles from '../ExportToolContainer.module.css';
-import worldAnvilAPI from '../../../utils/worldAnvilAPI';
+import backendAPI from '../../../utils/backendAPI';
 import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation';
 
 
@@ -89,7 +89,7 @@ function ExportHeader() {
   useEffect(() => {
     if (articleId && selectedWorld) {
       const selectedWorldKey = selectedWorld?.cssClassName || "default";
-      fetchAndProcessCharacter(accessToken, articleId, selectedWorldKey, applicationKey || undefined);
+      fetchAndProcessCharacter(articleId, selectedWorldKey);
     }
   }, [articleId])
   const handleSelectedTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
@@ -116,8 +116,7 @@ function ExportHeader() {
 
         if (!world.characterSheets || !world.tags) {
           setWorldIsLoading(true);
-
-          worldAnvilAPI.getCharacterSheets(accessToken, world.id, applicationKey || undefined).then((results) => {
+          backendAPI.getCharacterSheets(world.id).then((results) => {
               if (results.length > 0) {
                 world.characterSheets = results;
 

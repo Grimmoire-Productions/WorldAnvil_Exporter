@@ -8,10 +8,8 @@ export interface ArticleContextType {
   isArticleLoading: boolean;
   setIsArticleLoading: (value: React.SetStateAction<boolean>) => void;
   fetchAndProcessCharacter: (
-    userToken: string,
     articleId: string,
     selectedWorldKey: string,
-    applicationKey?: string,
   ) => void;
 }
 

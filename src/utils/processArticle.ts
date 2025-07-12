@@ -3,11 +3,11 @@
 import { transformBBCode, transformWorldAnvilLinks, correctPunctuation } from './formatter.ts';
 import { processSecrets } from './processSecrets.ts';
 import { processFootnotes } from './processFootnotes.ts';
-import type { ArticleResponse, UserContextType } from './types.ts';
+import type { ArticleResponse } from './types.ts';
 
 
 
-export async function ProcessArticle(userToken: UserContextType['accessToken'], data: ArticleResponse, selectedWorldKey: string, applicationKey?: string) {
+export async function ProcessArticle(data: ArticleResponse, selectedWorldKey: string) {
   let headerImageSrc: string;
   let footerImageSrc: string;
 
@@ -59,7 +59,7 @@ export async function ProcessArticle(userToken: UserContextType['accessToken'], 
   /* Handle special cases */
   let arrayContent = content.split("\n");
   const arrayFootnotes = footnotes.split("\n")
-  arrayContent = await processSecrets(userToken, arrayContent, applicationKey);
+  arrayContent = await processSecrets(arrayContent);
 
   arrayContent.forEach((str, idx) => {
 
