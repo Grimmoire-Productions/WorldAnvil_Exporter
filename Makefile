@@ -5,6 +5,9 @@ dev-setup: ## Creates .env file and loads API keys
 start:
 	@ npm run start
 
+start-dev-mode: ## Start in dev mode with mock user (bypasses login)
+	@ VITE_DEV_MODE=true npm run start
+
 build:
 	@npm run build
 

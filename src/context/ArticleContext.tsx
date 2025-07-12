@@ -28,12 +28,13 @@ const ArticleProvider: React.FC<{
     userToken: UserContextType['accessToken'],
     articleId: string,
     selectedWorldKey: string,
+    applicationKey?: string,
   ) => {
     setIsArticleLoading(true);
-    const results: ArticleResponse = await worldAnvilAPI.fetchCharacter(userToken, articleId)
+    const results: ArticleResponse = await worldAnvilAPI.fetchCharacter(userToken, articleId, applicationKey)
 
     if (results?.id) {
-      setActiveCharacter(await ProcessArticle(userToken, results, selectedWorldKey));
+      setActiveCharacter(await ProcessArticle(userToken, results, selectedWorldKey, applicationKey));
     }
 
     if (!activeCharacter) {

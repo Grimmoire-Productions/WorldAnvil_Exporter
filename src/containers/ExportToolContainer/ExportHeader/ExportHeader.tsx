@@ -36,7 +36,8 @@ function ExportHeader() {
   const {
     accessToken,
     user,
-    setUser
+    setUser,
+    applicationKey
   } = React.useContext(UserContext) as UserContextType;
 
   const [articlesList, setArticlesList] = useState<DropdownOption[]>([]);
@@ -88,7 +89,7 @@ function ExportHeader() {
   useEffect(() => {
     if (articleId && selectedWorld) {
       const selectedWorldKey = selectedWorld?.cssClassName || "default";
-      fetchAndProcessCharacter(accessToken, articleId, selectedWorldKey);
+      fetchAndProcessCharacter(accessToken, articleId, selectedWorldKey, applicationKey || undefined);
     }
   }, [articleId])
   const handleSelectedTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
@@ -116,7 +117,7 @@ function ExportHeader() {
         if (!world.characterSheets || !world.tags) {
           setWorldIsLoading(true);
 
-          worldAnvilAPI.getCharacterSheets(accessToken, world.id).then((results) => {
+          worldAnvilAPI.getCharacterSheets(accessToken, world.id, applicationKey || undefined).then((results) => {
               if (results.length > 0) {
                 world.characterSheets = results;
 

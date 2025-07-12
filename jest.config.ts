@@ -11,7 +11,11 @@ const presetConfig = createJsWithTsEsmPreset({
     before: [
       {
         path: "ts-jest-mock-import-meta", // or, alternatively, 'ts-jest-mock-import-meta' directly, without node_modules.
-        options: { metaObjectReplacement: { url: "https://www.url.com" } },
+        options: {
+          metaObjectReplacement: {
+            url: "https://www.url.com", env: {
+              VITE_DEV_MODE: 'false'
+            } } },
       },
     ],
   },

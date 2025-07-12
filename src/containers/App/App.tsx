@@ -13,6 +13,7 @@ function App() {
     user: null,
     expiresAt: initUserToken?.expiry || null,
     accessToken: initUserToken?.value || '',
+    applicationKey: null,
   };
 
   return (

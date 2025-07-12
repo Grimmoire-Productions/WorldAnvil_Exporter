@@ -8,12 +8,13 @@ import worldAnvilAPI from '../../utils/worldAnvilAPI';
 import WorldProvider from '../../context/WorldContext';
 import ArticleProvider from '../../context/ArticleContext';
 function MainContainer() {
-  const { isLoggedIn, accessToken, setUser, setIsLoggedIn } = React.useContext(UserContext) as UserContextType;
+  const { isLoggedIn, accessToken, setUser, setIsLoggedIn, applicationKey } = React.useContext(UserContext) as UserContextType;
 
   const worldInitialValues: WorldInitialValues = {
     worldIsLoading: false,
     selectedWorld: null,
-    selectedTags: []
+    selectedTags: [],
+    selectedRunTag: null
   };
 
   const articleInitialValues: ArticleInitialValues = {
@@ -27,13 +28,34 @@ function MainContainer() {
 
   useEffect(() => {
     if (isLoading) {
-      if (accessToken === '') {
-        setIsLoading(false)
-      } else {
-        worldAnvilAPI.logIn(accessToken).then(userResponse => {
+      // Check if dev mode is enabled
+      const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
+      const devApiToken = import.meta.env.VITE_PUBLIC_WA_API_TOKEN;
+      
+      if (isDevMode && devApiToken) {
+        // Use real API with dev token for dev mode
+        worldAnvilAPI.logIn(devApiToken, applicationKey || undefined).then(userResponse => {
           const newUser = userResponse;
           setIsLoggedIn(true);
-          worldAnvilAPI.getWorlds(accessToken, userResponse.id).then(worldResponse => {
+          worldAnvilAPI.getWorlds(devApiToken, userResponse.id, applicationKey || undefined).then(worldResponse => {
+            newUser.worlds = worldResponse
+            setUser(newUser)
+            setIsLoading(false);
+          }).catch(error => {
+            console.error('Failed to fetch worlds in dev mode:', error)
+            setIsLoading(false);
+          })
+        }).catch(error => {
+          console.error('Failed to login in dev mode:', error)
+          setIsLoading(false);
+        })
+      } else if (accessToken === '') {
+        setIsLoading(false)
+      } else {
+        worldAnvilAPI.logIn(accessToken, applicationKey || undefined).then(userResponse => {
+          const newUser = userResponse;
+          setIsLoggedIn(true);
+          worldAnvilAPI.getWorlds(accessToken, userResponse.id, applicationKey || undefined).then(worldResponse => {
             newUser.worlds = worldResponse
             setUser(newUser)
           }).catch(error => {

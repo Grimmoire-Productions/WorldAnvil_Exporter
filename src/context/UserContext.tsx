@@ -10,7 +10,8 @@ const UserProvider: React.FC<{
   const [isLoggedIn, setIsLoggedIn] = useState(initialValues.isLoggedIn);
   const [accessToken, setAccessToken] = useState(initialValues.accessToken);
   const [user, setUser] = useState(initialValues.user);
-  const [expiresAt, setExpiresAt] = useState(initialValues.expiresAt)
+  const [expiresAt, setExpiresAt] = useState(initialValues.expiresAt);
+  const [applicationKey, setApplicationKey] = useState(initialValues.applicationKey);
 
   return (
     <UserContext.Provider
@@ -23,6 +24,8 @@ const UserProvider: React.FC<{
         setAccessToken,
         expiresAt,
         setExpiresAt,
+        applicationKey,
+        setApplicationKey,
       }}
     >
       {children}

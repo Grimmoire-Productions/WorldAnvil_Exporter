@@ -1,4 +1,4 @@
-import { APPLICATION_KEY, TOKEN_EXPIRATION_SECONDS } from './consts'
+import { APPLICATION_KEY, TOKEN_EXPIRATION_SECONDS } from '#consts'
 import { setUserToken } from './userToken';
 import type {
   User,
@@ -14,13 +14,13 @@ import type {
 const baseURL = 'https://www.worldanvil.com/api/external/boromir'
 
 const worldAnvilAPI = {
-  logIn(userToken: string) {
+  logIn(userToken: string, appKey?: string) {
 
     const options: RequestInit = {
       method: "GET",
       headers: {
         "x-auth-token": userToken,
-        "x-application-key": APPLICATION_KEY || "",
+        "x-application-key": appKey || APPLICATION_KEY || "",
         "Content-type": "application/json"
       }
     }
@@ -44,12 +44,12 @@ const worldAnvilAPI = {
         return user;
       })
   },
-  getWorlds(userToken: string, userId: string) {
+  getWorlds(userToken: string, userId: string, appKey?: string) {
     const options: RequestInit = {
       method: "POST",
       headers: {
         "x-auth-token": userToken,
-        "x-application-key": APPLICATION_KEY || "",
+        "x-application-key": appKey || APPLICATION_KEY || "",
         "Content-type": "application/json",
         "accept": "application/json"
       },
@@ -85,7 +85,7 @@ const worldAnvilAPI = {
         return worlds;
       })
   },
-  getCharacterSheets(userToken: string, worldId: string) {
+  getCharacterSheets(userToken: string, worldId: string, appKey?: string) {
     const allCharacterSheets: CharacterSheet[] = [];
     const limit = 50;
     let offset = 0;
@@ -96,7 +96,7 @@ const worldAnvilAPI = {
         method: "POST",
         headers: {
           "x-auth-token": userToken,
-          "x-application-key": APPLICATION_KEY || "",
+          "x-application-key": appKey || APPLICATION_KEY || "",
           "Content-type": "application/json",
           "accept": "application/json"
         },
@@ -155,13 +155,13 @@ const worldAnvilAPI = {
 
     return fetchPage();
   },
-  fetchCharacter(userToken: string, charId: string) {
+  fetchCharacter(userToken: string, charId: string, appKey?: string) {
 
     const options: RequestInit = {
       method: "GET",
       headers: {
         "x-auth-token": userToken,
-        "x-application-key": APPLICATION_KEY || "",
+        "x-application-key": appKey || APPLICATION_KEY || "",
         "Content-type": "application/json"
       }
     }
@@ -179,13 +179,13 @@ const worldAnvilAPI = {
         return jsonResponse;
       })
   },
-  fetchSecrets(userToken: string, secretId: string) {
+  fetchSecrets(userToken: string, secretId: string, appKey?: string) {
 
     const options: RequestInit = {
       method: "GET",
       headers: {
         "x-auth-token": userToken,
-        "x-application-key": APPLICATION_KEY || "",
+        "x-application-key": appKey || APPLICATION_KEY || "",
         "Content-type": "application/json"
       }
     }

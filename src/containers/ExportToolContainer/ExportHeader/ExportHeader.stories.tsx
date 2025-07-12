@@ -27,7 +27,9 @@ const mockUserContext: UserContextType = {
   isLoggedIn: true,
   setIsLoggedIn: () => {},
   expiresAt: null,
-  setExpiresAt: () => {}
+  setExpiresAt: () => { },
+  applicationKey: null,
+  setApplicationKey: () => { }
 };
 
 const mockWorldContext: WorldContextType = {

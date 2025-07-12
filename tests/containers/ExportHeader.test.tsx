@@ -256,6 +256,7 @@ describe("ExportHeader", () => {
       expect(worldAnvilAPI.getCharacterSheets).toHaveBeenCalledWith(
         "test-token",
         "world2",
+        undefined,
       );
 
       await waitFor(() => {
@@ -380,6 +381,7 @@ describe("ExportHeader", () => {
         "test-token",
         "char1",
         "test-world-1",
+        undefined,
       );
     });
   });

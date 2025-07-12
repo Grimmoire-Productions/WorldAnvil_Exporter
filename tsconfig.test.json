@@ -8,10 +8,13 @@
       "dom.iterable",
       "esnext"
     ],
-    "module": "ESNext",
+    "module": "esnext",
     "skipLibCheck": true,
     "incremental": true,
     "esModuleInterop": true,
+    "paths": {
+      "#consts": ["./tests/__mocks__/mockConsts.ts"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -43,9 +46,13 @@
     "vite.config.ts",
     "build/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "src/**/*.stories.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ["src/utils/consts.ts"]
   ]
 }

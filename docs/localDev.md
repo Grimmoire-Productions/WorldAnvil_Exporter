@@ -67,12 +67,13 @@ World Anvil credentials provide write access to all content. Mishandling could r
    make start  # or npm start
    ```
 
-   The application will be available at http://localhost:3000
+   The application will be available at http://localhost:5173
 
 ## Development Commands
 
 ```bash
 make start          # Start dev server
+make start-dev-mode # Start dev server with mock user (bypasses login)
 make build          # Production build
 make test           # Run test suite
 make test-watch     # Run tests in watch mode
@@ -80,6 +81,27 @@ npm run lint        # Run ESLint
 npm run typecheck   # TypeScript type checking
 npm run preview     # Preview production build
 ```
+
+## Dev Mode
+
+For faster development iteration, you can use dev mode to bypass the login flow:
+
+```bash
+make start-dev-mode
+```
+
+This will:
+
+- Skip the login page entirely
+- Automatically log in using the `VITE_PUBLIC_WA_API_TOKEN` from your `.env` file
+- Fetch real user data and worlds from the World Anvil API
+- Allow immediate testing of the export functionality
+
+Dev mode requires the following in your `.env` file:
+
+- `VITE_PUBLIC_WA_API_TOKEN` - Your World Anvil API token (same as used for normal login)
+
+**Note:** Dev mode now uses real API authentication with your token, providing a more realistic development experience. Use `make start` for normal operation with manual login.
 
 ## Testing
 
