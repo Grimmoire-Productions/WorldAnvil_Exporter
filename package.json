@@ -3,6 +3,26 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "contributors": [
+    {
+      "name": "Kelsey Morse-Brown",
+      "url": "https://github.com/kelseymorsebrown"
+    },
+    {
+      "name": "Joe Bir",
+      "url": "https://github.com/joebir"
+    },
+    {
+      "name": "Carly Ho",
+      "url": "https://github.com/cmho"
+    }
+  ],
+  "imports": {
+    "#consts": {
+      "storybook": "./tests/__mocks__/mockConsts.ts",
+      "default": "./src/utils/consts.ts"
+    }
+  },
   "scripts": {
     "start": "vite",
     "build": "tsc -b && vite build",
@@ -13,7 +33,8 @@
     "test:coverage": "jest --coverage .",
     "test:debug": "jest --inspect-brk --runInBand --no-cache",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "browserslist-to-esbuild": "^2.1.1",
