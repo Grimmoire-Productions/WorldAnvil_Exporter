@@ -13,7 +13,8 @@ function MainContainer() {
   const worldInitialValues: WorldInitialValues = {
     worldIsLoading: false,
     selectedWorld: null,
-    selectedTags: []
+    selectedTags: [],
+    selectedRunTag: null
   };
 
   const articleInitialValues: ArticleInitialValues = {
@@ -27,7 +28,28 @@ function MainContainer() {
 
   useEffect(() => {
     if (isLoading) {
-      if (accessToken === '') {
+      // Check if dev mode is enabled
+      const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
+      const devApiToken = import.meta.env.VITE_PUBLIC_WA_API_TOKEN;
+      
+      if (isDevMode && devApiToken) {
+        // Use real API with dev token for dev mode
+        worldAnvilAPI.logIn(devApiToken).then(userResponse => {
+          const newUser = userResponse;
+          setIsLoggedIn(true);
+          worldAnvilAPI.getWorlds(devApiToken, userResponse.id).then(worldResponse => {
+            newUser.worlds = worldResponse
+            setUser(newUser)
+            setIsLoading(false);
+          }).catch(error => {
+            console.error('Failed to fetch worlds in dev mode:', error)
+            setIsLoading(false);
+          })
+        }).catch(error => {
+          console.error('Failed to login in dev mode:', error)
+          setIsLoading(false);
+        })
+      } else if (accessToken === '') {
         setIsLoading(false)
       } else {
         worldAnvilAPI.logIn(accessToken).then(userResponse => {
