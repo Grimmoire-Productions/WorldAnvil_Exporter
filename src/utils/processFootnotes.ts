@@ -14,7 +14,13 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
 
       if (typeof superscript === 'string') {
 
-      const footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
+      let footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
+      
+      if (footnoteIdx < 0) {
+        arrayFootnotes.push(`<p><sup>${footnoteNum}</sup> TK</p>`)
+        footnoteIdx = arrayFootnotes.length - 1;
+      }
+      
       const footnoteHasParagraphTags = arrayFootnotes[footnoteIdx].includes('<p>') && arrayFootnotes[footnoteIdx].includes('</p>')
 
       const hasVariableBeforeFootnote = hasVariable && str.indexOf('[var:') < str.indexOf('[sup]');
@@ -26,14 +32,29 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
       if (hasVariableBeforeFootnote) {
         const varName = getVariableName(newString);
         const varData = getVarData(varName, LIES_VARS)
-        const isFirstInstance = checkIfFirstInstance(arrayFootnotes, varData.description)
-        
-        newString = replaceVariable(newString, varData, footnoteNum, isFirstInstance)
 
-        if (isFirstInstance) {
-          addVariableFootnote(arrayFootnotes, footnoteNum, varData.description)
-          footnoteNum += 1;
-        };
+        if (varData) {
+          const isFirstInstance = checkIfFirstInstance(
+            arrayFootnotes,
+            varData.description,
+          );
+
+          newString = replaceVariable(
+            newString,
+            varData,
+            footnoteNum,
+            isFirstInstance,
+          );
+
+          if (isFirstInstance) {
+            addVariableFootnote(
+              arrayFootnotes,
+              footnoteNum,
+              varData.description,
+            );
+            footnoteNum += 1;
+          }
+        }
       }
 
       /* Update footnote superscript */
@@ -49,15 +70,25 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
     } else if (hasVariable) {
       const varName = getVariableName(newString);
       const varData = getVarData(varName, LIES_VARS)
-      const isFirstInstance = checkIfFirstInstance(arrayFootnotes, varData.description)
 
-      newString = replaceVariable(newString, varData, footnoteNum, isFirstInstance)
+      if (varData) {
+        const isFirstInstance = checkIfFirstInstance(
+          arrayFootnotes,
+          varData.description,
+        );
 
-      if (isFirstInstance) {
-        addVariableFootnote(arrayFootnotes, footnoteNum, varData.description)
-        footnoteNum += 1;
-      };
-      
+        newString = replaceVariable(
+          newString,
+          varData,
+          footnoteNum,
+          isFirstInstance,
+        );
+
+        if (isFirstInstance) {
+          addVariableFootnote(arrayFootnotes, footnoteNum, varData.description);
+          footnoteNum += 1;
+        }
+      }
     }
 
     arrayContent[idx] = newString;
