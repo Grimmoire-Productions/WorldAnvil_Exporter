@@ -1,6 +1,7 @@
 import React from 'react';
 import type { UserContextType } from '../../utils/types';
 import { APPLICATION_KEY } from '#consts';
+import styles from './LoginBar.module.css';
 
 type LoginBarProps = {
   accessToken: UserContextType['accessToken']
@@ -37,7 +38,7 @@ function LoginBar({accessToken, onUpdateAccessToken, onLogin, applicationKey, on
         onChange={onUpdateAccessToken}
       />
       <button
-        className={'btn'}
+        className={styles.btn}
         onClick={onLogin}
         data-testid='login-button'
       >

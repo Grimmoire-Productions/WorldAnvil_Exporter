@@ -4,6 +4,7 @@ import type { UserContextType } from '../../utils/types.ts';
 import worldAnvilAPI from '../../utils/worldAnvilAPI.ts';
 import LoginBar from '../../components/LoginBar/LoginBar.tsx';
 import { APPLICATION_KEY } from '#consts';
+import styles from './LoginContainer.module.css';
 
 function LoginContainer() {
   const {
@@ -75,7 +76,7 @@ function LoginContainer() {
   };
 
   return (
-    <div id="login" className={"login"} data-testid="login-container">
+    <div id="login" className={styles.login} data-testid="login-container">
       <header>
         <h1>World Anvil Character Sheet Export Tool</h1>
       </header>
