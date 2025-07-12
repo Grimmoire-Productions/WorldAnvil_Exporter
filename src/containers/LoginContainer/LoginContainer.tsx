@@ -3,6 +3,7 @@ import { UserContext } from '../../context/UserContext';
 import type { UserContextType } from '../../utils/types.ts';
 import worldAnvilAPI from '../../utils/worldAnvilAPI.ts';
 import LoginBar from '../../components/LoginBar/LoginBar.tsx';
+import { APPLICATION_KEY } from '#consts';
 
 function LoginContainer() {
   const {
@@ -12,6 +13,8 @@ function LoginContainer() {
     setAccessToken,
     expiresAt,
     setExpiresAt,
+    applicationKey,
+    setApplicationKey,
   } = React.useContext(UserContext) as UserContextType;
 
   useEffect(() => {
@@ -33,12 +36,16 @@ function LoginContainer() {
 
   const handleAccessTokenChange = (e: React.FormEvent<HTMLInputElement>) =>
     setAccessToken(e.currentTarget.value);
+    
+  const handleApplicationKeyChange = (e: React.FormEvent<HTMLInputElement>) =>
+    setApplicationKey(e.currentTarget.value);
 
   const login = async (accessToken: string) => {
     try {
-      const userResponse = await worldAnvilAPI.logIn(accessToken);
+      const appKey = !APPLICATION_KEY ? (applicationKey || undefined) : undefined;
+      const userResponse = await worldAnvilAPI.logIn(accessToken, appKey);
       if (userResponse.displayName) {
-        const worlds = await worldAnvilAPI.getWorlds(accessToken, userResponse.id)
+        const worlds = await worldAnvilAPI.getWorlds(accessToken, userResponse.id, appKey)
         const user = userResponse;
         user.worlds = worlds;
         setUser(user);
@@ -53,7 +60,12 @@ function LoginContainer() {
     event.preventDefault();
 
     if (accessToken === '') {
-      console.log('error')
+      console.log('error: Access token is required')
+      return;
+    }
+    
+    if (!APPLICATION_KEY && !applicationKey) {
+      console.log('error: Application key is required')
       return;
     }
 
@@ -72,10 +84,12 @@ function LoginContainer() {
           accessToken={accessToken}
           onLogin={handleLogin}
           onUpdateAccessToken={handleAccessTokenChange}
+          applicationKey={applicationKey}
+          onUpdateApplicationKey={handleApplicationKeyChange}
         />
       </main>
       <footer>
-        <p>Kelsey Morse-Brown 2024</p>
+        <p>Grimmoire Productions 2024</p>
       </footer>
     </div>
   );

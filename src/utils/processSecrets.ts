@@ -2,7 +2,7 @@ import { transformBBCode, transformWorldAnvilLinks, correctPunctuation } from '.
 import type { UserContextType } from './types.ts';
 import worldAnvilAPI from './worldAnvilAPI.ts';
 
-export async function processSecrets(userToken: UserContextType['accessToken'], arrayContent: string[]) {
+export async function processSecrets(userToken: UserContextType['accessToken'], arrayContent: string[], applicationKey?: string) {
 
   let i = 0;
 
@@ -12,7 +12,7 @@ export async function processSecrets(userToken: UserContextType['accessToken'], 
         str.indexOf(":")+1,
         str.indexOf("]")
       )
-      let secretText = await worldAnvilAPI.fetchSecrets(userToken, secretId);
+      let secretText = await worldAnvilAPI.fetchSecrets(userToken, secretId, applicationKey);
       if (secretText) {
         secretText = transformBBCode(secretText)
         secretText = transformWorldAnvilLinks(secretText)

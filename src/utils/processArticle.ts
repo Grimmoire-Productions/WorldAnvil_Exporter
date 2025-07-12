@@ -7,7 +7,7 @@ import type { ArticleResponse, UserContextType } from './types.ts';
 
 
 
-export async function ProcessArticle(userToken: UserContextType['accessToken'], data: ArticleResponse, selectedWorldKey: string) {
+export async function ProcessArticle(userToken: UserContextType['accessToken'], data: ArticleResponse, selectedWorldKey: string, applicationKey?: string) {
   let headerImageSrc: string;
   let footerImageSrc: string;
 
@@ -59,7 +59,7 @@ export async function ProcessArticle(userToken: UserContextType['accessToken'], 
   /* Handle special cases */
   let arrayContent = content.split("\n");
   const arrayFootnotes = footnotes.split("\n")
-  arrayContent = await processSecrets(userToken, arrayContent);
+  arrayContent = await processSecrets(userToken, arrayContent, applicationKey);
 
   arrayContent.forEach((str, idx) => {
 

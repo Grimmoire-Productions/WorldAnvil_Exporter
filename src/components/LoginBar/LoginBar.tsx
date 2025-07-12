@@ -1,15 +1,33 @@
 import React from 'react';
 import type { UserContextType } from '../../utils/types';
+import { APPLICATION_KEY } from '#consts';
 
 type LoginBarProps = {
   accessToken: UserContextType['accessToken']
   onUpdateAccessToken: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  applicationKey?: string | null;
+  onUpdateApplicationKey?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function LoginBar({accessToken, onUpdateAccessToken, onLogin}: LoginBarProps) {
+function LoginBar({accessToken, onUpdateAccessToken, onLogin, applicationKey, onUpdateApplicationKey}: LoginBarProps) {
+    
+  const needsApplicationKey = !APPLICATION_KEY;
+
   return (
-    <div className={'LoginBar'}>
+    <div className={styles.loginBar}>
+      {needsApplicationKey && (
+        <>
+          <input
+            id='application-key'
+            name='application-key'
+            data-testid='application-key'
+            value={applicationKey || ''}
+            placeholder='Enter Application Key'
+            onChange={onUpdateApplicationKey}
+          />
+        </>
+      )}
       <input
         id='access-token'
         name='access-token'

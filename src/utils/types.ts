@@ -11,6 +11,7 @@ export interface ArticleContextType {
     userToken: string,
     articleId: string,
     selectedWorldKey: string,
+    applicationKey?: string,
   ) => void;
 }
 
@@ -48,6 +49,8 @@ export interface UserContextType {
   setAccessToken: (value: React.SetStateAction<string>) => void;
   expiresAt: number | null;
   setExpiresAt: (value: React.SetStateAction<number | null>) => void;
+  applicationKey: string | null;
+  setApplicationKey: (value: React.SetStateAction<string | null>) => void;
 }
 
 export interface UserInitialValues {
@@ -55,6 +58,7 @@ export interface UserInitialValues {
   accessToken: string;
   expiresAt: number | null;
   user: User | null;
+  applicationKey: string | null;
 }
 
 export interface UserToken {
