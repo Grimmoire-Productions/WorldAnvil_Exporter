@@ -4,7 +4,7 @@ A web application that converts narrative larp character sheets written in World
 
 ## Overview
 
-Grimmoire Productions authors detailed character sheets for their lit-form live-action role playing games (larps) in World Anvil -- a world-building platform that is, essentially, an extremely fancy wiki. These World Anvil character sheets are distributed to players as PDFs ahead of the game and in print on site. 
+This tool was built for [Grimmoire Productions](https://grimmoire.productions/). Grimmoire Productions produces lit-form live action role playing games (larps) with detailed pre-written characters, robust plots, and rich inter-character connections. Grimmoire Production's writers use World Anvil -- a world-building platform that is, essentially, an extremely fancy wiki -- to author these character sheets and document the game's narrative information. These World Anvil character sheets are distributed to players as PDFs ahead of the game and in print on site.
 
 However, using the browser's print-to-PDF functionality directly from World Anvil has significant limitations:
 

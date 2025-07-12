@@ -29,6 +29,8 @@ function ExportHeader() {
     setSelectedWorld,
     selectedTags,
     setSelectedTags,
+    selectedRunTag,
+    setSelectedRunTag,
   } = React.useContext(WorldContext) as WorldContextType;
 
   const {
@@ -60,6 +62,7 @@ function ExportHeader() {
     setArticleId('')
     setActiveCharacter('')
     setSelectedTags([])
+    setSelectedRunTag(null)
     
   }, [selectedWorld])
 
@@ -80,7 +83,7 @@ function ExportHeader() {
         }
       }
     }
-  }, [selectedTags, selectedWorld, currentCharacter, articlesList]);
+  }, [selectedTags, selectedRunTag, selectedWorld, currentCharacter]);
 
   useEffect(() => {
     if (articleId && selectedWorld) {
@@ -90,6 +93,10 @@ function ExportHeader() {
   }, [articleId])
   const handleSelectedTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
     setSelectedTags(options as DropdownOption[])
+  };
+
+  const handleSelectedRunTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
+    setSelectedRunTag(options as DropdownOption)
   };
 
   const handleSelectedWorldChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
@@ -147,11 +154,26 @@ function ExportHeader() {
     return options;
   }
 
+  const runDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
+    const options: DropdownOption[] = [];
+
+    if (tags) {
+      tags.filter(tag => tag.toLowerCase().includes('run')).forEach((tag: string) => {
+        options.push({
+          value: tag,
+          id: tag,
+          label: tag
+        })
+      })
+    }
+    return options;
+  }
+
   const tagDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
     const options: DropdownOption[] = [];
 
     if (tags) {
-      tags.forEach((tag: string) => {
+      tags.filter(tag => !tag.toLowerCase().includes('run') && !tag.toLowerCase().includes('character_sheet')).forEach((tag: string) => {
         options.push({
           value: tag,
           id: tag,
@@ -167,11 +189,21 @@ function ExportHeader() {
 
     if (characterSheets) {
       characterSheets.filter((character) => {
+        let matchesTags = true;
+        let matchesRunTag = true;
+
+        // Check if character matches all selected tags
         if (selectedTags && selectedTags.length > 0) {
           const tagsArray = selectedTags.map((tag) => tag.value);
-          return tagsArray.every((tag) => character.tags.includes(tag));
+          matchesTags = tagsArray.every((tag) => character.tags.includes(tag));
         }
-        return true
+
+        // Check if character matches the selected run tag
+        if (selectedRunTag) {
+          matchesRunTag = character.tags.includes(selectedRunTag.value);
+        }
+
+        return matchesTags && matchesRunTag;
       }).forEach(character => {
         options.push({
           value: character.title,
@@ -194,6 +226,11 @@ function ExportHeader() {
           isMultiSelect={false}
           error="No words available"
           handleChange={handleSelectedWorldChange}
+          currentSelection={selectedWorld ? {
+            value: selectedWorld.title,
+            id: selectedWorld.id,
+            label: selectedWorld.title
+          } : undefined}
         />
       )}
       {worldIsLoading ? (
@@ -204,9 +241,19 @@ function ExportHeader() {
         selectedWorld && (
           <>
             <SearchDropdown
+              id="select-run-tag"
+              className="select-run-tag"
+              placeholder="--Choose a run--"
+              items={runDropdownOptions(selectedWorld.tags)}
+              isMultiSelect={false}
+              error="No run tags available for the selected world."
+              handleChange={handleSelectedRunTagChange}
+              currentSelection={selectedRunTag as DropdownOption}
+            />
+            <SearchDropdown
               id="select-tags"
               className="select-tags"
-              placeholder="--Choose a tag--"
+              placeholder="--Choose tags--"
               items={tagDropdownOptions(selectedWorld.tags)}
               isMultiSelect={true}
               error="No tags available for the selected world."

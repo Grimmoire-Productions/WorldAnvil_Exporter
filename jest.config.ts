@@ -5,17 +5,17 @@ import { createJsWithTsEsmPreset, type JestConfigWithTsJest } from 'ts-jest'
 const presetConfig = createJsWithTsEsmPreset({
   tsconfig: "./tsconfig.test.json",
   diagnostics: {
-    ignoreCodes: [1343]
+    ignoreCodes: [1343],
   },
   astTransformers: {
     before: [
       {
-        path: 'ts-jest-mock-import-meta',  // or, alternatively, 'ts-jest-mock-import-meta' directly, without node_modules.
-        options: { metaObjectReplacement: { url: 'https://www.url.com' } }
-      }
-    ]
-  }
-})
+        path: "ts-jest-mock-import-meta", // or, alternatively, 'ts-jest-mock-import-meta' directly, without node_modules.
+        options: { metaObjectReplacement: { url: "https://www.url.com" } },
+      },
+    ],
+  },
+});
 
 const jestConfig: JestConfigWithTsJest = {
   ...presetConfig,
