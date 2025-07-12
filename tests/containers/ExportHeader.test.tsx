@@ -79,6 +79,8 @@ describe("ExportHeader", () => {
     setSelectedWorld: jest.fn(),
     selectedTags: [],
     setSelectedTags: jest.fn(),
+    selectedRunTag: null,
+    setSelectedRunTag: jest.fn(),
   } as WorldContextType;
 
   const mockUserContext = {
@@ -96,15 +98,15 @@ describe("ExportHeader", () => {
             {
               articleId: "char1",
               title: "Character 1",
-              tags: ["tag1", "tag2"],
+              tags: ["tag1", "tag2", "run1"],
             },
             {
               articleId: "char2",
               title: "Character 2",
-              tags: ["tag2", "tag3"],
+              tags: ["tag2", "tag3", "run2"],
             },
           ],
-          tags: ["tag1", "tag2", "tag3"],
+          tags: ["tag1", "tag2", "tag3", "run1", "run2"],
         },
         {
           id: "world2",
@@ -181,11 +183,25 @@ describe("ExportHeader", () => {
 
       renderWithContexts(mockArticleContext, loadingWorldContext);
 
-      expect(screen.getByText("Tags Loading")).toBeInTheDocument();
-      expect(screen.getByText("Articles Loading")).toBeInTheDocument();
+      // Check that dropdowns are not shown when loading
+      expect(screen.queryByTestId("select-run-tag")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("select-tags")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("select-article")).not.toBeInTheDocument();
     });
 
-    it("shows tags dropdown when world is selected and not loading", () => {
+    it("shows run tags dropdown when world is selected and not loading", () => {
+      const selectedWorldContext = {
+        ...mockWorldContext,
+        selectedWorld: mockUserContext.user.worlds[0],
+      };
+
+      renderWithContexts(mockArticleContext, selectedWorldContext);
+
+      expect(screen.getByTestId("select-run-tag")).toBeInTheDocument();
+      expect(screen.getByText("--Choose a run--")).toBeInTheDocument();
+    });
+
+    it("shows non-run tags dropdown when world is selected and not loading", () => {
       const selectedWorldContext = {
         ...mockWorldContext,
         selectedWorld: mockUserContext.user.worlds[0],
@@ -194,7 +210,7 @@ describe("ExportHeader", () => {
       renderWithContexts(mockArticleContext, selectedWorldContext);
 
       expect(screen.getByTestId("select-tags")).toBeInTheDocument();
-      expect(screen.getByText("--Choose a tag--")).toBeInTheDocument();
+      expect(screen.getByText("--Choose tags--")).toBeInTheDocument();
     });
 
     it("shows articles dropdown when world is selected and not loading", () => {
@@ -270,7 +286,17 @@ describe("ExportHeader", () => {
       selectedWorld: mockUserContext.user.worlds[0],
     };
 
-    it("handles tag selection", async () => {
+    it("handles run tag selection", async () => {
+      const user = userEvent.setup();
+      renderWithContexts(mockArticleContext, selectedWorldContext);
+
+      const runTagSelect = screen.getByTestId("select-run-tag-select");
+      await user.selectOptions(runTagSelect, "run1");
+
+      expect(mockWorldContext.setSelectedRunTag).toHaveBeenCalled();
+    });
+
+    it("handles non-run tag selection", async () => {
       const user = userEvent.setup();
       renderWithContexts(mockArticleContext, selectedWorldContext);
 
@@ -280,16 +306,16 @@ describe("ExportHeader", () => {
       expect(mockWorldContext.setSelectedTags).toHaveBeenCalled();
     });
 
-    it("filters articles based on selected tags", () => {
+    it("filters articles based on selected tags and run tag", () => {
       const selectedTagsContext = {
         ...selectedWorldContext,
         selectedTags: [{ value: "tag1", id: "tag1", label: "tag1" }],
+        selectedRunTag: { value: "run1", id: "run1", label: "run1" },
       };
 
       renderWithContexts(mockArticleContext, selectedTagsContext);
 
-      // The component should filter articles based on tags
-      // This would be visible in the articles dropdown options
+      // The component should filter articles based on both tags and run tag
       expect(screen.getByTestId("select-article")).toBeInTheDocument();
     });
   });
@@ -334,6 +360,7 @@ describe("ExportHeader", () => {
       expect(mockArticleContext.setArticleId).toHaveBeenCalledWith("");
       expect(mockArticleContext.setActiveCharacter).toHaveBeenCalledWith("");
       expect(mockWorldContext.setSelectedTags).toHaveBeenCalledWith([]);
+      expect(mockWorldContext.setSelectedRunTag).toHaveBeenCalledWith(null);
     });
 
     it("calls fetchAndProcessCharacter when articleId changes", () => {

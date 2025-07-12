@@ -74,6 +74,7 @@ export interface WorldInitialValues {
   worldIsLoading: boolean;
   selectedWorld: World | null;
   selectedTags: DropdownOption[] | null;
+  selectedRunTag: DropdownOption | null;
 }
 
 export interface WorldContextType {
@@ -84,6 +85,10 @@ export interface WorldContextType {
   selectedTags: DropdownOption[] | null;
   setSelectedTags: (
     value: React.SetStateAction<DropdownOption[] | null>,
+  ) => void;
+  selectedRunTag: DropdownOption | null;
+  setSelectedRunTag: (
+    value: React.SetStateAction<DropdownOption | null>,
   ) => void;
 }
 
@@ -97,22 +102,16 @@ export interface ArticleResponse {
   entityClass: string;
   icon: string | null;
   url: string;
-  folderId: string;
   tags: string | null;
   templateType: string;
-  customArticleTemplate?: string | null;
+  customArticleTemplate: {
+    id: string,
+    title: string,
+  } | null;
   content: string;
-  category: {
-    id: string;
-    title: string;
-    slug: string;
-    url: string;
-    tags: string | null;
-  };
   footnotes: string;
   fullfooter: string;
   subheading: string | null;
-  secrets: SecretResponse[];
 }
 export interface BaseWorldAnvilResponse {
   success: boolean;

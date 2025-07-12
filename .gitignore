@@ -530,3 +530,5 @@ $RECYCLE.BIN/
 
 #Claude
 Claude.md
+*storybook.log
+storybook-static
