@@ -1,14 +1,42 @@
+export interface ArticleContextType {
+  articleId: string;
+  setArticleId: (value: React.SetStateAction<string>) => void;
+  activeCharacter: string;
+  setActiveCharacter: (value: React.SetStateAction<string>) => void;
+  errorMessage: string | null;
+  setErrorMessage: (value: React.SetStateAction<string | null>) => void;
+  isArticleLoading: boolean;
+  setIsArticleLoading: (value: React.SetStateAction<boolean>) => void;
+  fetchAndProcessCharacter: (
+    userToken: string,
+    articleId: string,
+    selectedWorldKey: string,
+  ) => void;
+}
+
+export interface ArticleInitialValues {
+  errorMessage: string | null;
+  articleId: string;
+  activeCharacter: string;
+  isArticleLoading: boolean;
+}
+
+export interface CharacterSheet {
+  articleId: string;
+  title: string;
+  tags: string[];
+}
+
+export interface DropdownOption {
+  value: string;
+  id: string;
+  label: string;
+}
+
 export interface User {
   displayName: string;
   id: string;
   worlds: World[] | null;
-}
-
-export interface UserInitialValues {
-  isLoggedIn: boolean;
-  accessToken: string;
-  expiresAt: number | null;
-  user: User | null;
 }
 
 export interface UserContextType {
@@ -22,54 +50,82 @@ export interface UserContextType {
   setExpiresAt: (value: React.SetStateAction<number | null>) => void;
 }
 
+export interface UserInitialValues {
+  isLoggedIn: boolean;
+  accessToken: string;
+  expiresAt: number | null;
+  user: User | null;
+}
+
 export interface UserToken {
   expiry: number;
   value: string;
 }
 
 export interface World {
-  id: string,
-  title: string,
-  cssClassName: string,
+  id: string;
+  title: string;
+  cssClassName: string;
+  characterSheets?: CharacterSheet[] | null;
+  tags?: string[] | null;
 }
 
 export interface WorldInitialValues {
+  worldIsLoading: boolean;
   selectedWorld: World | null;
+  selectedTags: DropdownOption[] | null;
 }
 
 export interface WorldContextType {
+  worldIsLoading: boolean;
+  setWorldIsLoading: (value: React.SetStateAction<boolean>) => void;
   selectedWorld: World | null;
   setSelectedWorld: (value: React.SetStateAction<World | null>) => void;
-}
-
-export interface ArticleContextType {
-  articleId: string;
-  setArticleId: (value: React.SetStateAction<string>) => void;
-  activeCharacter: string;
-  setActiveCharacter: (value: React.SetStateAction<string>) => void;
-  errorMessage: string | null;
-  setErrorMessage: (value: React.SetStateAction<string | null>) => void;
-  fetchAndProcessCharacter: (
-    userToken: string,
-    articleId: string,
-    selectedWorldKey: string,
+  selectedTags: DropdownOption[] | null;
+  setSelectedTags: (
+    value: React.SetStateAction<DropdownOption[] | null>,
   ) => void;
 }
 
-export interface ArticleInitialValues {
-  errorMessage: string | null;
-  articleId: string;
-  activeCharacter: string;
+// World Anvil API Response Data
+
+export interface ArticleResponse {
+  id: string;
+  title: string;
+  slug: string;
+  state: "public" | "private";
+  entityClass: string;
+  icon: string | null;
+  url: string;
+  folderId: string;
+  tags: string | null;
+  templateType: string;
+  customArticleTemplate?: string | null;
+  content: string;
+  category: {
+    id: string;
+    title: string;
+    slug: string;
+    url: string;
+    tags: string | null;
+  };
+  footnotes: string;
+  fullfooter: string;
+  subheading: string | null;
+  secrets: SecretResponse[];
 }
-
-// World Anvil Response Data
-
 export interface BaseWorldAnvilResponse {
   success: boolean;
 }
 
+export interface SecretResponse {
+  id: string;
+  title: string;
+  url: string;
+  content?: string;
+}
 export interface UserWorldsResponse extends BaseWorldAnvilResponse {
-  entities: World[]
+  entities: World[];
 }
 
 export interface UserIdentityResponse extends BaseWorldAnvilResponse {
@@ -77,35 +133,6 @@ export interface UserIdentityResponse extends BaseWorldAnvilResponse {
   id: string;
 }
 
-export interface ArticleResponse {
-  id: string,
-  title: string,
-  slug: string,
-  state: 'public' | 'private',
-  entityClass: string,
-  icon: string | null,
-  url: string,
-  folderId: string,
-  tags: string | null,
-  templateType: string,
-  customArticleTemplate?: string | null,
-  content: string,
-  category: {
-    id: string,
-    title: string,
-    slug: string,
-    url: string,
-    tags: string | null,
-  },
-  footnotes: string,
-  fullfooter: string,
-  subheading: string | null,
-  secrets: SecretResponse[]
-}
-
-export interface SecretResponse {
-  id: string,
-  title: string,
-  url: string,
-  content?: string,
+export interface WorldArticlesResponse extends BaseWorldAnvilResponse {
+  entities: ArticleResponse[];
 }

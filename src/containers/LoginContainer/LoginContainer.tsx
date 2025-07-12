@@ -58,12 +58,12 @@ function LoginContainer() {
     }
 
     login(accessToken)
-    
+
     return;
   };
 
   return (
-    <div id="login" className={'login'}>
+    <div id="login" className={"login"} data-testid="login-container">
       <header>
         <h1>World Anvil Character Sheet Export Tool</h1>
       </header>
