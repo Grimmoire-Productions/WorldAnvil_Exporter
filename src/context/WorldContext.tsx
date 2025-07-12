@@ -10,6 +10,7 @@ const WorldProvider: React.FC<{
   const [worldIsLoading, setWorldIsLoading] = useState(initialValues.worldIsLoading);
   const [selectedWorld, setSelectedWorld] = useState(initialValues.selectedWorld);
   const [selectedTags, setSelectedTags] = useState(initialValues.selectedTags)
+  const [selectedRunTag, setSelectedRunTag] = useState(initialValues.selectedRunTag)
 
   return (
     <WorldContext.Provider
@@ -20,6 +21,8 @@ const WorldProvider: React.FC<{
         setSelectedWorld,
         selectedTags,
         setSelectedTags,
+        selectedRunTag,
+        setSelectedRunTag,
       }}
     >
       {children}
