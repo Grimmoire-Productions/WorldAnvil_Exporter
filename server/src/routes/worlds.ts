@@ -19,6 +19,13 @@ router.get('/:userId', requireAuth, async (req, res) => {
   try {
     const { userId } = req.params;
     
+    console.log('Get worlds request:', {
+      requestUserId: userId,
+      sessionUserId: req.session.userId,
+      hasUserToken: !!req.session.userToken,
+      sessionData: req.session
+    });
+    
     if (userId !== req.session.userId) {
       return res.status(403).json({ error: 'Access denied' });
     }
@@ -28,6 +35,11 @@ router.get('/:userId', requireAuth, async (req, res) => {
 
   } catch (error) {
     console.error('Get worlds error:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      response: (error as any).response
+    });
     res.status(500).json({ error: 'Failed to fetch worlds' });
   }
 });

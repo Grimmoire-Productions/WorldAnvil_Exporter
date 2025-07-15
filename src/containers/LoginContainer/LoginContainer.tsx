@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import type { UserContextType } from '../../utils/types.ts';
 import backendAPI from '../../utils/backendAPI.ts';
 import LoginBar from '../../components/LoginBar/LoginBar.tsx';
-import { APPLICATION_KEY } from '#consts';
 import styles from './LoginContainer.module.css';
 
 function LoginContainer() {
@@ -17,6 +16,8 @@ function LoginContainer() {
     applicationKey,
     setApplicationKey,
   } = React.useContext(UserContext) as UserContextType;
+  
+  const [needsApplicationKey, setNeedsApplicationKey] = useState(true);
 
   useEffect(() => {
     if (accessToken !== '' && expiresAt) {
@@ -37,13 +38,20 @@ function LoginContainer() {
 
   const handleAccessTokenChange = (e: React.FormEvent<HTMLInputElement>) =>
     setAccessToken(e.currentTarget.value);
+
+  useEffect(() => {
+    backendAPI.checkCredentials().then((response) => {
+      setNeedsApplicationKey(!response.hasAppKey);
+    });
+  }, []);
     
   const handleApplicationKeyChange = (e: React.FormEvent<HTMLInputElement>) =>
     setApplicationKey(e.currentTarget.value);
 
   const login = async (accessToken: string) => {
     try {
-      const appKey = APPLICATION_KEY || applicationKey || undefined;
+      // Only send appKey if user provided it
+      const appKey = applicationKey || undefined;
       const userResponse = await backendAPI.logIn(accessToken, appKey);
       if (userResponse.displayName) {
         const worlds = await backendAPI.getWorlds(userResponse.id)
@@ -65,7 +73,7 @@ function LoginContainer() {
       return;
     }
     
-    if (!APPLICATION_KEY && !applicationKey) {
+    if (needsApplicationKey && !applicationKey) {
       console.log('error: Application key is required')
       return;
     }
@@ -85,6 +93,7 @@ function LoginContainer() {
           accessToken={accessToken}
           onLogin={handleLogin}
           onUpdateAccessToken={handleAccessTokenChange}
+          needsApplicationKey={needsApplicationKey}
           applicationKey={applicationKey}
           onUpdateApplicationKey={handleApplicationKeyChange}
         />

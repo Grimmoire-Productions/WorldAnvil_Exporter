@@ -33,17 +33,14 @@ class WorldAnvilAPIService {
       throw new Error('User token not set. Call setCredentials() first.');
     }
     return {
+      "accept": "application/json",
       "x-auth-token": this.userToken,
-      "x-application-key": this.appKey,
-      "Content-type": "application/json"
+      "x-application-key": this.appKey
     };
   }
 
   private getHeadersWithAccept(): HeadersInit {
-    return {
-      ...this.getHeaders(),
-      "accept": "application/json"
-    };
+    return this.getHeaders();
   }
 
   async logIn(userToken: string, appKey?: string): Promise<User> {
@@ -57,9 +54,18 @@ class WorldAnvilAPIService {
     const response = await fetch(`${baseURL}/identity`, options);
     
     if (!response.ok) {
-      const errorResponse = await response.json();
-      console.error('API error: ', errorResponse.error);
-      throw new Error('API error');
+      const errorText = await response.text();
+      console.error('Login API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        response: errorText,
+        url: response.url,
+        headers: {
+          'x-auth-token': this.userToken?.substring(0, 10) + '...',
+          'x-application-key': this.appKey?.substring(0, 10) + '...'
+        }
+      });
+      throw new Error(`Authentication failed: ${response.status} ${response.statusText}`);
     }
 
     const jsonResponse: UserIdentityResponse = await response.json();
@@ -84,17 +90,42 @@ class WorldAnvilAPIService {
       })
     };
 
-    const response = await fetch(`${baseURL}/user/worlds?id=${userId}`, options);
+    const url = `${baseURL}/user/worlds?id=${userId}`;
+    console.log('Fetching worlds from World Anvil:', {
+      url,
+      method: options.method,
+      headers: {
+        ...this.getHeadersWithAccept(),
+        'x-auth-token': this.userToken ? `${this.userToken.substring(0, 10)}...` : 'NOT SET',
+        'x-application-key': this.appKey ? `${this.appKey.substring(0, 10)}...` : 'NOT SET'
+      },
+      body: options.body
+    });
+
+    const response = await fetch(url, options);
     
     if (!response.ok) {
-      const errorResponse = await response.json();
-      if (errorResponse.error) {
-        console.error('API error: ', errorResponse.error);
-      } else if (errorResponse.value) {
-        console.error(`${errorResponse.summary}; ${errorResponse.value.status}`);
-        console.error(errorResponse.value.error);
+      const errorText = await response.text();
+      console.error('World Anvil API error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        responseText: errorText,
+        headers: response.headers
+      });
+      
+      try {
+        const errorResponse = JSON.parse(errorText);
+        if (errorResponse.error) {
+          console.error('API error: ', errorResponse.error);
+        } else if (errorResponse.value) {
+          console.error(`${errorResponse.summary}; ${errorResponse.value.status}`);
+          console.error(errorResponse.value.error);
+        }
+      } catch (e) {
+        console.error('Could not parse error response as JSON');
       }
-      throw new Error('API error');
+      
+      throw new Error(`World Anvil API error: ${response.status} ${response.statusText}`);
     }
 
     const jsonResponse: UserWorldsResponse = await response.json();

@@ -1,4 +1,4 @@
-import { APPLICATION_KEY, TOKEN_EXPIRATION_SECONDS } from '#consts'
+import { TOKEN_EXPIRATION_SECONDS } from '#consts'
 import { setUserToken } from './userToken';
 import type {
   User,
@@ -18,7 +18,7 @@ class WorldAnvilAPIService {
   private appKey: string;
 
   constructor(appKey?: string) {
-    this.appKey = appKey || APPLICATION_KEY || "";
+    this.appKey = appKey || "";
   }
 
   setCredentials(userToken: string, appKey?: string) {

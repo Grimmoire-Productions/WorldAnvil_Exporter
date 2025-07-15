@@ -12,11 +12,21 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'User token is required' });
     }
 
-    const user = await worldAnvilAPI.logIn(userToken, appKey);
+    // Use backend app key if available, otherwise use provided key
+    const backendAppKey = process.env.WA_API_KEY || appKey;
     
+    if (!backendAppKey) {
+      return res.status(400).json({ error: 'Application key is required' });
+    }
+
+    // Authenticate with World Anvil
+    const user = await worldAnvilAPI.logIn(userToken, backendAppKey);
+
     // Store credentials in session
     req.session.userToken = userToken;
-    req.session.appKey = appKey;
+    if (!process.env.WA_API_KEY && appKey) {
+      req.session.appKey = appKey;
+    }
     req.session.userId = user.id;
 
     res.json({
@@ -53,4 +63,16 @@ router.get('/session', (req, res) => {
   }
 });
 
+// GET /api/auth/env
+router.get('/env', (req, res) => {
+
+  const backendAppKey = process.env.WA_API_KEY;
+
+  if (!backendAppKey) {
+    res.json({ hasAppKey: false });
+  } else {
+    res.json({ hasAppKey: true });
+  }
+
+})
 export default router;
