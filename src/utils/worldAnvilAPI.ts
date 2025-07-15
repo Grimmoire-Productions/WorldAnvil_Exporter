@@ -1,4 +1,4 @@
-import { TOKEN_EXPIRATION_SECONDS } from '#consts'
+import { TOKEN_EXPIRATION_SECONDS } from './consts'
 import { setUserToken } from './userToken';
 import type {
   User,

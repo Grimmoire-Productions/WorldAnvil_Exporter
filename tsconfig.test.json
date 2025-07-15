@@ -12,9 +12,6 @@
     "skipLibCheck": true,
     "incremental": true,
     "esModuleInterop": true,
-    "paths": {
-      "#consts": ["./tests/__mocks__/mockConsts.ts"]
-    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",

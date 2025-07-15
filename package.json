@@ -17,12 +17,6 @@
       "url": "https://github.com/cmho"
     }
   ],
-  "imports": {
-    "#consts": {
-      "storybook": "./tests/__mocks__/mockConsts.ts",
-      "default": "./src/utils/consts.ts"
-    }
-  },
   "scripts": {
     "start": "vite",
     "build": "tsc -b && vite build",

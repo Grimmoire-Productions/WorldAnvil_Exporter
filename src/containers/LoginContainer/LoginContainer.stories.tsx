@@ -3,24 +3,19 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import LoginContainer from './LoginContainer';
 import { UserContext } from "../../context/UserContext";
 import type { UserContextType } from '../../utils/types';
-import { setApplicationKeyMock } from '#consts';
+import backendAPI from '../../utils/backendAPI';
 
 const mockUserContext: UserContextType = {
   accessToken: '',
   setAccessToken: () => {},
   user: null,
   setUser: () => {},
-  isLoggedIn: true,
+  isLoggedIn: false,
   setIsLoggedIn: () => {},
   expiresAt: null,
   setExpiresAt: () => {},
-  applicationKey: null,
+  applicationKey: '',
   setApplicationKey: () => {}
-};
-
-const mockUserContextWithoutAppKey: UserContextType = {
-  ...mockUserContext,
-  applicationKey: ''
 };
 
 const LoginContainerWithContext = ({ userContext = mockUserContext }) => (
@@ -50,32 +45,51 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 
-export const WithApplicationKeyInEnv: Story = {
-  beforeEach: () => {
-    setApplicationKeyMock("testKey");
-  },
-  name: "With Application Key in Environment",
+export const WithBackendApplicationKey: Story = {
+  decorators: [
+    (Story) => {
+      // Override the checkCredentials method before component renders
+      const originalCheckCredentials = backendAPI.checkCredentials;
+      backendAPI.checkCredentials = () => Promise.resolve({ hasAppKey: true });
+      
+      return (
+        <div style={{ width: "100%", minHeight: "200px" }}>
+          <Story />
+        </div>
+      );
+    },
+  ],
+  name: "With Backend Application Key",
   parameters: {
     docs: {
       description: {
         story:
-          "Simulates when an application key is provided by the environment. Only the access token input field is displayed.",
+          "Simulates when the backend server has an application key configured. Only the access token input field is displayed.",
       },
     },
   },
 };
 
-export const WithoutApplicationKeyInEnv: Story = {
-  beforeEach: () => {
-    setApplicationKeyMock(undefined)
-  },
-  name: "Without Application Key in Environment",
-  render: () => <LoginContainerWithContext userContext={mockUserContextWithoutAppKey} />,
+export const WithoutBackendApplicationKey: Story = {
+  decorators: [
+    (Story) => {
+      // Override the checkCredentials method before component renders
+      const originalCheckCredentials = backendAPI.checkCredentials;
+      backendAPI.checkCredentials = () => Promise.resolve({ hasAppKey: false });
+      
+      return (
+        <div style={{ width: "100%", minHeight: "200px" }}>
+          <Story />
+        </div>
+      );
+    },
+  ],
+  name: "Without Backend Application Key",
   parameters: {
     docs: {
       description: {
         story:
-          "Simulates when no application key is provided. Both application key and access token input fields are displayed.",
+          "Simulates when the backend server doesn't have an application key. Both application key and access token input fields are displayed.",
       },
     },
   },
