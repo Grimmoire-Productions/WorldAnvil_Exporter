@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import type { UserContextType } from '../../utils/types.ts';
 import backendAPI from '../../utils/backendAPI.ts';
+import { useLogin } from '../../hooks/useLogin.ts';
 import LoginBar from '../../components/LoginBar/LoginBar.tsx';
 import styles from './LoginContainer.module.css';
 
@@ -17,11 +18,16 @@ function LoginContainer() {
     setApplicationKey,
   } = React.useContext(UserContext) as UserContextType;
   
+  const { login } = useLogin();
+  
   const [needsApplicationKey, setNeedsApplicationKey] = useState(true);
 
   useEffect(() => {
     if (accessToken !== '' && expiresAt) {
-      login(accessToken);
+      const appKey = applicationKey || undefined;
+      login(accessToken, appKey).catch((err) => {
+        console.error('Auto-login failed:', err);
+      });
       const timeRemaining = expiresAt - Date.now();
       const timeout = setTimeout(() => {
         alert('Authentication timeout, please log in again');
@@ -34,7 +40,7 @@ function LoginContainer() {
         clearTimeout(timeout);
       };
     }
-  }, [accessToken, expiresAt]);
+  }, [accessToken, expiresAt, applicationKey, login, setAccessToken, setUser, setIsLoggedIn, setExpiresAt]);
 
   const handleAccessTokenChange = (e: React.FormEvent<HTMLInputElement>) =>
     setAccessToken(e.currentTarget.value);
@@ -48,24 +54,8 @@ function LoginContainer() {
   const handleApplicationKeyChange = (e: React.FormEvent<HTMLInputElement>) =>
     setApplicationKey(e.currentTarget.value);
 
-  const login = async (accessToken: string) => {
-    try {
-      // Only send appKey if user provided it
-      const appKey = applicationKey || undefined;
-      const userResponse = await backendAPI.logIn(accessToken, appKey);
-      if (userResponse.displayName) {
-        const worlds = await backendAPI.getWorlds(userResponse.id)
-        const user = userResponse;
-        user.worlds = worlds;
-        setUser(user);
-        setIsLoggedIn(true)
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
 
-  const handleLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     if (accessToken === '') {
@@ -78,9 +68,12 @@ function LoginContainer() {
       return;
     }
 
-    login(accessToken)
-
-    return;
+    try {
+      const appKey = applicationKey || undefined;
+      await login(accessToken, appKey);
+    } catch (err) {
+      console.error('Login failed:', err);
+    }
   };
 
   return (
