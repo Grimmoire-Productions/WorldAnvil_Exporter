@@ -40,25 +40,31 @@ World Anvil credentials have write access. Never commit them to version control 
 3. Start development server:
 
    ```bash
-   npm run dev  # Starts both frontend and backend servers
+   make start
    ```
 
    This will start:
    - Backend server at http://localhost:3001
    - Frontend at http://localhost:5173
+   - Open http://localhost:5173 in a browser window
 
-   Alternatively, you can run just the frontend:
+   Alternatively, you can run just the frontend or just the backend:
+
    ```bash
    make start  # Frontend only at http://localhost:5173
+   ```
+
+   ```bash
+   make run server:dev  # Start backend server only
    ```
 
 ## Development Commands
 
 ```bash
 # Development servers
+make start          # Start both backend and frontend servers and open browser
 npm run dev         # Start both backend and frontend servers
-make start          # Start frontend server only
-make start-dev-mode # Start frontend with auto-login (uses VITE_PUBLIC_WA_API_TOKEN)
+npm run start       # Start frontend server only
 npm run server:dev  # Start backend server only
 
 # Testing & linting
@@ -73,26 +79,6 @@ npm run build:server # Build server TypeScript
 npm run preview     # Preview production build
 ```
 
-## Dev Mode
-
-For faster development iteration, you can use dev mode to bypass the login flow:
-
-```bash
-make start-dev-mode
-```
-
-This will:
-
-- Skip the login page entirely
-- Automatically log in using the `VITE_PUBLIC_WA_API_TOKEN` from your `.env` file
-- Fetch real user data and worlds from the World Anvil API
-- Allow immediate testing of the export functionality
-
-Dev mode requires the following in your `.env` file:
-
-- `VITE_PUBLIC_WA_API_TOKEN` - Your World Anvil API token (same as used for normal login)
-
-**Note:** Dev mode now uses real API authentication with your token, providing a more realistic development experience. Use `make start` for normal operation with manual login.
 
 ## Testing
 

@@ -29,21 +29,7 @@ function MainContainer() {
 
   useEffect(() => {
     if (isLoading) {
-      // Check if dev mode is enabled
-      const isDevMode = import.meta.env.VITE_DEV_MODE === 'true';
-      const devApiToken = import.meta.env.VITE_PUBLIC_WA_API_TOKEN;
-      
-      if (isDevMode && devApiToken) {
-        // Use real API with dev token for dev mode
-        login(devApiToken, applicationKey || undefined)
-          .then(() => {
-            setIsLoading(false);
-          })
-          .catch(error => {
-            console.error('Failed to login in dev mode:', error);
-            setIsLoading(false);
-          })
-      } else if (accessToken === '') {
+      if (accessToken === '') {
         setIsLoading(false)
       } else {
         login(accessToken, applicationKey || undefined)

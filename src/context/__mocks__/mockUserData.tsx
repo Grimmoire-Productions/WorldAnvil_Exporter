@@ -1,15 +1,7 @@
 import type { User } from '../../utils/types';
 
 /**
- * Mock user data for development mode.
- * 
- * Configuration is read from environment variables in .env file.
- * 
- * To enable dev mode (bypass login):
- * - Run: make start-dev-mode
- * 
- * To use normal login:
- * - Run: make start
+ * Mock user data for testing.
  */
 export const mockDevUser: User = {
   displayName: import.meta.env.VITE_DEV_USER_DISPLAY_NAME || 'dev-user',

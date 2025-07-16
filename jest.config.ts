@@ -14,7 +14,6 @@ const presetConfig = createJsWithTsEsmPreset({
         options: {
           metaObjectReplacement: {
             url: "https://www.url.com", env: {
-              VITE_DEV_MODE: 'false'
             } } },
       },
     ],
