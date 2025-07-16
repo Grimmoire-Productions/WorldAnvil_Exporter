@@ -1,187 +1,175 @@
-# New Devs, start here
+# New to Development? Start Here
 
-## Requirements
+This guide is for people who have never worked with command line tools or development environments before. If you're already familiar with Git, Node.js, and command line basics, see the [Local Development Guide](./localDev.md) instead.
 
-- Know how to open Terminal or Powershell on your computer
-- Git
-- An API token for the Grimmoire Producitons World Anvil account (will be different for each user)
-- The World Anvil API Key
+## What You'll Need
 
-If you don't have WA credentials, talk to Kelsey.
+- World Anvil credentials (contact Kelsey)
+- About 30 minutes to set up your environment
+- Basic computer skills (you'll learn the rest!)
 
-### Treatment of Credentials
+## Important Security Warning
 
-Correct handling of World Anvil credentials is crucial to the security of our systems, and in the hands of a bad actor, could be catastrophic (like, deleting literally everything).
+World Anvil credentials can modify or delete all our content. **Never**:
 
-Do Not:
+- Save credentials outside the `.env` files created by our setup
+- Store credentials in cloud services or password managers
+- Share credentials with other staff members
+- Post credentials online
 
-- Make copies of or save WA credentials on your computer beyond the env file created by following this README.
-- Save WA credentials in any cloud service (personal password storage, Google Drive, etc.)
-- Share World Anvil credentials with other members of staff
-- Make World Anvil credentials public
+Credentials will be shared via 1Password links that will expire after 7 days, so it's recommended you only request them when you're ready to set up the application so can immediately input them into the application when instructed during setup.
 
-## New to local development?
+## Getting Started
 
-If you've never worked with command line tools before, here's what you need to get started:
+If you've never worked with command line tools before, here's what you need to do:
 
-### Install pre-requisites
+### Step 1: Open Your Command Line
 
-1. Open a command prompt application
+First, you need to open a terminal (command line) application:
 
-    **Windows:** Press `Windows`+`X` to open the Power User Menu then click "Windows PowerShell(Admin)". It's usually located between "Computer Management" and "Task Manager." Alternatively, you can open the start menu, search for "PowerShell", then right-click the result and click "Run as Administrator"
+**Windows:**
 
-    **MacOS:** Go to "Applications" > "Utilities" and click on "Terminal"
+- Press `Windows`+`X` and click "Windows PowerShell (Admin)"
+- Or: Search for "PowerShell" in Start menu, right-click, and choose "Run as Administrator"
 
-2. Install nvm, node.js, and npm
+**macOS:**
 
-    Check if you already have these installed using the following commands in your command prompt application:
+- Go to Applications → Utilities → Terminal
+- Or: Press `Cmd+Space`, type "Terminal", and press Enter
 
-    ```bash
-    nvm --version
-    ```
+### Step 2: Install Required Software
 
-    ```bash
-    node --version
-    ```
+You'll need to install several tools. Don't worry - we'll check what you already have first!
 
-    ```bash
-    npm --version
-    ```
+#### Check What's Already Installed
 
-    If you get a response that looks like a version number for all 3 of these, skip to the next step. If you've only got node and npm installed but not nvm, don't worry about nvm and skip to the next step as well.
+Copy and paste these commands one at a time into your terminal:
 
-    Otherwise, follow [these instructions](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/) to install all three (Windows users, make sure not to skip the stuff under "Wrapping up" below the Mac instructions)
+```bash
+node --version
+npm --version
+git --version
+make --version
+```
 
-3. Install git
-    Check if you already have git installed using the following in your command prompt application (Macs _should_ come with Git pre-installed, but you should follow these steps to double check anyway.)
+If you see version numbers (like `v18.0.0`) for all four, skip to Step 3. Otherwise, continue below.
 
-    ```bash
-    git version
-    ```
+#### Install Missing Software
 
-    If you get a response that looks like a version number for all 3 of these, skip to the next step.
+1. **Node.js and npm**: Follow [these instructions](https://nodejs.org/en/download/) to install Node.js (npm comes with it)
 
-    Otherwise, install git following [these instructions](https://github.com/git-guides/install-git)
+2. **Git**:
 
-4. **Windows only:** use [these instructions](https://earthly.dev/blog/makefiles-on-windows/) to install Chocolatey and `make`. (It's the first subheader. Ignore the other options it gives after)
+   - macOS: Usually pre-installed, but if missing, install from [git-scm.com](https://git-scm.com/download/mac)
+   - Windows: Download and install from [git-scm.com](https://git-scm.com/download/win)
 
-5. Install VSCode using [here](https://code.visualstudio.com/download) (Optional if you don't plan to ever look at the code, but can be good for viewing hidden files)
+3. **Make** (Windows only):
 
-6. Install GitHub desktop following [these instructions](https://docs.github.com/en/desktop/installing-and-authenticating-to-github-desktop/setting-up-github-desktop)
-    You could do everything GitHub desktop does with command line prompts, but this gives you a user interface that might be less intimidating.
+   First, let's check if you have `winget` (Windows Package Manager):
 
-7. Install gettext
-    - For MacOS, install [homebrew](https://brew.sh/) via it's instructions. Then, in your terminal, run `brew install gettext`
-    - For Windows:
-        - Download the [precompiled binary installer](https://mlocati.github.io/articles/gettext-iconv-windows.html). Download the "static" flavor of your Operating System (32bit or 64bit) and simply run the installer.
-        - Update the system PATH: `Control Panel > System > Advanced > Environment Variables`
-        - In the System variables list, click Path, click Edit and then New. Add `C:\Program Files\gettext-iconv\bin` value.
+   a. In your PowerShell window, type:
 
-## Setting up local dev environment
+      ```powershell
+      winget --version
+      ```
 
-1. Clone the `WorldAnvil_Exporter` repository using [these instructions](https://docs.github.com/en/desktop/adding-and-cloning-repositories/cloning-a-repository-from-github-to-github-desktop)
+   b. **If you see a version number** (like `v1.4.10173`):
 
-2. Source World Anvil credentials onto your shell.
+      - Great! Skip to step (d) below.
 
-    Mac OS
+   c. **If you get an error** saying `'winget' is not recognized...`:
 
-    ```bash
-    export WA_API_KEY={World Anvil API key here}
-    export WA_GP_API_TOKEN={Grimmoire Productions WA API token here}
-    ```
+      - Open the Microsoft Store (search for it in Start menu)
+      - Search for "App Installer"
+      - Click "Get" or "Install"
+      - Close and reopen PowerShell as Administrator
+      - Try `winget --version` again - it should now show a version number
 
-    Windows (Command Prompt)
+   d. Install Make by typing:
 
-    ```bash
-    set WA_API_KEY={World Anvil API key here}
-    set WA_GP_API_TOKEN={Grimmoire Productions WA API token here}
-    ```
+      ```powershell
+      winget install -e --id GnuWin32.Make
+      ```
 
-    Windows (PowerShell)
+   e. **Important**: Close and reopen PowerShell to refresh your system
 
-    ```powershell
-    $env:WA_API_KEY="{World Anvil API key here}"
-    $env:WA_GP_API_TOKEN="{Grimmoire Productions WA API token here}"
-    ```
+   f. Verify Make is installed by typing:
 
-   Confirm you've loaded the variables correctly with:
+      ```powershell
+      make -v
+      ```
 
-    Mac OS
+      You should see version information for GNU Make!
 
-    ```bash
-    echo "WA_API_KEY=$WA_API_KEY, WA_GP_API_TOKEN=$WA_GP_API_TOKEN"
-    ```
+4. **Important**: Close and reopen your command line to refresh your system, following the same method as in [Step 1](#step-1-open-your-command-line)
 
-    Windows (Command Prompt)
+5. Re-input all the version commands from the start of [Step 2](#step-2-install-required-software) to verify you have everything installed.
 
-    ```bash
-    set WA_API_KEY
-    set WA_GP_API_TOKEN
-    ```
+#### Recommended Tools
 
-    Windows (PowerShell)
+- **GitHub Desktop**: [Download here](https://desktop.github.com/) - Makes Git easier with a visual interface
+- **VS Code**: [Download here](https://code.visualstudio.com/) - For viewing and editing code (optional)
 
-    ```powershell
-    echo "WA_API_KEY=$env:WA_API_KEY, WA_GP_API_TOKEN=$env:WA_GP_API_TOKEN"
-    ```
+### Step 3: Get the Project Code
 
-3. In the root of the project folder, run the following steps to setup the local environment:
+1. **Using GitHub Desktop** (recommended for beginners):
+   a. Clone the repository following [these instructions](https://docs.github.com/en/desktop/adding-and-cloning-repositories/cloning-a-repository-from-github-to-github-desktop)
 
-    ```bash
-    make dev-setup
-    ```
+2. **Navigate to the project folder**:
+   a. In GitHub Desktop: Right-click "Current Repository" → "Copy Repo Path"
+   b. In your terminal, type: `cd [paste-the-path-here]`
 
-    This will copy your API key and token into a new .env file that will stay only on your machine. This is to prevent our API keys from being made public on the github repo.
+   Example:
 
-## Running the tool locally
+   ```powershell
+   cd C:\Users\YourName\WorldAnvil_Exporter
+   ```
 
-1. In your command line tool, navigate to the project folder
+### Step 4: Set Up Your Environment
 
-    Find the full filepath for the WorldAnvil_Exporter directory (in GitHub desktop, right click where it says "Current Repository" and then click "copy repo path")
+In your terminal (while in the project folder), run:
 
-    Then, in your command prompt application, type `cd` followed by a space and then the filepath. Hit enter. (`cd` stands for "**C**hange **D**irectory")
+```bash
+make dev-setup
+```
 
-    Example:
+When prompted:
 
-    ```bash
-    cd C:\Users\Your_Name\WorldAnvil_Exporter
-    ```
+- Enter your World Anvil API Token (or press Enter for a placeholder)
+- Enter the World Anvil Application API Key (or press Enter for a placeholder)
 
-    You should then see something like this:
+This creates secure `.env` files that stay only on your computer.
 
-    ```bash
-    C:\> cd C:\Users\Your_Name\WorldAnvil_Exporter
-    C:\Users\Your_Name\WorldAnvil_Exporter (main)>
-    ```
+### Step 5: Run the Application
 
-2. Make sure you have the latest version of the project
+1. **Start the servers**:
 
-    GitHub desktop:
-        - Make sure "Current Branch" is "main" in the header bar
-        - Get any project updates following [these instructions](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/syncing-your-branch-in-github-desktop#pulling-to-your-local-branch-from-the-remote) (Don't worry about anything other than the "Pulling to your local branch from the remote" subheader)
+   ```bash
+   npm run dev
+   ```
 
-    Command Prompt:
-        - if you don't see "main" after the filepath, switch to the main branch  `git checkout main`
-        - then, get the latest updates from GitHub by entering `git pull`
+2. **Open your browser**: The app will be at http://localhost:5173
 
-    Example of how that looks:
+## Keeping Your Code Updated
 
-    ```bash
-    ➜  WorldAnvil_Exporter git:(handle-null-footnotes) git checkout main
-    Switched to branch 'main'
-    Your branch is up to date with 'origin/main'.
-    ➜  WorldAnvil_Exporter git:(main) git pull
-    Already up to date.
-    ➜  WorldAnvil_Exporter git:(main)
-    ```
+Before each work session:
 
-3. In the root of the project folder, run the following command:
+1. **With GitHub Desktop**:
+  a. Make sure "Current Branch" shows "main"
+  b. Click "Fetch origin" then "Pull origin"
 
-    ```bash
-    make start
-    ```
+2. **With command line**:
+  a. Navigate to the project folder per [Step 3.2](#step-3-get-the-project-code)
 
-4. localhost:3000 should open in your chrome web browser. If you get errors when you click "submit" it may be because you didn't run `make dev-setup` first.
-    Mr. John Radcliffe is a great character to test with. Article ID: `49170f44-a961-45ed-b860-bcf612b4d55d`
+   ```bash
+   git checkout main
+   git pull
+   ```
 
-    To test a Hawkins character, use: `b48e173f-7e04-46cd-a3f3-00c461965431`
+## Need More Details?
+
+Once you're comfortable with these basics, check out the [Local Development Guide](./localDev.md) for:
+
+- Additional development commands
+- Project structure details
+- Advanced configuration options

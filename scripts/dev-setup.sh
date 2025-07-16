@@ -14,16 +14,11 @@ if [ -z "$WA_API_KEY" ]; then
     WA_API_KEY="your-wa-app-api-key-here"
 fi
 
-# Export variables for envsubst
-export WA_GP_API_TOKEN
-export WA_API_KEY
+# Create the .env file from env.template
+sed "s/\$WA_GP_API_TOKEN/$WA_GP_API_TOKEN/g" env.template > .env
 
-# Create the .env file in project root
-SECRET_KEYS="\$WA_API_KEY:\$WA_GP_API_TOKEN"
-envsubst $SECRET_KEYS < env.template > .env
-
-# Create the server/.env file
-envsubst $SECRET_KEYS < server/env.template > server/.env
+# Create the server/.env file from server/env.template
+sed "s/\$WA_API_KEY/$WA_API_KEY/g" server/env.template > server/.env
 
 echo "Environment files created successfully!"
 echo "- .env (frontend)"
