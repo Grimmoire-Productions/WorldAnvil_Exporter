@@ -1,11 +1,11 @@
 import React from 'react';
-import { waitFor, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 import LoginContainer from '../../src/containers/LoginContainer/LoginContainer';
 import UserProvider from '../../src/context/UserContext';
-import worldAnvilAPI from '../../src/utils/worldAnvilAPI';
 import '@testing-library/jest-dom';
+import type { UserInitialValues } from '../../src/utils/types';
 /* eslint-disable no-empty-function, @typescript-eslint/no-empty-function */
+
 
 describe('LoginContainer', () => {
 
@@ -14,7 +14,8 @@ describe('LoginContainer', () => {
     user: null,
     accessToken: '',
     expiresAt: null,
-  };
+    applicationKey: null,
+  } as UserInitialValues;
 
   it('Displays the login button', async () => {
     render(

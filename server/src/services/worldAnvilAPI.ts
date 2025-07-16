@@ -1,19 +1,23 @@
-import { WorldAnvilBaseService } from 'shared/services/worldAnvilBaseService.ts';
-import { TOKEN_EXPIRATION_SECONDS } from 'shared/constants/worldAnvilConstants.ts';
-import { setUserToken } from './userToken.ts';
-import type {
-  User,
-  World,
+import { WorldAnvilBaseService } from '../../../shared/services/worldAnvilBaseService.js';
+import type { 
+  User, 
+  World, 
+  WorldArticlesResponse,
+  UserWorldsResponse,
+  UserIdentityResponse,
   ArticleResponse,
   CharacterSheet,
-} from 'shared/types/worldAnvilTypes.ts';
+  SecretResponse 
+} from '../../../shared/types/worldAnvilTypes.js';
+
+const APPLICATION_KEY = process.env.WA_API_KEY || '';
 
 class WorldAnvilAPIService extends WorldAnvilBaseService {
   private appKey: string;
 
   constructor(appKey?: string) {
     super();
-    this.appKey = appKey || "";
+    this.appKey = appKey || APPLICATION_KEY;
   }
 
   setCredentials(userToken: string, appKey?: string) {
@@ -28,7 +32,8 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
   }
 
   protected onTokenRefresh(token: string): void {
-    setUserToken(token, TOKEN_EXPIRATION_SECONDS);
+    // Backend doesn't need to handle token refresh for localStorage
+    // Session management is handled by express-session
   }
 
   async logIn(userToken: string, appKey?: string): Promise<User> {
@@ -43,12 +48,19 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
         worlds: null
       };
     } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
+      const errorText = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Login API error:', {
+        error: errorText,
+        userToken: this.userToken?.substring(0, 10) + '...',
+        appKey: this.appKey?.substring(0, 10) + '...'
+      });
+      throw new Error(`Authentication failed: ${errorText}`);
     }
   }
 
   async getWorlds(userId: string): Promise<World[]> {
+    console.log('Fetching worlds from World Anvil for user:', userId);
+
     try {
       const jsonResponse = await this.fetchUserWorlds(userId);
       

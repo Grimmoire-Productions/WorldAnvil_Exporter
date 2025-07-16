@@ -5,7 +5,7 @@ import ExportHeader from "../../src/containers/ExportToolContainer/ExportHeader/
 import { ArticleContext } from "../../src/context/ArticleContext";
 import { UserContext } from "../../src/context/UserContext";
 import { WorldContext } from "../../src/context/WorldContext";
-import worldAnvilAPI from "../../src/utils/worldAnvilAPI";
+import backendAPI from "../../src/utils/backendAPI";
 import type { ArticleContextType, UserContextType, WorldContextType } from "../../src/utils/types";
 
 // Mock the SearchDropdown component
@@ -53,8 +53,8 @@ jest.mock(
   }),
 );
 
-// Mock the worldAnvilAPI
-jest.mock("../../src/utils/worldAnvilAPI", () => ({
+// Mock the backendAPI
+jest.mock("../../src/utils/backendAPI", () => ({
   getCharacterSheets: jest.fn(),
 }));
 
@@ -243,7 +243,7 @@ describe("ExportHeader", () => {
         { articleId: "char3", title: "Character 3", tags: ["tag4"] },
       ];
 
-      (worldAnvilAPI.getCharacterSheets as jest.Mock).mockResolvedValue(
+      (backendAPI.getCharacterSheets as jest.Mock).mockResolvedValue(
         mockCharacterSheets,
       );
 
@@ -253,11 +253,7 @@ describe("ExportHeader", () => {
       await user.selectOptions(worldSelect, "Test World 2");
 
       expect(mockWorldContext.setWorldIsLoading).toHaveBeenCalledWith(true);
-      expect(worldAnvilAPI.getCharacterSheets).toHaveBeenCalledWith(
-        "test-token",
-        "world2",
-        undefined,
-      );
+      expect(backendAPI.getCharacterSheets).toHaveBeenCalledWith("world2");
 
       await waitFor(() => {
         expect(mockWorldContext.setWorldIsLoading).toHaveBeenCalledWith(false);
@@ -378,10 +374,8 @@ describe("ExportHeader", () => {
       renderWithContexts(articleContextWithId, selectedWorldContext);
 
       expect(mockArticleContext.fetchAndProcessCharacter).toHaveBeenCalledWith(
-        "test-token",
         "char1",
         "test-world-1",
-        undefined,
       );
     });
   });
@@ -415,7 +409,7 @@ describe("ExportHeader", () => {
   describe("Error Handling", () => {
     it.skip("handles API errors gracefully", async () => {
       const user = userEvent.setup();
-      (worldAnvilAPI.getCharacterSheets as jest.Mock).mockRejectedValue(
+      (backendAPI.getCharacterSheets as jest.Mock).mockRejectedValue(
         new Error("API Error"),
       );
 

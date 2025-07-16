@@ -12,9 +12,7 @@
     "skipLibCheck": true,
     "incremental": true,
     "esModuleInterop": true,
-    "paths": {
-      "#consts": ["./tests/__mocks__/mockConsts.ts"]
-    },
+    "baseUrl": ".",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -40,7 +38,10 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "shared/*": ["./shared/*"]
+    }
   },
   "include": [
     "vite.config.ts",
@@ -53,6 +54,6 @@
   ],
   "exclude": [
     "node_modules",
-    ["src/utils/consts.ts"]
+    "src/utils/consts.ts"
   ]
 }

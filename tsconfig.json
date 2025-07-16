@@ -8,10 +8,10 @@
   "compilerOptions": {
     "module": "esnext",
     "baseUrl": ".",
-    "paths": {
-      "#consts": ["./src/utils/consts.ts"]
-    },
     "moduleResolution": "bundler",
-    "resolvePackageJsonImports": true
+    "resolvePackageJsonImports": true,
+    "paths": {
+      "shared/*": ["./shared/*"]
+    }
   }
 }

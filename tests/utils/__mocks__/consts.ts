@@ -1,5 +1,3 @@
-export const APPLICATION_KEY = 'mock-application-key-for-testing';
-
 export const WA_TOKEN = 'WA_TOKEN';
 
 // (24 hrs * 60)min * 60 = seconds

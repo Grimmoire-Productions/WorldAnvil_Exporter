@@ -1,9 +1,5 @@
-export const APPLICATION_KEY = import.meta.env.VITE_PUBLIC_APPLICATION_KEY;
-
-export const WA_TOKEN = 'WA_TOKEN';
-
-// (24 hrs * 60)min * 60 = seconds
-export const TOKEN_EXPIRATION_SECONDS = 24 * 60 * 60
+// Re-export shared constants
+export { TOKEN_EXPIRATION_SECONDS, WA_TOKEN_STORAGE_KEY as WA_TOKEN } from 'shared/constants/worldAnvilConstants';
 
 export const LIES_VARS = [
   {
