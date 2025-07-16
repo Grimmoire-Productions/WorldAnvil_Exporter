@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "incremental": true,
     "esModuleInterop": true,
+    "baseUrl": ".",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -37,7 +38,10 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "shared/*": ["./shared/*"]
+    }
   },
   "include": [
     "vite.config.ts",

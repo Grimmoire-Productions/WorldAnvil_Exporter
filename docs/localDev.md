@@ -95,6 +95,18 @@ Test with these article IDs:
 - `/src/utils/` - API utilities and helpers
 - `/src/assets/` - Theme-specific assets
 - `/tests/` - Test files
+- `/shared/` - Shared modules between frontend and backend
+  - `/shared/types/` - Common TypeScript interfaces
+  - `/shared/constants/` - API endpoints and configuration
+  - `/shared/services/` - Base service classes
+
+## Shared Module System
+
+The project uses shared modules to eliminate code duplication:
+
+- **Imports**: Use `shared/` prefix: `import { User } from 'shared/types/worldAnvilTypes'`
+- **Configuration**: Path mapping configured in `tsconfig.json` and Jest
+- **Benefits**: Single source of truth for types, constants, and API logic
 
 ## Backend Development
 
@@ -102,7 +114,7 @@ The backend server provides secure API integration:
 
 - **Server Entry**: `server/src/app.ts` - Express app with session management
 - **API Routes**: `server/src/routes/` - Auth, worlds, and character endpoints
-- **Services**: `server/src/services/` - World Anvil API integration
+- **Services**: `server/src/services/` - World Anvil API integration (extends shared base)
 - **Environment**: Backend requires `WA_API_KEY` in `server/.env`
 
 ## Frontend Architecture
@@ -110,7 +122,7 @@ The backend server provides secure API integration:
 - **Context Providers**: UserContext, WorldContext, ArticleContext for state management
 - **Containers**: App orchestration and main UI flows
 - **Components**: Reusable UI elements and character sheet rendering
-- **Utils**: API clients, BBCode processing, content formatting
+- **Utils**: API clients (extends shared base), BBCode processing, content formatting
 
 ## Additional Resources
 

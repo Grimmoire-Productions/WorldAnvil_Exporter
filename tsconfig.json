@@ -9,6 +9,9 @@
     "module": "esnext",
     "baseUrl": ".",
     "moduleResolution": "bundler",
-    "resolvePackageJsonImports": true
+    "resolvePackageJsonImports": true,
+    "paths": {
+      "shared/*": ["./shared/*"]
+    }
   }
 }
