@@ -15,6 +15,12 @@
     -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
     0 0 20px #450100;
   
+  @media print {
+    header {
+      padding-bottom: 1.25em;
+    }
+  }
+
   header,
   footer {
     text-align: center;
@@ -24,6 +30,8 @@
     flex-direction: column-reverse;
     justify-content: space-around;
   }
+
+
 
   body {
     font-family: "EB Garamond", serif;
@@ -37,12 +45,15 @@
   }
 
   h1 {
-    text-transform: uppercase;
+    text-transform: none;
+    font-variant: small-caps;
     font-family: Libre Baskerville, serif;
     break-after: avoid;
     font-size: 22pt;
     line-height: 1.15;
     font-weight: 700;
+    text-align: center;
+    padding-top: 1.25em;
   }
   
   h2 {
@@ -51,8 +62,10 @@
     color: black;
     font-size: 16pt;
     padding-top: 1.25em;
-    break-after: avoid;
+    break-before: page;
     font-weight: 700;
+    font-variant: small-caps;
+    text-align: center;
   }
   
   h3 {
@@ -77,6 +90,13 @@
   
   ul {
     list-style-type: none;
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
+  }
+
+  ol {
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
   }
   
   li {
@@ -134,7 +154,7 @@
   .plots p,
   .summary p,
   .goals p {
-    text-indent: 30px;
+    /* text-indent: 30px; */
     text-align: justify;
   }
   
