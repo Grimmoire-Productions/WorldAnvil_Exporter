@@ -1,12 +1,12 @@
-import { WorldAnvilBaseService } from 'shared/services/worldAnvilBaseService.ts';
-import { TOKEN_EXPIRATION_SECONDS } from 'shared/constants/worldAnvilConstants.ts';
+import { WorldAnvilBaseService } from '../../shared/services/worldAnvilBaseService';
+import { TOKEN_EXPIRATION_SECONDS } from '../../shared/constants/worldAnvilConstants';
 import { setUserToken } from './userToken.ts';
 import type {
   User,
   World,
   ArticleResponse,
   CharacterSheet,
-} from 'shared/types/worldAnvilTypes.ts';
+} from '../../shared/types/worldAnvilTypes';
 
 class WorldAnvilAPIService extends WorldAnvilBaseService {
   private appKey: string;

@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./LoadingAnimation.module.css";
 
 // CSS and HTML c/o https://loading.io/css/

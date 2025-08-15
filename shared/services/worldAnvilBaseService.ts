@@ -6,14 +6,14 @@ import {
   WORLD_ANVIL_BASE_URL, 
   API_ENDPOINTS, 
   API_HEADERS 
-} from '../constants/worldAnvilConstants.js';
+} from '../constants/worldAnvilConstants';
 import type { 
   UserIdentityResponse, 
   UserWorldsResponse, 
   WorldArticlesResponse, 
   ArticleResponse, 
   SecretResponse 
-} from '../types/worldAnvilTypes.js';
+} from '../types/worldAnvilTypes';
 
 export abstract class WorldAnvilBaseService {
   protected userToken: string | null = null;

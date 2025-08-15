@@ -1,5 +1,8 @@
 // Re-export shared constants
-export { TOKEN_EXPIRATION_SECONDS, WA_TOKEN_STORAGE_KEY as WA_TOKEN } from 'shared/constants/worldAnvilConstants';
+export {
+  TOKEN_EXPIRATION_SECONDS,
+  WA_TOKEN_STORAGE_KEY as WA_TOKEN,
+} from "../../shared/constants/worldAnvilConstants";
 
 export const LIES_VARS = [
   {

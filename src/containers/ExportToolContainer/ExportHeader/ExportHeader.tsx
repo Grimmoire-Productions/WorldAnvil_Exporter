@@ -34,10 +34,8 @@ function ExportHeader() {
   } = React.useContext(WorldContext) as WorldContextType;
 
   const {
-    accessToken,
     user,
     setUser,
-    applicationKey
   } = React.useContext(UserContext) as UserContextType;
 
   const [articlesList, setArticlesList] = useState<DropdownOption[]>([]);

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useEffect } from 'react';
 
 import LoginContainer from './LoginContainer';
 import { UserContext } from "../../context/UserContext";
@@ -76,6 +77,13 @@ export const WithoutBackendApplicationKey: Story = {
       // Override the checkCredentials method before component renders
       const originalCheckCredentials = backendAPI.checkCredentials;
       backendAPI.checkCredentials = () => Promise.resolve({ hasAppKey: false });
+      
+      // Restore original method on cleanup
+      useEffect(() => {
+        return () => {
+          backendAPI.checkCredentials = originalCheckCredentials;
+        };
+      }, []);
       
       return (
         <div style={{ width: "100%", minHeight: "200px" }}>

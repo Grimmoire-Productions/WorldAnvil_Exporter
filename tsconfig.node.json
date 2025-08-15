@@ -40,12 +40,14 @@
     ]
   },
   "include": [
-    "vite.config.ts",
-    "build/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "src/components/WorldSelector"  ],
+    "vite.config.js"
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.stories.ts", 
+    "**/*.stories.tsx",
+    "tests/**/*"
   ]
 }

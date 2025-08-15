@@ -3,7 +3,6 @@ import {
   screen,
   fireEvent,
   waitFor,
-  prettyDOM,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import SearchDropdown from "../../src/components/SearchDropdown/SearchDropdown";

@@ -7,6 +7,7 @@ import type {
 const baseURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 class BackendAPIService {
+  // @ts-ignore TS6133
   private sessionId: string | null = null;
 
   private async request(

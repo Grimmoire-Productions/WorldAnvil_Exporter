@@ -64,7 +64,7 @@ router.get('/session', (req, res) => {
 });
 
 // GET /api/auth/env
-router.get('/env', (req, res) => {
+router.get('/env', (_req, res) => {
 
   const backendAppKey = process.env.WA_API_KEY;
 
