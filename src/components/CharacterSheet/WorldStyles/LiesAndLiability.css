@@ -1,5 +1,21 @@
 /* Element styling */
 .LiesAndLiability {
+
+  @media print {
+    header,
+    .header-space {
+      height: 100px;
+      padding: 10pt auto;
+      margin: 10pt auto;
+    }
+    footer,
+    .footer-space {
+      height: 100px;
+      padding: 10pt;
+      margin: auto 10pt;
+    }
+  }
+  
   header,
   footer {
     text-align: center;

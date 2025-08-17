@@ -31,7 +31,7 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
     console.error(message, ...args);
   }
 
-  protected onTokenRefresh(token: string): void {
+  protected onTokenRefresh(_token: string): void {
     // Backend doesn't need to handle token refresh for localStorage
     // Session management is handled by express-session
   }

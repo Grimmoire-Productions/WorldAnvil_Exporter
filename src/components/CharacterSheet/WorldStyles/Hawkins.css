@@ -15,6 +15,17 @@
     -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
     0 0 20px #450100;
   
+  @media print {
+    header,
+    .header-space {
+      height: 100px;
+      margin-top: 10pt;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 0pt;
+    }
+  }
+
   header,
   footer {
     text-align: center;
@@ -37,12 +48,14 @@
   }
 
   h1 {
-    text-transform: uppercase;
+    text-transform: none;
+    font-variant: small-caps;
     font-family: Libre Baskerville, serif;
     break-after: avoid;
     font-size: 22pt;
     line-height: 1.15;
     font-weight: 700;
+    text-align: center;
   }
   
   h2 {
@@ -50,9 +63,10 @@
     font-family: Libre Baskerville, serif;
     color: black;
     font-size: 16pt;
-    padding-top: 1.25em;
     break-after: avoid;
     font-weight: 700;
+    font-variant: small-caps;
+    text-align: center;
   }
   
   h3 {
@@ -74,9 +88,16 @@
     margin-block-end: 0.75em;
     font-weight: 400;
   }
-  
+
   ul {
     list-style-type: none;
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
+  }
+
+  ol {
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
   }
   
   li {
@@ -134,13 +155,17 @@
   .plots p,
   .summary p,
   .goals p {
-    text-indent: 30px;
+    /* text-indent: 30px; */
     text-align: justify;
   }
   
   .plots li {
     margin-left: 30px;
     margin-bottom: .5em;
+  }
+
+  .plots h2{
+    padding-top: 1.25em;
   }
   
   .plots li:last-child {

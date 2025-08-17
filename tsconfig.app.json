@@ -28,5 +28,6 @@
       "shared/*": ["./shared/*"]
     }
   },
-  "include": ["src", "tests/app.test.jsx", "tests/snapshot.js", "tests/utils/processFootnotes.test.jsx"]
+  "include": ["src", "shared"],
+  "exclude": ["**/*.stories.tsx", "**/*.stories.ts", "**/*.test.tsx", "**/*.test.ts", "**/*.test.jsx", "**/*.test.js", "tests/**/*"]
 }

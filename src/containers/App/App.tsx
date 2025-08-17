@@ -1,4 +1,3 @@
-import React from 'react';
 import UserProvider from '../../context/UserContext';
 import { getUserToken } from '../../utils/userToken';
 import type { UserInitialValues } from '../../utils/types';
