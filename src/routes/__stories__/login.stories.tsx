@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect } from 'react';
 
-import LoginContainer from './LoginContainer';
+import LoginPage from "../login";
 import { UserContext } from "../../context/UserContext";
 import type { UserContextType } from '../../utils/types';
 import backendAPI from '../../utils/backendAPI';
@@ -21,7 +21,7 @@ const mockUserContext: UserContextType = {
 
 const LoginContainerWithContext = ({ userContext = mockUserContext }) => (
   <UserContext.Provider value={userContext}>
-    <LoginContainer />
+    <LoginPage />
   </UserContext.Provider>
 );
 
@@ -39,7 +39,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof LoginContainer>;
+} satisfies Meta<typeof LoginContainerWithContext>;
 
 export default meta;
 
