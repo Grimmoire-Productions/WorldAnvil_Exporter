@@ -6,7 +6,7 @@ export async function processSecrets(arrayContent: string[]) {
   let i = 0;
 
   for (const str of arrayContent) {
-    if(str.includes("secret:")) {
+    if(str.includes("[secret:")) {
       const secretId = str.substring(
         str.indexOf(":")+1,
         str.indexOf("]")
