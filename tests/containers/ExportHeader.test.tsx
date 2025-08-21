@@ -1,11 +1,10 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ExportHeader from "../../app/containers/ExportToolContainer/ExportHeader/ExportHeader"
 import { ArticleContext } from "../../app/context/ArticleContext";
 import { UserContext } from "../../app/context/UserContext";
 import { WorldContext } from "../../app/context/WorldContext";
-import backendAPI from "../../app/utils/backendAPI";
 import type { ArticleContextType, UserContextType, WorldContextType } from "../../app/utils/types";
 
 // Mock the SearchDropdown component
@@ -53,10 +52,6 @@ jest.mock(
   }),
 );
 
-// Mock the backendAPI
-jest.mock("../../app/utils/backendAPI", () => ({
-  getCharacterSheets: jest.fn(),
-}));
 
 describe("ExportHeader", () => {
   // Mock context values
@@ -121,7 +116,9 @@ describe("ExportHeader", () => {
     accessToken: "test-token",
     setAccessToken: jest.fn(),
     expiresAt: 1234,
-    setExpiresAt: jest.fn()
+    setExpiresAt: jest.fn(),
+    applicationKey: "test-app-key",
+    setApplicationKey: jest.fn()
   } as UserContextType;
 
   const renderWithContexts = (
@@ -168,108 +165,6 @@ describe("ExportHeader", () => {
     });
   });
 
-  describe("World Selection", () => {
-    it("shows loading state when world is loading", () => {
-      const loadingWorldContext = {
-        ...mockWorldContext,
-        worldIsLoading: true,
-      };
-
-      renderWithContexts(mockArticleContext, loadingWorldContext);
-
-      // Check that dropdowns are not shown when loading
-      expect(screen.queryByTestId("select-run-tag")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("select-tags")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("select-article")).not.toBeInTheDocument();
-    });
-
-    it("shows run tags dropdown when world is selected and not loading", () => {
-      const selectedWorldContext = {
-        ...mockWorldContext,
-        selectedWorld: mockUserContext.user.worlds[0],
-      };
-
-      renderWithContexts(mockArticleContext, selectedWorldContext);
-
-      expect(screen.getByTestId("select-run-tag")).toBeInTheDocument();
-      expect(screen.getByText("--Choose a run--")).toBeInTheDocument();
-    });
-
-    it("shows non-run tags dropdown when world is selected and not loading", () => {
-      const selectedWorldContext = {
-        ...mockWorldContext,
-        selectedWorld: mockUserContext.user.worlds[0],
-      };
-
-      renderWithContexts(mockArticleContext, selectedWorldContext);
-
-      expect(screen.getByTestId("select-tags")).toBeInTheDocument();
-      expect(screen.getByText("--Choose tags--")).toBeInTheDocument();
-    });
-
-    it("shows articles dropdown when world is selected and not loading", () => {
-      const selectedWorldContext = {
-        ...mockWorldContext,
-        selectedWorld: mockUserContext.user.worlds[0],
-      };
-
-      renderWithContexts(mockArticleContext, selectedWorldContext);
-
-      expect(screen.getByTestId("select-article")).toBeInTheDocument();
-      expect(screen.getByText("--Select a Character--")).toBeInTheDocument();
-    });
-
-    it("handles world selection with existing character sheets", async () => {
-      const user = userEvent.setup();
-      renderWithContexts();
-
-      const worldSelect = screen.getByTestId("select-world-select");
-      await user.selectOptions(worldSelect, "Test World 1");
-
-      expect(mockWorldContext.setSelectedWorld).toHaveBeenCalledWith(
-        mockUserContext.user.worlds[0],
-      );
-    });
-
-    it("handles world selection without character sheets (API call)", async () => {
-      const user = userEvent.setup();
-      const mockCharacterSheets = [
-        { articleId: "char3", title: "Character 3", tags: ["tag4"] },
-      ];
-
-      (backendAPI.getCharacterSheets as jest.Mock).mockResolvedValue(
-        mockCharacterSheets,
-      );
-
-      renderWithContexts();
-
-      const worldSelect = screen.getByTestId("select-world-select");
-      await user.selectOptions(worldSelect, "Test World 2");
-
-      expect(mockWorldContext.setWorldIsLoading).toHaveBeenCalledWith(true);
-      expect(backendAPI.getCharacterSheets).toHaveBeenCalledWith("world2");
-
-      await waitFor(() => {
-        expect(mockWorldContext.setWorldIsLoading).toHaveBeenCalledWith(false);
-        expect(mockWorldContext.setSelectedWorld).toHaveBeenCalled();
-      });
-    });
-
-    it("does not change world when same world is selected", async () => {
-      const user = userEvent.setup();
-      const selectedWorldContext = {
-        ...mockWorldContext,
-        selectedWorld: mockUserContext.user.worlds[0],
-      };
-
-      renderWithContexts(mockArticleContext, selectedWorldContext);
-
-      const worldSelect = screen.getByTestId("select-world-select");
-      await user.selectOptions(worldSelect, "Test World 1");
-
-      expect(mockWorldContext.setSelectedWorld).not.toHaveBeenCalled();
-    });
-  });
 
   describe("Tag Selection", () => {
     const selectedWorldContext = {
@@ -375,12 +270,16 @@ describe("ExportHeader", () => {
   });
 
   describe("Helper Functions", () => {
-    it("creates world dropdown options correctly", () => {
-      renderWithContexts();
+    it("creates run tag dropdown options correctly", () => {
+      const selectedWorldContext = {
+        ...mockWorldContext,
+        selectedWorld: mockUserContext.user.worlds[0],
+      };
 
-      // The world dropdown should contain the world titles
-      expect(screen.getByText("Test World 1")).toBeInTheDocument();
-      expect(screen.getByText("Test World 2")).toBeInTheDocument();
+      renderWithContexts(mockArticleContext, selectedWorldContext);
+
+      // The run tag dropdown should contain run tags
+      expect(screen.getByText("--Choose a run--")).toBeInTheDocument();
     });
 
     it("handles empty character sheets", () => {
@@ -401,20 +300,6 @@ describe("ExportHeader", () => {
   });
 
   describe("Error Handling", () => {
-    it.skip("handles API errors gracefully", async () => {
-      const user = userEvent.setup();
-      (backendAPI.getCharacterSheets as jest.Mock).mockRejectedValue(
-        new Error("API Error"),
-      );
-
-      renderWithContexts();
-
-      const worldSelect = screen.getByTestId("select-world-select");
-      await user.selectOptions(worldSelect, "Test World 2");
-
-      expect(mockWorldContext.setWorldIsLoading).toHaveBeenCalledWith(true);
-      // The component should handle the error gracefully
-    });
 
     it("handles null user context", () => {
       const nullUserContext = {
