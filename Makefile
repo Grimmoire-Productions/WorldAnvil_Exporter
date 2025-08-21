@@ -16,3 +16,6 @@ test:
 
 eject:
 	npm run eject
+
+check-auth:
+	@ npm run check:auth
