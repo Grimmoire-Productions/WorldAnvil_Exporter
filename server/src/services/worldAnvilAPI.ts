@@ -2,12 +2,8 @@ import { WorldAnvilBaseService } from '../../../shared/services/worldAnvilBaseSe
 import type { 
   User, 
   World, 
-  WorldArticlesResponse,
-  UserWorldsResponse,
-  UserIdentityResponse,
   ArticleResponse,
-  CharacterSheet,
-  SecretResponse 
+  CharacterSheet
 } from '../../../shared/types/worldAnvilTypes.js';
 
 const APPLICATION_KEY = process.env.WA_API_KEY || '';

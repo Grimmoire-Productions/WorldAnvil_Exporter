@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react';
-import { useLogin } from '../../src/hooks/useLogin';
-import UserProvider from '../../src/context/UserContext';
-import type { UserInitialValues } from '../../src/utils/types';
-import { setUserToken, getUserToken } from '../../src/utils/userToken';
+import { useLogin } from '../../app/hooks/useLogin';
+import UserProvider from '../../app/context/UserContext';
+import type { UserInitialValues } from '../../app/utils/types';
+import { setUserToken, getUserToken } from '../../app/utils/userToken';
 
-import backendAPI from '../../src/utils/backendAPI';
+import backendAPI from '../../app/utils/backendAPI';
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -17,7 +17,7 @@ const mockLocalStorage = {
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 // Mock userToken functions
-jest.mock('../../src/utils/userToken', () => ({
+jest.mock('../../app/utils/userToken', () => ({
   setUserToken: jest.fn(),
   getUserToken: jest.fn(),
 }));

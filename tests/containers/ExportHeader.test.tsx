@@ -1,15 +1,15 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ExportHeader from "../../src/containers/ExportToolContainer/ExportHeader/ExportHeader"
-import { ArticleContext } from "../../src/context/ArticleContext";
-import { UserContext } from "../../src/context/UserContext";
-import { WorldContext } from "../../src/context/WorldContext";
-import backendAPI from "../../src/utils/backendAPI";
-import type { ArticleContextType, UserContextType, WorldContextType } from "../../src/utils/types";
+import ExportHeader from "../../app/containers/ExportToolContainer/ExportHeader/ExportHeader"
+import { ArticleContext } from "../../app/context/ArticleContext";
+import { UserContext } from "../../app/context/UserContext";
+import { WorldContext } from "../../app/context/WorldContext";
+import backendAPI from "../../app/utils/backendAPI";
+import type { ArticleContextType, UserContextType, WorldContextType } from "../../app/utils/types";
 
 // Mock the SearchDropdown component
-jest.mock("../../src/components/SearchDropdown/SearchDropdown", () => {
+jest.mock("../../app/components/SearchDropdown/SearchDropdown", () => {
   return function MockSearchDropdown({
     id,
     placeholder,
@@ -46,7 +46,7 @@ jest.mock("../../src/components/SearchDropdown/SearchDropdown", () => {
 
 // Mock the CSS module
 jest.mock(
-  "../../src/containers/ExportToolContainer/ExportToolContainer.module.css",
+  "../../app/containers/ExportToolContainer/ExportToolContainer.module.css",
   () => ({
     ExportHeader: "export-header",
     Loading: "loading",
@@ -54,7 +54,7 @@ jest.mock(
 );
 
 // Mock the backendAPI
-jest.mock("../../src/utils/backendAPI", () => ({
+jest.mock("../../app/utils/backendAPI", () => ({
   getCharacterSheets: jest.fn(),
 }));
 
@@ -145,32 +145,26 @@ describe("ExportHeader", () => {
   });
 
   describe("Initial Rendering", () => {
-    it("renders the component with user display name", () => {
+    it("renders placeholder message when no world is selected", () => {
       renderWithContexts();
 
-      expect(screen.getByText("Logged in as Test User")).toBeInTheDocument();
+      expect(screen.getByText("Please select a world from the dropdown above to begin")).toBeInTheDocument();
     });
 
-    it("renders world dropdown when user has worlds", () => {
-      renderWithContexts();
-
-      expect(screen.getByTestId("select-world")).toBeInTheDocument();
-      expect(screen.getByText("--Choose a World--")).toBeInTheDocument();
-    });
-
-    it("does not render world dropdown when user has no worlds", () => {
-      const userContextWithoutWorlds = {
-        ...mockUserContext,
-        user: { ...mockUserContext.user, worlds: null },
+    it("renders run, tags, and character dropdowns when world is selected", () => {
+      const worldContextWithSelection = {
+        ...mockWorldContext,
+        selectedWorld: mockUserContext.user.worlds[0]
       };
 
       renderWithContexts(
         mockArticleContext,
-        mockWorldContext,
-        userContextWithoutWorlds,
+        worldContextWithSelection
       );
 
-      expect(screen.queryByTestId("select-world")).not.toBeInTheDocument();
+      expect(screen.getByTestId("select-run-tag")).toBeInTheDocument();
+      expect(screen.getByTestId("select-tags")).toBeInTheDocument();
+      expect(screen.getByTestId("select-article")).toBeInTheDocument();
     });
   });
 

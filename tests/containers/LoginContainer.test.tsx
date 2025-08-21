@@ -1,13 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import LoginContainer from '../../src/containers/LoginContainer/LoginContainer';
-import UserProvider from '../../src/context/UserContext';
+import { MemoryRouter } from 'react-router';
+import LoginPage from '../../app/routes/auth/login';
+import UserProvider from '../../app/context/UserContext';
 import '@testing-library/jest-dom';
-import type { UserInitialValues } from '../../src/utils/types';
+import type { UserInitialValues } from '../../app/utils/types';
 /* eslint-disable no-empty-function, @typescript-eslint/no-empty-function */
 
 
-describe('LoginContainer', () => {
+describe('LoginPage', () => {
 
   const userInit = {
     isLoggedIn: false,
@@ -19,9 +20,11 @@ describe('LoginContainer', () => {
 
   it('Displays the login button', async () => {
     render(
-      <UserProvider initialValues={userInit}>
-        <LoginContainer />
-      </UserProvider>
+      <MemoryRouter>
+        <UserProvider initialValues={userInit}>
+          <LoginPage />
+        </UserProvider>
+      </MemoryRouter>
     );
 
     expect(screen.getByText('Login')).toBeInTheDocument();
@@ -29,9 +32,11 @@ describe('LoginContainer', () => {
 
   it('Displays the search placeholder text', async () => {
     render(
-      <UserProvider initialValues={userInit}>
-        <LoginContainer />
-      </UserProvider>
+      <MemoryRouter>
+        <UserProvider initialValues={userInit}>
+          <LoginPage />
+        </UserProvider>
+      </MemoryRouter>
     );
 
     expect(screen.getByPlaceholderText(/Enter Your User API Token/i)).toBeInTheDocument();

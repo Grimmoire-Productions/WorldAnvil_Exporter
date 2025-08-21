@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { processFootnotes } from '../../src/utils/processFootnotes'
+import { processFootnotes } from '../../app/utils/processFootnotes'
 
 describe('processFootnotes', () => {
       const mockArrayContent = [

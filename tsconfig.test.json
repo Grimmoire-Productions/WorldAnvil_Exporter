@@ -50,10 +50,10 @@
     "**/*.tsx",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "src/**/*.stories.tsx"
+    "app/**/*.stories.tsx"
   ],
   "exclude": [
     "node_modules",
-    "src/utils/consts.ts"
+    "app/utils/consts.ts"
   ]
 }

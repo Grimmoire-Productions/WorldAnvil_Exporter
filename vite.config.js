@@ -1,6 +1,6 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import { reactRouter } from '@react-router/dev/vite';
 import * as path from "path";
 
 // https://vite.dev/config/
@@ -10,7 +10,7 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [react()],
+  plugins: [reactRouter()],
   resolve: {
     alias: {
       'shared': path.resolve(dirname, './shared')

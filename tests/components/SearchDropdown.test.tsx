@@ -5,8 +5,8 @@ import {
   waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import SearchDropdown from "../../src/components/SearchDropdown/SearchDropdown";
-import type { DropdownOption } from "../../src/utils/types";
+import SearchDropdown from "../../app/components/SearchDropdown/SearchDropdown";
+import type { DropdownOption } from "../../app/utils/types";
 
 // Mock the CSS module
 jest.mock("./SearchDropdown.module.css", () => ({

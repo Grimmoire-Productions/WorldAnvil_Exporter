@@ -22,14 +22,14 @@ const presetConfig = createJsWithTsEsmPreset({
 
 const jestConfig: JestConfigWithTsJest = {
   ...presetConfig,
-  testEnvironment: "jsdom",
+  testEnvironment: "jest-fixed-jsdom",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  roots: ["<rootDir>/src/", "<rootDir>/tests/"],
+  roots: ["<rootDir>/app/", "<rootDir>/tests/"],
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tests/__mocks__/fileMock.ts",
     "^.+\\.svg$": "jest-transformer-svg",
-    "src/(.*)": "<rootDir>/src/$1",
+    "app/(.*)": "<rootDir>/app/$1",
     "^shared/(.*)$": "<rootDir>/shared/$1",
     "^[\w.\/]*consts$": "<rootDir>/tests/utils/__mocks__/consts.ts" // Or .js if you prefer
   },

@@ -4,7 +4,7 @@ import React from 'react';
 global.React = React;
 
 // Mock the backend API globally for all tests
-jest.mock('./src/utils/backendAPI', () => ({
+jest.mock('./app/utils/backendAPI', () => ({
   __esModule: true,
   default: {
     checkCredentials: jest.fn().mockResolvedValue({ hasAppKey: false }),
