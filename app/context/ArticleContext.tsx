@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useCallback } from 'react';
 
 import backendAPI from "../utils/backendAPI";
 import { ProcessArticle } from "../utils/processArticle"
@@ -23,25 +23,30 @@ const ArticleProvider: React.FC<{
   const [articleId, setArticleId] = useState(initialValues.articleId);
   const [isArticleLoading, setIsArticleLoading] = useState(initialValues.isArticleLoading)
 
-  const fetchAndProcessCharacter = async (
+  const fetchAndProcessCharacter = useCallback(async (
     articleId: string,
     selectedWorldKey: string,
   ) => {
     setIsArticleLoading(true);
-    const results: ArticleResponse = await backendAPI.fetchCharacter(articleId)
+    setErrorMessage(null);
+    
+    try {
+      const results: ArticleResponse = await backendAPI.fetchCharacter(articleId);
 
-    if (results?.id) {
-      setActiveCharacter(await ProcessArticle(results, selectedWorldKey));
+      if (results?.id) {
+        const processedCharacter = await ProcessArticle(results, selectedWorldKey);
+        setActiveCharacter(processedCharacter);
+      } else {
+        setErrorMessage(`Character not found. Please try again.`);
+        setActiveCharacter('');
+      }
+    } catch (error) {
+      setErrorMessage(`Failed to load character. Please try again.`);
+      setActiveCharacter('');
+    } finally {
+      setIsArticleLoading(false);
     }
-
-    if (!activeCharacter) {
-      setErrorMessage(`Something went wrong. Please try again.`);
-    } else {
-      setErrorMessage(null);
-    }
-    setIsArticleLoading(false);
-    return;
-  };
+  }, []);
   
   return (
     <ArticleContext.Provider

@@ -28,7 +28,7 @@
     "test:debug": "jest --inspect-brk --runInBand --no-cache",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "typecheck": "tsc",
+    "typecheck": "react-router typegen && tsc --noEmit",
     "server": "cd server && npx tsx src/app.ts",
     "server:dev": "cd server && npx tsx watch src/app.ts",
     "dev": "concurrently \"npm run server:dev\" \"npm start\"",

@@ -1,6 +1,6 @@
 import Select from "react-select";
 import type { MultiValue } from "react-select";
-import type { DropdownOption } from "../../utils/types";
+import type { DropdownOption } from "~/utils/types";
 import styles from "./SearchDropdown.module.css";
 
 type SearchDropdownProps = {

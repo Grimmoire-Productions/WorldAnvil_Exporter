@@ -1,148 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type { MultiValue } from 'react-select';
-import type { ArticleContextType, DropdownOption, WorldContextType, UserContextType, CharacterSheet, World } from '../../../utils/types';
+import type { DropdownOption, World } from '../../../utils/types';
 import SearchDropdown from '../../../components/SearchDropdown/SearchDropdown';
-import { ArticleContext } from '../../../context/ArticleContext';
-import { WorldContext } from '../../../context/WorldContext';
-import { UserContext } from '../../../context/UserContext';
-import backendAPI from '../../../utils/backendAPI';
-import styles from '../ExportToolContainer.module.css';
+import styles from '../../../routes/worlds/$worldId/export.module.css';
 
-function ExportHeader() {
-  const {
-    articleId,
-    setArticleId,
-    fetchAndProcessCharacter,
-    setActiveCharacter
-  } = React.useContext(ArticleContext) as ArticleContextType;
+interface ExportHeaderProps {
+  selectedWorld: World | null;
+  selectedTags: DropdownOption[];
+  selectedRunTag: DropdownOption | null;
+  articlesList: DropdownOption[];
+  articleId: string;
+  runDropdownOptions: (tags: string[] | undefined | null) => DropdownOption[];
+  tagDropdownOptions: (tags: string[] | undefined | null) => DropdownOption[];
+  onSelectedTagChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
+  onSelectedRunTagChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
+  onArticleChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
+}
 
-  const {
-    worldIsLoading,
-    setWorldIsLoading,
-    selectedWorld,
-    setSelectedWorld,
-    selectedTags,
-    setSelectedTags,
-    selectedRunTag,
-    setSelectedRunTag,
-  } = React.useContext(WorldContext) as WorldContextType;
-
-  const { user } = React.useContext(UserContext) as UserContextType;
-
-  const [articlesList, setArticlesList] = useState<DropdownOption[]>([]);
-  const [currentCharacter, setCurrentCharacter] = useState<DropdownOption | null>(null);
-
-  useEffect(() => {
-    if (selectedWorld) {
-      setArticleDropdownOptions(selectedWorld.characterSheets);
-      setCurrentCharacter(null);
-      setArticleId('');
-      setActiveCharacter('');
-      setSelectedTags([]);
-      setSelectedRunTag(null);
-    }
-  }, [selectedWorld]);
-
-  useEffect(() => {
-    if (selectedWorld) {
-      setArticleDropdownOptions(selectedWorld.characterSheets);
-
-      // Check if the current character is still available in the updated articlesList
-      if (currentCharacter) {
-        const isCurrentCharacterValid = articlesList.some(
-          (article) => article.id === currentCharacter.id,
-        );
-
-        if (!isCurrentCharacterValid) {
-          setCurrentCharacter(null);
-          setArticleId("");
-          setActiveCharacter("");
-        }
-      }
-    }
-  }, [selectedTags, selectedRunTag, selectedWorld, currentCharacter]);
-
-  useEffect(() => {
-    if (articleId && selectedWorld) {
-      const selectedWorldKey = selectedWorld?.cssClassName || "default";
-      fetchAndProcessCharacter(articleId, selectedWorldKey);
-    }
-  }, [articleId]);
-
-  const handleSelectedTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
-    setSelectedTags(options as DropdownOption[]);
-  };
-
-  const handleSelectedRunTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
-    setSelectedRunTag(options as DropdownOption);
-  };
-
-  const handleArticleChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
-    const selectedOption = options as DropdownOption;
-    setCurrentCharacter(selectedOption);
-    setArticleId(selectedOption.id);
-  };
-
-  const runDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
-    const options: DropdownOption[] = [];
-
-    if (tags) {
-      tags.filter(tag => tag.toLowerCase().includes('run')).forEach((tag: string) => {
-        options.push({
-          value: tag,
-          id: tag,
-          label: tag
-        });
-      });
-    }
-    return options;
-  };
-
-  const tagDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
-    const options: DropdownOption[] = [];
-
-    if (tags) {
-      tags.filter(tag => !tag.toLowerCase().includes('run') && !tag.toLowerCase().includes('character_sheet')).forEach((tag: string) => {
-        options.push({
-          value: tag,
-          id: tag,
-          label: tag
-        });
-      });
-    }
-    return options;
-  };
-
-  const setArticleDropdownOptions = (characterSheets: CharacterSheet[] | undefined | null) => {
-    const options: DropdownOption[] = [];
-
-    if (characterSheets) {
-      characterSheets.filter((character) => {
-        let matchesTags = true;
-        let matchesRunTag = true;
-
-        // Check if character matches all selected tags
-        if (selectedTags && selectedTags.length > 0) {
-          const tagsArray = selectedTags.map((tag) => tag.value);
-          matchesTags = tagsArray.every((tag) => character.tags.includes(tag));
-        }
-
-        // Check if character matches the selected run tag
-        if (selectedRunTag) {
-          matchesRunTag = character.tags.includes(selectedRunTag.value);
-        }
-
-        return matchesTags && matchesRunTag;
-      }).forEach(character => {
-        options.push({
-          value: character.title,
-          id: character.articleId,
-          label: character.title,
-        });
-      });
-    }
-    setArticlesList(options);
-  };
+function ExportHeader({
+  selectedWorld,
+  selectedTags,
+  selectedRunTag,
+  articlesList,
+  articleId,
+  runDropdownOptions,
+  tagDropdownOptions,
+  onSelectedTagChange,
+  onSelectedRunTagChange,
+  onArticleChange,
+}: ExportHeaderProps) {
 
   if (!selectedWorld) {
     return (
@@ -161,7 +47,7 @@ function ExportHeader() {
         items={runDropdownOptions(selectedWorld.tags)}
         isMultiSelect={false}
         error="No run tags available for the selected world."
-        handleChange={handleSelectedRunTagChange}
+        handleChange={onSelectedRunTagChange}
         currentSelection={selectedRunTag as DropdownOption}
       />
       <SearchDropdown
@@ -171,7 +57,7 @@ function ExportHeader() {
         items={tagDropdownOptions(selectedWorld.tags)}
         isMultiSelect={true}
         error="No tags available for the selected world."
-        handleChange={handleSelectedTagChange}
+        handleChange={onSelectedTagChange}
         currentSelection={selectedTags as MultiValue<DropdownOption>}
       />
       <SearchDropdown
@@ -181,8 +67,8 @@ function ExportHeader() {
         items={articlesList}
         isMultiSelect={false}
         error="Cannot find character sheets"
-        handleChange={handleArticleChange}
-        currentSelection={currentCharacter as DropdownOption}
+        handleChange={onArticleChange}
+        currentSelection={articleId ? articlesList.find(item => item.id === articleId) : undefined}
       />
     </div>
   );

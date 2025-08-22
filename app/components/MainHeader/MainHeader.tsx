@@ -1,90 +1,21 @@
-import React, { useEffect, useCallback } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 import type { MultiValue } from 'react-select';
-import SearchDropdown from '../SearchDropdown/SearchDropdown';
-import { UserContext } from '../../context/UserContext';
-import { WorldContext } from '../../context/WorldContext';
-import type { UserContextType, WorldContextType, DropdownOption, World } from '../../utils/types';
-import backendAPI from '../../utils/backendAPI';
+import SearchDropdown from '~/components/SearchDropdown/SearchDropdown';
+import { UserContext } from '~/context/UserContext';
+import type { UserContextType, DropdownOption, World } from '~/utils/types';
 import styles from './MainHeader.module.css';
 
 function MainHeader() {
-  const { user, setUser, isLoggedIn } = React.useContext(UserContext) as UserContextType;
-  const { 
-    worldIsLoading, 
-    setWorldIsLoading, 
-    selectedWorld, 
-    setSelectedWorld,
-    setSelectedTags,
-    setSelectedRunTag,
-  } = React.useContext(WorldContext) as WorldContextType;
+  const { user, isLoggedIn } = React.useContext(UserContext) as UserContextType;
   
   const navigate = useNavigate();
   const { worldId } = useParams<{ worldId?: string }>();
 
-  const handleWorldSelection = useCallback(async (world: World) => {
-    if (!world.characterSheets || !world.tags) {
-      setWorldIsLoading(true);
-      try {
-        const results = await backendAPI.getCharacterSheets(world.id);
-        if (results.length > 0) {
-          world.characterSheets = results;
-          // Get set of unique tags
-          const tagSet = new Set(results.map((sheet) => sheet.tags).flat());
-          world.tags = [...tagSet];
-        }
-        setSelectedWorld(world);
-        
-        // Update user's worlds in context
-        if (user?.worlds) {
-          const updatedWorlds = [...user.worlds];
-          const worldIndex = updatedWorlds.findIndex(w => w.id === world.id);
-          if (worldIndex >= 0) {
-            updatedWorlds[worldIndex] = world;
-            setUser(prevUser => {
-              if (prevUser === null) {
-                return null;
-              }
-              return {
-                ...prevUser,
-                worlds: updatedWorlds
-              };
-            });
-          }
-        }
-      } finally {
-        setWorldIsLoading(false);
-      }
-    } else {
-      setSelectedWorld(world);
-    }
-  }, [user?.worlds, setUser, setSelectedWorld, setWorldIsLoading]);
-
-  useEffect(() => {
-    // Sync selected world with URL worldId
-    if (worldId && user?.worlds) {
-      const world = user.worlds.find(w => w.id === worldId);
-      if (world && (!selectedWorld || selectedWorld.id !== worldId)) {
-        handleWorldSelection(world);
-      }
-    } else if (!worldId && selectedWorld) {
-      // Clear selected world if no worldId in URL
-      setSelectedWorld(null);
-      setSelectedTags([]);
-      setSelectedRunTag(null);
-    }
-  }, [worldId, user?.worlds, selectedWorld?.id, handleWorldSelection, setSelectedWorld, setSelectedTags, setSelectedRunTag]);
 
   const handleSelectedWorldChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
     const selectedOption = options as DropdownOption;
-
-    // Only proceed if a different world is selected
-    if (selectedWorld?.id === selectedOption.id) {
-      return;
-    }
-
-    // Navigate immediately to the world-specific route
-    navigate(`/authenticated/worlds/${selectedOption.id}`);
+    navigate(`/worlds/${selectedOption.id}`);
   };
 
   const worldDropdownOptions = (worlds: World[]): DropdownOption[] => {
@@ -118,11 +49,15 @@ function MainHeader() {
               isMultiSelect={false}
               error="No worlds available"
               handleChange={handleSelectedWorldChange}
-              currentSelection={selectedWorld ? {
-                value: selectedWorld.title,
-                id: selectedWorld.id,
-                label: selectedWorld.title
-              } : undefined}
+              currentSelection={(() => {
+                if (!worldId || !user?.worlds) return undefined;
+                const currentWorld = user.worlds.find(w => w.id === worldId);
+                return currentWorld ? {
+                  value: currentWorld.title,
+                  id: worldId,
+                  label: currentWorld.title
+                } : undefined;
+              })()}
             />
           )}
           

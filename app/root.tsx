@@ -5,9 +5,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-import UserProvider from './context/UserContext';
-import { getUserToken } from './utils/userToken';
-import type { UserInitialValues } from './utils/types';
+import UserProvider from '~/context/UserContext';
+import { getUserToken } from '~/utils/userToken';
+import type { UserInitialValues } from '~/utils/types';
 import './root.css';
 
 export function Layout({ children }: { children: React.ReactNode }) {

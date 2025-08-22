@@ -25,7 +25,8 @@
     "noUncheckedSideEffectImports": true,
 
     "paths": {
-      "shared/*": ["./shared/*"]
+      "shared/*": ["./shared/*"],
+      "~/*": ["./app/*"]
     }
   },
   "include": ["app", "shared"],

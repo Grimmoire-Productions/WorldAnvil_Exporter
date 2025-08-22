@@ -5,6 +5,7 @@ import type {
   ArticleResponse,
   CharacterSheet
 } from '../../../shared/types/worldAnvilTypes.js';
+import { mockUser } from '../../__mocks__/mockUserData'
 
 const APPLICATION_KEY = process.env.WA_API_KEY || '';
 
@@ -35,6 +36,10 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
   async logIn(userToken: string, appKey?: string): Promise<User> {
     this.setCredentials(userToken, appKey);
 
+    if (process.env.MOCK_API === "true") {
+      return mockUser;
+    }
+
     try {
       const jsonResponse = await this.fetchUserIdentity();
       
@@ -57,6 +62,11 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
   async getWorlds(userId: string): Promise<World[]> {
     console.log('Fetching worlds from World Anvil for user:', userId);
 
+    console.log("MOCK_API ", process.env.MOCK_API);
+    if (process.env.MOCK_API === "true") {
+      return mockUser.worlds;
+    }
+    
     try {
       const jsonResponse = await this.fetchUserWorlds(userId);
       

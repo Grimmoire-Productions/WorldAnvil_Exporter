@@ -16,17 +16,27 @@ type Pages = {
   "/auth/login": {
     params: {};
   };
-  "/authenticated": {
+  "/auth/unauthorized": {
     params: {};
   };
-  "/authenticated/worlds/:worldId": {
+  "/worlds": {
+    params: {};
+  };
+  "/worlds/:worldId": {
     params: {
       "worldId": string;
     };
   };
-  "/authenticated/worlds/:worldId/export": {
+  "/worlds/:worldId/:export": {
     params: {
       "worldId": string;
+      "export": string;
+    };
+  };
+  "/worlds/:worldId/export/:articleId": {
+    params: {
+      "worldId": string;
+      "articleId": string;
     };
   };
 };
@@ -34,7 +44,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/login" | "/authenticated" | "/authenticated/worlds/:worldId" | "/authenticated/worlds/:worldId/export";
+    page: "/" | "/auth/login" | "/auth/unauthorized" | "/worlds" | "/worlds/:worldId" | "/worlds/:worldId/:export" | "/worlds/:worldId/export/:articleId";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -44,20 +54,36 @@ type RouteFiles = {
     id: "routes/auth/login";
     page: "/auth/login";
   };
+  "routes/auth/unauthorized.tsx": {
+    id: "routes/auth/unauthorized";
+    page: "/auth/unauthorized";
+  };
   "routes/authenticated.tsx": {
     id: "routes/authenticated";
-    page: "/authenticated" | "/authenticated/worlds/:worldId" | "/authenticated/worlds/:worldId/export";
+    page: "/" | "/worlds" | "/worlds/:worldId" | "/worlds/:worldId/:export" | "/worlds/:worldId/export/:articleId";
   };
-  "routes/authenticated/home.tsx": {
-    id: "routes/authenticated/home";
-    page: "/authenticated";
+  "routes/worlds/wrapper.tsx": {
+    id: "routes/worlds/wrapper";
+    page: "/worlds";
   };
-  "routes/authenticated/worlds/$worldId/details.tsx": {
-    id: "routes/authenticated/worlds/$worldId/details";
-    page: "/authenticated/worlds/:worldId";
+  "routes/worlds/index.tsx": {
+    id: "routes/worlds/index";
+    page: "/worlds";
   };
-  "routes/authenticated/worlds/$worldId/export.tsx": {
-    id: "routes/authenticated/worlds/$worldId/export";
-    page: "/authenticated/worlds/:worldId/export";
+  "routes/worlds/$worldId/wrapper.tsx": {
+    id: "routes/worlds/$worldId/wrapper";
+    page: "/worlds/:worldId" | "/worlds/:worldId/:export" | "/worlds/:worldId/export/:articleId";
+  };
+  "routes/worlds/$worldId/index.tsx": {
+    id: "routes/worlds/$worldId/index";
+    page: "/worlds/:worldId";
+  };
+  "routes/worlds/$worldId/export.tsx": {
+    id: "routes/worlds/$worldId/export";
+    page: "/worlds/:worldId/:export";
+  };
+  "routes/worlds/$worldId/$articleId.tsx": {
+    id: "routes/worlds/$worldId/$articleId";
+    page: "/worlds/:worldId/export/:articleId";
   };
 };

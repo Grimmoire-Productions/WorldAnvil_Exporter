@@ -8,10 +8,11 @@ import {
 export const ROUTE_PATHS = Object.freeze({
   home: "/",
   login: "/auth/login",
-  authenticated: "/authenticated",
-  worlds: "/authenticated/worlds",
-  worldDetail: "/authenticated/worlds/:worldId",
-  worldExport: "/authenticated/worlds/:worldId/export",
+  unauthorized: "/auth/unauthorized",
+  worlds: "/worlds",
+  worldDetail: "/worlds/:worldId",
+  worldExport: "/worlds/:worldId/export",
+  characterSheet: "/worlds/:worldId/export/:articleId",
 });
 
 export type RoutePath = (typeof ROUTE_PATHS)[keyof typeof ROUTE_PATHS];
@@ -20,12 +21,17 @@ export default [
   index("routes/home.tsx"),
   ...prefix("auth", [
     route("login", "routes/auth/login.tsx"),
+    route("unauthorized", "routes/auth/unauthorized.tsx"),
   ]),
-  route("authenticated", "routes/authenticated.tsx", [
-    index("routes/authenticated/home.tsx"),
-    ...prefix("worlds", [
-      route(":worldId", "routes/authenticated/worlds/$worldId/details.tsx"),
-      route(":worldId/export", "routes/authenticated/worlds/$worldId/export.tsx"),
+  route("", "routes/authenticated.tsx", [
+    route("worlds", "routes/worlds/wrapper.tsx", [
+      index("routes/worlds/index.tsx"),
     ]),
+    // Individual world routes
+    route("worlds/:worldId", "routes/worlds/$worldId/wrapper.tsx", [
+      index("routes/worlds/$worldId/index.tsx"),
+      route(":export", "routes/worlds/$worldId/export.tsx"),
+      route("export/:articleId", "routes/worlds/$worldId/$articleId.tsx"),
+    ])
   ]),
 ] satisfies RouteConfig;

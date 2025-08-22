@@ -1,31 +1,7 @@
 import type { User } from '../../utils/types';
 
 /**
- * Mock user data for testing.
- */
-export const mockDevUser: User = {
-  displayName: import.meta.env.VITE_DEV_USER_DISPLAY_NAME || 'dev-user',
-  id: import.meta.env.VITE_DEV_USER_ID || 'dev-user-id',
-  worlds: [
-    {
-      id: import.meta.env.VITE_DEV_WORLD_1_ID || 'world-1-id',
-      title: import.meta.env.VITE_DEV_WORLD_1_TITLE || 'World 1',
-      cssClassName: import.meta.env.VITE_DEV_WORLD_1_CSS || 'default',
-      characterSheets: null,
-      tags: null
-    },
-    {
-      id: import.meta.env.VITE_DEV_WORLD_2_ID || 'world-2-id',
-      title: import.meta.env.VITE_DEV_WORLD_2_TITLE || 'World 2',
-      cssClassName: import.meta.env.VITE_DEV_WORLD_2_CSS || 'default',
-      characterSheets: null,
-      tags: null
-    }
-  ]
-};
-
-/**
- * Mock user data for Storybook - no environment variable dependencies
+ * Mock user data for Storybook and testing
  */
 export const mockUser: User = {
   displayName: 'Storybook User',

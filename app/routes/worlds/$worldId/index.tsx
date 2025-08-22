@@ -1,37 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { UserContext } from '../../../../context/UserContext';
-import { WorldContext } from '../../../../context/WorldContext';
-import type { UserContextType, WorldContextType } from '../../../../utils/types';
-import LoadingAnimation from '../../../../components/LoadingAnimation/LoadingAnimation';
-import backendAPI from '../../../../utils/backendAPI';
-import styles from './details.module.css';
+import { UserContext } from '~/context/UserContext';
+import { WorldContext } from '~/context/WorldContext';
+import type { UserContextType, WorldContextType } from '~/utils/types';
+import LoadingAnimation from '~/components/LoadingAnimation/LoadingAnimation';
+import backendAPI from '~/utils/backendAPI';
+import styles from './index.module.css';
 
 export default function WorldIdPage() {
   const { worldId } = useParams<{ worldId: string }>();
   const { user, setUser } = React.useContext(UserContext) as UserContextType;
   const navigate = useNavigate();
+  const loadingWorldRef = useRef<string>('');
   const { 
+    worldIsLoading,
+    setWorldIsLoading,
     selectedWorld, 
     setSelectedWorld,
     setSelectedTags,
     setSelectedRunTag,
   } = React.useContext(WorldContext) as WorldContextType;
-  
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const loadWorld = async () => {
-      if (!worldId || !user?.worlds) return;
+      if (!worldId || !user?.worlds || worldIsLoading) return;
       
-      setSelectedTags([]);
-      setSelectedRunTag(null);
+      // Prevent concurrent loading of the same world
+      if (loadingWorldRef.current === worldId) return;
       
       const world = user.worlds.find(w => w.id === worldId);
       if (!world) return;
 
+      // Clear previous selections
+      setSelectedTags([]);
+      setSelectedRunTag(null);
+
       if (!world.characterSheets || !world.tags) {
-        setIsLoading(true);
+        loadingWorldRef.current = worldId;
+        setWorldIsLoading(true);
         try {
           const results = await backendAPI.getCharacterSheets(world.id);
           if (results.length > 0) {
@@ -59,7 +65,8 @@ export default function WorldIdPage() {
         } catch (error) {
           console.error('Failed to load world data:', error);
         } finally {
-          setIsLoading(false);
+          setWorldIsLoading(false);
+          loadingWorldRef.current = '';
         }
       } else {
         setSelectedWorld(world);
@@ -67,15 +74,15 @@ export default function WorldIdPage() {
     };
 
     loadWorld();
-  }, [worldId, user?.worlds]);
+  }, [worldId, user?.worlds, setUser, setSelectedWorld, setSelectedTags, setSelectedRunTag, setWorldIsLoading, worldIsLoading]);
 
   const handleExportClick = () => {
     if (worldId) {
-      navigate(`/authenticated/worlds/${worldId}/export`);
+      navigate(`/worlds/${worldId}/export`);
     }
   };
 
-  if (isLoading) {
+  if (worldIsLoading) {
     return (
       <div className={styles.worldPage}>
         <div className={styles.loadingContainer}>

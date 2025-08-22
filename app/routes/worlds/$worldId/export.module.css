@@ -57,3 +57,19 @@
     align-items: center;
     color: white;
 }
+
+.exportInstructions {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+}
+
+.exportInstructions h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.exportInstructions p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}

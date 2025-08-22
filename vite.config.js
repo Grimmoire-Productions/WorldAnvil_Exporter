@@ -13,7 +13,8 @@ export default defineConfig({
   plugins: [reactRouter()],
   resolve: {
     alias: {
-      'shared': path.resolve(dirname, './shared')
+      'shared': path.resolve(dirname, './shared'),
+      '~': path.resolve(dirname, './app')
     }
   },
   test: {
