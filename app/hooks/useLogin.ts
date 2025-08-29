@@ -13,11 +13,11 @@ export const useLogin = () => {
   const login = async (accessToken: string, appKey?: string) => {
     const MOCK_SERVER = import.meta.env.VITE_MOCK_SERVER;
 
-    if (MOCK_SERVER) {
-      setUser(mockUser);
-      setIsLoggedIn(true);
-      return mockUser;
-    }
+    // if (MOCK_SERVER) {
+    //   setUser(mockUser);
+    //   setIsLoggedIn(true);
+    //   return mockUser;
+    // }
     try {
       const userResponse = await backendAPI.logIn(accessToken, appKey);
       if (userResponse.displayName) {

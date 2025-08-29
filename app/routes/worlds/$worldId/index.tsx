@@ -9,72 +9,52 @@ import styles from './index.module.css';
 
 export default function WorldIdPage() {
   const { worldId } = useParams<{ worldId: string }>();
-  const { user, setUser } = React.useContext(UserContext) as UserContextType;
+  const { user } = React.useContext(UserContext) as UserContextType;
   const navigate = useNavigate();
   const loadingWorldRef = useRef<string>('');
-  const { 
+  const {
     worldIsLoading,
     setWorldIsLoading,
-    selectedWorld, 
-    setSelectedWorld,
+    selectedWorld,
     setSelectedTags,
     setSelectedRunTag,
   } = React.useContext(WorldContext) as WorldContextType;
-
+  
   useEffect(() => {
-    const loadWorld = async () => {
-      if (!worldId || !user?.worlds || worldIsLoading) return;
-      
+      if (!worldId || !user?.worlds ) return;
+
       // Prevent concurrent loading of the same world
       if (loadingWorldRef.current === worldId) return;
-      
-      const world = user.worlds.find(w => w.id === worldId);
-      if (!world) return;
+
+      if (!selectedWorld) return;
 
       // Clear previous selections
       setSelectedTags([]);
       setSelectedRunTag(null);
 
-      if (!world.characterSheets || !world.tags) {
+      if (!selectedWorld.characterSheets || !selectedWorld.tags) {
         loadingWorldRef.current = worldId;
         setWorldIsLoading(true);
         try {
-          const results = await backendAPI.getCharacterSheets(world.id);
-          if (results.length > 0) {
-            world.characterSheets = results;
-            const tagSet = new Set(results.map((sheet) => sheet.tags).flat());
-            world.tags = [...tagSet];
-          }
-          
-          const updatedWorlds = [...user.worlds];
-          const worldIndex = updatedWorlds.findIndex(w => w.id === world.id);
-          if (worldIndex >= 0) {
-            updatedWorlds[worldIndex] = world;
-            setUser(prevUser => {
-              if (prevUser === null) {
-                return null;
-              }
-              return {
-                ...prevUser,
-                worlds: updatedWorlds
-              };
-            });
-          }
-          
-          setSelectedWorld(world);
+          backendAPI.getCharacterSheets(selectedWorld.id).then((results) => {
+            if (results.length > 0) {
+              selectedWorld.characterSheets = results;
+              const tagSet = new Set(results.map((sheet) => sheet.tags).flat());
+              selectedWorld.tags = [...tagSet];
+            }
+          })
         } catch (error) {
-          console.error('Failed to load world data:', error);
+          console.error("Failed to load world data:", error);
         } finally {
           setWorldIsLoading(false);
-          loadingWorldRef.current = '';
+          loadingWorldRef.current = "";
         }
-      } else {
-        setSelectedWorld(world);
-      }
     };
-
-    loadWorld();
-  }, [worldId, user?.worlds, setUser, setSelectedWorld, setSelectedTags, setSelectedRunTag, setWorldIsLoading, worldIsLoading]);
+  }, [
+    worldId,
+    selectedWorld,
+    setWorldIsLoading,
+  ]);
 
   const handleExportClick = () => {
     if (worldId) {

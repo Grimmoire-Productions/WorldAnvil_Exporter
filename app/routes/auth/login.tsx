@@ -10,12 +10,9 @@ import styles from './login.module.css';
 import {ROUTE_PATHS} from '~/routes'
 export default function LoginPage() {
   const {
-    setIsLoggedIn,
-    setUser,
+    user,
     accessToken,
     setAccessToken,
-    expiresAt,
-    setExpiresAt,
     applicationKey,
     setApplicationKey,
     isLoggedIn,
@@ -27,44 +24,12 @@ export default function LoginPage() {
   const [needsApplicationKey, setNeedsApplicationKey] = useState(true);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
+  // Redirect to worlds if already logged in
   useEffect(() => {
-    if (accessToken !== '' && expiresAt) {
-      setIsLoggingIn(true);
-      const appKey = applicationKey || undefined;
-      login(accessToken, appKey)
-        .then(() => {
-          navigate(ROUTE_PATHS.worlds);
-        })
-        .catch((err) => {
-          console.error('Auto-login failed:', err);
-          let errorMessage = 'Auto-login failed. Please log in again.';
-          
-          if (err instanceof Error) {
-            if (err.message.includes('unauthorized') || err.message.includes('401')) {
-              errorMessage = 'Session expired: Invalid API key or token. Please log in again.';
-            } else if (err.message.includes('worlds') || err.message.includes('fetch')) {
-              errorMessage = 'Could not fetch worlds. Please try logging in again.';
-            }
-          }
-          
-          navigate('/auth/unauthorized', { state: { error: errorMessage } });
-        })
-        .finally(() => {
-          setIsLoggingIn(false);
-        });
-      const timeRemaining = expiresAt - Date.now();
-      const timeout = setTimeout(() => {
-        alert('Authentication timeout, please log in again');
-        setAccessToken('');
-        setUser(null);
-        setIsLoggedIn(false);
-        setExpiresAt(null);
-      }, timeRemaining);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (isLoggedIn && user) {
+      navigate(ROUTE_PATHS.worlds);
     }
-  }, [accessToken, expiresAt, applicationKey, login, setAccessToken, setUser, setIsLoggedIn, setExpiresAt, navigate]);
+  }, [isLoggedIn, user, navigate]);
 
   useEffect(() => {
     backendAPI.checkCredentials().then((response) => {

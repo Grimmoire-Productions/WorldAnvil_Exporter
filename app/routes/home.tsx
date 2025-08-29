@@ -1,15 +1,18 @@
-import React from "react";
-import { redirect } from "react-router";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { UserContext } from "~/context/UserContext";
 import type { UserContextType } from "~/utils/types";
 import {ROUTE_PATHS} from "~/routes"
 
 export default function HomePage() {
   const { isLoggedIn } = React.useContext(UserContext) as UserContextType;
+  const navigate = useNavigate();
 
-  if (isLoggedIn) {
-    return redirect(ROUTE_PATHS.worlds)
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(ROUTE_PATHS.worlds);
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <div>

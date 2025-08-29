@@ -10,7 +10,7 @@ import type {
 import React from "react";
 import { Outlet, redirect } from "react-router";
 
-export default function WorldsProtectedRoute() {
+export default function WorldProtectedRoute() {
   const { user, isLoggedIn } = React.useContext(UserContext) as UserContextType;
   const { selectedWorld } = React.useContext(WorldContext) as WorldContextType;
 

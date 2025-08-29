@@ -1,14 +1,23 @@
 import { Outlet } from 'react-router';
 import styles from './authenticated.module.css';
-import MainHeader from '../components/MainHeader/MainHeader';
+import WorldProvider from '~/context/WorldContext';
+import type { WorldInitialValues } from '~/utils/types';
+
 export default function AuthenticatedRoute() {
+  const worldInitialValues: WorldInitialValues = {
+    worldIsLoading: false,
+    selectedWorld: null,
+    selectedTags: [],
+    selectedRunTag: null,
+  };
 
   return (
-    <div className={styles.authenticated}>
-      <MainHeader/>
-      <main className={styles.main}>
-        <Outlet />
-      </main>
-    </div>
+    <WorldProvider initialValues={worldInitialValues}>
+      <div className={styles.authenticated}>
+        <main className={styles.main}>
+          <Outlet />
+        </main>
+      </div>
+    </WorldProvider>
   );
 }
