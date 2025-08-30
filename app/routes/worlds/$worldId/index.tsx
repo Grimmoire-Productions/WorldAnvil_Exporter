@@ -16,6 +16,7 @@ export default function WorldIdPage() {
     worldIsLoading,
     setWorldIsLoading,
     selectedWorld,
+    setSelectedWorld,
     setSelectedTags,
     setSelectedRunTag,
   } = React.useContext(WorldContext) as WorldContextType;
@@ -35,25 +36,37 @@ export default function WorldIdPage() {
       if (!selectedWorld.characterSheets || !selectedWorld.tags) {
         loadingWorldRef.current = worldId;
         setWorldIsLoading(true);
-        try {
-          backendAPI.getCharacterSheets(selectedWorld.id).then((results) => {
+        
+        const loadCharacterSheets = async () => {
+          try {
+            const results = await backendAPI.getCharacterSheets(selectedWorld.id);
             if (results.length > 0) {
-              selectedWorld.characterSheets = results;
               const tagSet = new Set(results.map((sheet) => sheet.tags).flat());
-              selectedWorld.tags = [...tagSet];
+              
+              // Update world with character sheets and tags using setSelectedWorld
+              setSelectedWorld({
+                ...selectedWorld,
+                characterSheets: results,
+                tags: [...tagSet]
+              });
             }
-          })
-        } catch (error) {
-          console.error("Failed to load world data:", error);
-        } finally {
-          setWorldIsLoading(false);
-          loadingWorldRef.current = "";
-        }
-    };
+          } catch (error) {
+            console.error("Failed to load world data:", error);
+          } finally {
+            setWorldIsLoading(false);
+            loadingWorldRef.current = "";
+          }
+        };
+        
+        loadCharacterSheets();
+      };
   }, [
     worldId,
     selectedWorld,
     setWorldIsLoading,
+    setSelectedWorld,
+    setSelectedTags,
+    setSelectedRunTag,
   ]);
 
   const handleExportClick = () => {
