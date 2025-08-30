@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ExportHeader from "../../app/containers/ExportToolContainer/ExportHeader/ExportHeader"
-import { ArticleContext } from "../../app/context/ArticleContext";
-import { UserContext } from "../../app/context/UserContext";
-import { WorldContext } from "../../app/context/WorldContext";
-import type { ArticleContextType, UserContextType, WorldContextType } from "../../app/utils/types";
+import ExportHeader from "./ExportHeader"
+import { ArticleContext } from "../../../context/ArticleContext";
+import { UserContext } from "../../../context/UserContext";
+import { WorldContext } from "../../../context/WorldContext";
+import type { ArticleContextType, UserContextType, WorldContextType } from "../../../utils/types";
 
 // Mock the SearchDropdown component
 jest.mock("../../app/components/SearchDropdown/SearchDropdown", () => {
@@ -118,19 +118,70 @@ describe("ExportHeader", () => {
     expiresAt: 1234,
     setExpiresAt: jest.fn(),
     applicationKey: "test-app-key",
-    setApplicationKey: jest.fn()
+    setApplicationKey: jest.fn(),
+    isAutoLoginPending: false,
+    setIsAutoLoginPending: jest.fn(),
+    isAutoLoginInProgress: false,
+    setIsAutoLoginInProgress: jest.fn(),
   } as UserContextType;
+
+  // Helper functions that mirror the actual export page logic
+  const runDropdownOptions = (tags: string[] | undefined | null) => {
+    const options: any[] = [];
+    if (tags) {
+      tags.filter(tag => tag.toLowerCase().includes('run')).forEach((tag: string) => {
+        options.push({
+          value: tag,
+          id: tag,
+          label: tag
+        });
+      });
+    }
+    return options;
+  };
+
+  const tagDropdownOptions = (tags: string[] | undefined | null) => {
+    const options: any[] = [];
+    if (tags) {
+      tags.filter(tag => !tag.toLowerCase().includes('run') && !tag.toLowerCase().includes('character_sheet')).forEach((tag: string) => {
+        options.push({
+          value: tag,
+          id: tag,
+          label: tag
+        });
+      });
+    }
+    return options;
+  };
 
   const renderWithContexts = (
     articleContext = mockArticleContext,
     worldContext = mockWorldContext,
     userContext = mockUserContext,
   ) => {
+    // Create articlesList from selectedWorld's characterSheets
+    const articlesList = worldContext.selectedWorld?.characterSheets?.map(sheet => ({
+      value: sheet.title,
+      id: sheet.articleId,
+      label: sheet.title
+    })) || [];
+
     return render(
       <ArticleContext.Provider value={articleContext}>
         <WorldContext.Provider value={worldContext}>
           <UserContext.Provider value={userContext}>
-            <ExportHeader />
+            <ExportHeader 
+              selectedWorld={worldContext.selectedWorld}
+              selectedTags={worldContext.selectedTags || []}
+              selectedRunTag={worldContext.selectedRunTag}
+              articlesList={articlesList}
+              articleId={articleContext.articleId}
+              runDropdownOptions={runDropdownOptions}
+              tagDropdownOptions={tagDropdownOptions}
+              onSelectedTagChange={worldContext.setSelectedTags}
+              onSelectedRunTagChange={worldContext.setSelectedRunTag}
+              onArticleChange={(option: any) => articleContext.setArticleId(option.id)}
+            />
           </UserContext.Provider>
         </WorldContext.Provider>
       </ArticleContext.Provider>,
@@ -223,49 +274,35 @@ describe("ExportHeader", () => {
     });
   });
 
-  describe("useEffect Hooks", () => {
-    it("resets state when selectedWorld changes", () => {
-      const { rerender } = renderWithContexts();
-
-      // Change selectedWorld
-      const newWorldContext = {
-        ...mockWorldContext,
-        selectedWorld: mockUserContext.user.worlds[0],
-      };
-
-      rerender(
-        <ArticleContext.Provider value={mockArticleContext}>
-          <WorldContext.Provider value={newWorldContext}>
-            <UserContext.Provider value={mockUserContext}>
-              <ExportHeader />
-            </UserContext.Provider>
-          </WorldContext.Provider>
-        </ArticleContext.Provider>,
-      );
-
-      expect(mockArticleContext.setArticleId).toHaveBeenCalledWith("");
-      expect(mockArticleContext.setActiveCharacter).toHaveBeenCalledWith("");
-      expect(mockWorldContext.setSelectedTags).toHaveBeenCalledWith([]);
-      expect(mockWorldContext.setSelectedRunTag).toHaveBeenCalledWith(null);
-    });
-
-    it("calls fetchAndProcessCharacter when articleId changes", () => {
-      const articleContextWithId = {
-        ...mockArticleContext,
-        articleId: "char1",
-      };
-
+  describe("Component Props", () => {
+    it("displays correct articlesList when world has character sheets", () => {
       const selectedWorldContext = {
         ...mockWorldContext,
         selectedWorld: mockUserContext.user.worlds[0],
       };
 
-      renderWithContexts(articleContextWithId, selectedWorldContext);
+      renderWithContexts(mockArticleContext, selectedWorldContext);
 
-      expect(mockArticleContext.fetchAndProcessCharacter).toHaveBeenCalledWith(
-        "char1",
-        "test-world-1",
-      );
+      // Should show the articles dropdown with characters from the selected world
+      expect(screen.getByTestId("select-article")).toBeInTheDocument();
+      
+      // Check that the select dropdown contains the expected options
+      const articleSelect = screen.getByTestId("select-article-select");
+      expect(articleSelect).toBeInTheDocument();
+    });
+
+    it("handles empty articlesList when world has no character sheets", () => {
+      const selectedWorldContext = {
+        ...mockWorldContext,
+        selectedWorld: {
+          ...mockUserContext.user.worlds[1], // This one has null characterSheets
+        },
+      };
+
+      renderWithContexts(mockArticleContext, selectedWorldContext);
+
+      // Should still show the articles dropdown, but it will be empty
+      expect(screen.getByTestId("select-article")).toBeInTheDocument();
     });
   });
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import LoginPage from '../../app/routes/auth/login';
-import UserProvider from '../../app/context/UserContext';
+import LoginPage from '../login';
+import UserProvider from '../../../context/UserContext';
 import '@testing-library/jest-dom';
-import type { UserInitialValues } from '../../app/utils/types';
+import type { UserInitialValues } from '../../../utils/types';
 /* eslint-disable no-empty-function, @typescript-eslint/no-empty-function */
 
 
