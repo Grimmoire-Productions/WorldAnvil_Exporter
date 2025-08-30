@@ -49,6 +49,10 @@ export interface UserContextType {
   setExpiresAt: (value: React.SetStateAction<number | null>) => void;
   applicationKey: string | null;
   setApplicationKey: (value: React.SetStateAction<string | null>) => void;
+  isAutoLoginPending: boolean;
+  setIsAutoLoginPending: (value: React.SetStateAction<boolean>) => void;
+  isAutoLoginInProgress: boolean;
+  setIsAutoLoginInProgress: (value: React.SetStateAction<boolean>) => void;
 }
 
 export interface UserInitialValues {
@@ -57,6 +61,8 @@ export interface UserInitialValues {
   expiresAt: number | null;
   user: User | null;
   applicationKey: string | null;
+  isAutoLoginPending: boolean;
+  isAutoLoginInProgress: boolean;
 }
 
 export interface UserToken {

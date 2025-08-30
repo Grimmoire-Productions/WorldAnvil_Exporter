@@ -131,7 +131,7 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
     let offset = 0;
     let hasMore = true;
 
-    console.log("MOCK_API ", process.env.MOCK_API);
+    if (process.env.MOCK_API) {console.log("MOCK_API ", process.env.MOCK_API)}
     if (process.env.MOCK_API === "true") {
       return [mockCharacterSheet];
     }

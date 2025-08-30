@@ -12,6 +12,8 @@ const UserProvider = ({ initialValues, children }: {
   const [user, setUser] = useState(initialValues.user);
   const [expiresAt, setExpiresAt] = useState(initialValues.expiresAt);
   const [applicationKey, setApplicationKey] = useState(initialValues.applicationKey);
+  const [isAutoLoginPending, setIsAutoLoginPending] = useState(initialValues.isAutoLoginPending);
+  const [isAutoLoginInProgress, setIsAutoLoginInProgress] = useState(initialValues.isAutoLoginInProgress);
 
   return (
     <UserContext.Provider
@@ -26,6 +28,10 @@ const UserProvider = ({ initialValues, children }: {
         setExpiresAt,
         applicationKey,
         setApplicationKey,
+        isAutoLoginPending,
+        setIsAutoLoginPending,
+        isAutoLoginInProgress,
+        setIsAutoLoginInProgress,
       }}
     >
       {children}
