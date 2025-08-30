@@ -11,12 +11,13 @@ import type {
 } from "~/utils/types";
 import styles from './MainHeader.module.css';
 import { WorldContext } from '~/context/WorldContext';
-
+import { useLogout } from '~/hooks/useLogout';
 function MainHeader() {
   const { user, isLoggedIn } = React.useContext(UserContext) as UserContextType;
   
   const navigate = useNavigate();
   const { worldId } = useParams<{ worldId?: string }>();
+  const { logout } = useLogout();
 
   const {
     selectedWorld,
@@ -66,6 +67,17 @@ function MainHeader() {
     return options;
   };
 
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.success) {
+      navigate('/auth/login');
+    } else {
+      console.error('Logout failed:', result.error);
+      // Still navigate to login even if logout failed to avoid stuck state
+      navigate('/auth/login');
+    }
+  };
+
   if (!isLoggedIn) {
     return null;
   }
@@ -103,6 +115,7 @@ function MainHeader() {
 
           <div className={styles.userInfo}>
             <span>Logged in as {user?.displayName || 'Loading...'}</span>
+            <span className={styles.logoutButton} onClick={handleLogout}>Logout</span>
           </div>
         </div>
       </div>

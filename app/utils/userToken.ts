@@ -41,3 +41,7 @@ export function getUserToken(): UserToken | null {
   }
   return item;
 }
+
+export function clearUserToken(): void {
+  localStorage.removeItem(WA_TOKEN)
+}

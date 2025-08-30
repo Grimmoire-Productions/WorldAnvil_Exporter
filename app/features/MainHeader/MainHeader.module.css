@@ -37,6 +37,19 @@
   color: #666;
   font-size: 0.9rem;
   white-space: nowrap;
+  display:flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.logoutButton {
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 0.25rem;
+}
+
+.logoutButton:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
