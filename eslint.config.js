@@ -9,11 +9,23 @@ import tseslint from 'typescript-eslint'
 import pluginJest from 'eslint-plugin-jest';
 
 export default [
-  js.configs.recommended, 
-  ...tseslint.configs.recommended, 
   {
-    ignores: ['dist', 'coverage', 'node_modules'] 
-  }, 
+    ignores: [
+      'dist', 
+      'coverage', 
+      'node_modules',
+      'build/**/*',
+      '.react-router/**/*',
+      '*.min.js',
+      '**/*.min.js',
+      'debug-auth.js',
+      '**/*.stories.tsx',
+      '**/*.json'
+    ] 
+  },
+  // Base config for all files
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -30,9 +42,7 @@ export default [
       'react-refresh': reactRefresh,
     },
     rules: {
-      ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
@@ -40,7 +50,7 @@ export default [
     },
   },
   {
-    files: ["tests/**/*"],
+    files: ["**/*.test.*", "**/__tests__/**/*", "**/tests/**/*", "jest.setup.ts"],
     plugins: {
       jest: pluginJest,
     },
@@ -56,6 +66,22 @@ export default [
       'jest/no-identical-title': 'error',
       'jest/prefer-to-have-length': 'warn',
       'jest/valid-expect': 'error',
+    },
+  },
+  {
+    files: ["server/**/*", "*.config.js", "*.config.ts", "vite.config.js", ".storybook/**/*"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
+    files: ["tests/**/*"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
     },
   },
   ...storybook.configs["flat/recommended"]

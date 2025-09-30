@@ -41,7 +41,7 @@ const ArticleProvider: React.FC<{
         setActiveCharacter('');
       }
     } catch (error) {
-      setErrorMessage(`Failed to load character. Please try again.`);
+      setErrorMessage(`Failed to load character. Please try again. ${error}`);
       setActiveCharacter('');
     } finally {
       setIsArticleLoading(false);

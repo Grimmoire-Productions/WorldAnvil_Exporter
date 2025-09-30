@@ -53,7 +53,7 @@ export const WithBackendApplicationKey: Story = {
   decorators: [
     (Story) => {
       // Override the checkCredentials method before component renders
-      const originalCheckCredentials = backendAPI.checkCredentials;
+      const _originalCheckCredentials = backendAPI.checkCredentials;
       backendAPI.checkCredentials = () => Promise.resolve({ hasAppKey: true });
       
       return (
@@ -63,7 +63,6 @@ export const WithBackendApplicationKey: Story = {
       );
     },
   ],
-  name: "With Backend Application Key",
   parameters: {
     docs: {
       description: {
@@ -86,7 +85,7 @@ export const WithoutBackendApplicationKey: Story = {
         return () => {
           backendAPI.checkCredentials = originalCheckCredentials;
         };
-      }, []);
+      }, [originalCheckCredentials]);
       
       return (
         <div style={{ width: "100%", minHeight: "200px" }}>
@@ -95,7 +94,6 @@ export const WithoutBackendApplicationKey: Story = {
       );
     },
   ],
-  name: "Without Backend Application Key",
   parameters: {
     docs: {
       description: {

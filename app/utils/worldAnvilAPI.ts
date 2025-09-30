@@ -23,7 +23,7 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
     }
   }
 
-  protected logError(message: string, ...args: any[]): void {
+  protected logError(message: string, ...args: unknown[]): void {
     console.error(message, ...args);
   }
 

@@ -70,8 +70,8 @@ export abstract class WorldAnvilBaseService {
   }
 
   // Abstract methods that must be implemented by platform-specific services
-  protected abstract logError(message: string, ...args: any[]): void;
-  protected abstract onTokenRefresh?(token: string): void;
+  protected abstract logError(message: string, ...args: unknown[]): void;
+  protected abstract onTokenRefresh?(_token: string): void;
 
   // Shared API call methods
   async fetchUserIdentity(): Promise<UserIdentityResponse> {

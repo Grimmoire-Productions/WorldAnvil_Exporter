@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, redirect } from 'react-router';
+import { useNavigate } from 'react-router';
 import { UserContext } from '~/context/UserContext';
 import type { UserContextType } from '~/utils/types';
 import backendAPI from '~/utils/backendAPI';

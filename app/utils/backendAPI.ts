@@ -7,7 +7,6 @@ import type {
 const baseURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 class BackendAPIService {
-  // @ts-ignore TS6133
   private sessionId: string | null = null;
 
   private async request(
@@ -43,7 +42,7 @@ class BackendAPIService {
 
   async logIn(userToken: string, appKey?: string): Promise<User> {
     // Only send appKey if explicitly provided (for environments without backend API key)
-    const payload: any = { userToken };
+    const payload: { userToken: string; appKey?: string } = { userToken };
     if (appKey) {
       payload.appKey = appKey;
     }

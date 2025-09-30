@@ -5,7 +5,7 @@ import ExportHeader from "./ExportHeader"
 import { ArticleContext } from "../../../context/ArticleContext";
 import { UserContext } from "../../../context/UserContext";
 import { WorldContext } from "../../../context/WorldContext";
-import type { ArticleContextType, UserContextType, WorldContextType } from "../../../utils/types";
+import type { ArticleContextType, UserContextType, WorldContextType, DropdownOption } from "../../../utils/types";
 
 // Mock the SearchDropdown component
 jest.mock("../../app/components/SearchDropdown/SearchDropdown", () => {
@@ -16,23 +16,30 @@ jest.mock("../../app/components/SearchDropdown/SearchDropdown", () => {
     handleChange,
     currentSelection,
     isMultiSelect,
-  }: any) {
+  }: {
+    id: string;
+    placeholder: string;
+    items: DropdownOption[];
+    handleChange: (value: DropdownOption | DropdownOption[]) => void;
+    currentSelection?: DropdownOption | DropdownOption[];
+    isMultiSelect?: boolean;
+  }) {
     return (
       <div data-testid={id}>
         <select
           data-testid={`${id}-select`}
           onChange={(e) => {
             const selectedItem = items.find(
-              (item: any) => item.value === e.target.value,
+              (item: DropdownOption) => item.value === e.target.value,
             );
             if (selectedItem) {
               handleChange(isMultiSelect ? [selectedItem] : selectedItem);
             }
           }}
-          value={currentSelection?.value || ""}
+          value={Array.isArray(currentSelection) ? "" : currentSelection?.value || ""}
         >
           <option value="">{placeholder}</option>
-          {items.map((item: any) => (
+          {items.map((item: DropdownOption) => (
             <option key={item.id} value={item.value}>
               {item.label}
             </option>
@@ -126,8 +133,8 @@ describe("ExportHeader", () => {
   } as UserContextType;
 
   // Helper functions that mirror the actual export page logic
-  const runDropdownOptions = (tags: string[] | undefined | null) => {
-    const options: any[] = [];
+  const runDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
+    const options: DropdownOption[] = [];
     if (tags) {
       tags.filter(tag => tag.toLowerCase().includes('run')).forEach((tag: string) => {
         options.push({
@@ -140,8 +147,8 @@ describe("ExportHeader", () => {
     return options;
   };
 
-  const tagDropdownOptions = (tags: string[] | undefined | null) => {
-    const options: any[] = [];
+  const tagDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
+    const options: DropdownOption[] = [];
     if (tags) {
       tags.filter(tag => !tag.toLowerCase().includes('run') && !tag.toLowerCase().includes('character_sheet')).forEach((tag: string) => {
         options.push({
@@ -160,7 +167,7 @@ describe("ExportHeader", () => {
     userContext = mockUserContext,
   ) => {
     // Create articlesList from selectedWorld's characterSheets
-    const articlesList = worldContext.selectedWorld?.characterSheets?.map(sheet => ({
+    const articlesList: DropdownOption[] = worldContext.selectedWorld?.characterSheets?.map(sheet => ({
       value: sheet.title,
       id: sheet.articleId,
       label: sheet.title
@@ -180,7 +187,7 @@ describe("ExportHeader", () => {
               tagDropdownOptions={tagDropdownOptions}
               onSelectedTagChange={worldContext.setSelectedTags}
               onSelectedRunTagChange={worldContext.setSelectedRunTag}
-              onArticleChange={(option: any) => articleContext.setArticleId(option.id)}
+              onArticleChange={(option: DropdownOption) => articleContext.setArticleId(option.id)}
             />
           </UserContext.Provider>
         </WorldContext.Provider>

@@ -5,7 +5,6 @@ import LoginPage from '../login';
 import UserProvider from '../../../context/UserContext';
 import '@testing-library/jest-dom';
 import type { UserInitialValues } from '../../../utils/types';
-/* eslint-disable no-empty-function, @typescript-eslint/no-empty-function */
 
 
 describe('LoginPage', () => {

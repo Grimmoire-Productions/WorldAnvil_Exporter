@@ -5,7 +5,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-import { useEffect, useContext, useState, useRef } from 'react';
+import { useEffect, useContext, useRef } from 'react';
 import UserProvider from '~/context/UserContext';
 import { UserContext } from '~/context/UserContext';
 import { useLogin } from '~/hooks/useLogin';

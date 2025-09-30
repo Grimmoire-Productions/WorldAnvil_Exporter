@@ -123,7 +123,7 @@ export async function ProcessArticle(data: ArticleResponse, selectedWorldKey: st
         <img src="${footerImageSrc}"/>
     </footer>`)
 
-  var joinedContent = arrayContent.join("\n");
+  let joinedContent = arrayContent.join("\n");
   joinedContent = joinedContent.replaceAll("[", "");
   joinedContent = joinedContent.replaceAll("]", "");
 

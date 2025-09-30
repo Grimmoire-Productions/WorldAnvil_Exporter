@@ -6,7 +6,7 @@ import type {
   ArticleResponse,
   CharacterSheet
 } from '../../../shared/types/worldAnvilTypes.js';
-import { mockUser } from '../../__mocks__/mockUserData'
+// import { mockUser } from '../../__mocks__/mockUserData'
 import { mockCharacterSheet } from "../../__mocks__/mockArticleData";
 
 
@@ -27,7 +27,7 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
     }
   }
 
-  protected logError(message: string, ...args: any[]): void {
+  protected logError(message: string, ...args: unknown[]): void {
     console.error(message, ...args);
   }
 

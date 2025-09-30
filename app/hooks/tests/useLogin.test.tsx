@@ -2,8 +2,8 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { useLogin } from '../../app/hooks/useLogin';
 import UserProvider from '../../app/context/UserContext';
-import type { UserInitialValues } from '../../app/utils/types';
-import { setUserToken, getUserToken } from '../../app/utils/userToken';
+import type { UserInitialValues, User } from '../../../app/utils/types';
+import { setUserToken } from '../../app/utils/userToken';
 
 import backendAPI from '../../app/utils/backendAPI';
 
@@ -35,6 +35,8 @@ describe('useLogin', () => {
     accessToken: '',
     expiresAt: null,
     applicationKey: null,
+    isAutoLoginPending: false,
+    isAutoLoginInProgress: false,
   };
 
   const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -58,7 +60,7 @@ describe('useLogin', () => {
     const { result } = renderHook(() => useLogin(), { wrapper });
     const mockSetUserToken = setUserToken as jest.MockedFunction<typeof setUserToken>;
     
-    let user: any;
+    let user: User;
     await act(async () => {
       user = await result.current.login('test-token', 'test-app-key');
     });
