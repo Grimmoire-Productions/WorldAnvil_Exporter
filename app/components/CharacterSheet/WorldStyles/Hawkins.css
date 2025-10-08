@@ -215,14 +215,8 @@
     color: black;
     line-height: 1.15;
     break-inside: avoid;
-  }
-  
-  li::before {
-    margin-left: -18pt;
-    white-space: nowrap;
-    display: inline-block;
-    min-width: 18pt;
-    content: "\00301C ";
+    margin-left: 30px;
+    margin-bottom: .5em;
   }
   
   hr {
@@ -281,14 +275,17 @@
    margin-bottom: 0px;
   }
 
-  .goals li {
-    margin-left: 30px;
-    margin-bottom: .5em;
-  }
-
   .goals li:last-child {
     margin-bottom: 0px;
    }
+
+  .goals li::before {
+    /* margin-left: -18pt; */
+    white-space: nowrap;
+    display: inline-block;
+    /* min-width: 18pt; */
+    /* content: "\00301C "; */
+  }
 
   .song {
     color: black;
@@ -311,5 +308,25 @@
   
   .notes p {
     margin-left: 20px;
+  }
+
+  .notes ul {
+    margin-left: 60px;
+    margin-block-start: 0.25em;
+  }
+
+  .notes li {
+    margin-bottom: .5em;
+  }
+
+  .notes li::before {
+    margin-left: -18pt;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: 18pt;
+  }
+
+  .notes li:last-child {
+    margin-bottom: 0px;
   }
 }

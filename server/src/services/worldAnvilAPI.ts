@@ -144,6 +144,7 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
         .filter(
           (article) =>
             article.tags?.includes("character_sheet") ||
+            article.tags?.includes("blue_sheet") ||
             article.customArticleTemplate
               ?.toLowerCase()
               .includes("character sheet"),
