@@ -29,8 +29,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "typecheck": "react-router typegen && tsc --noEmit",
-    "server": "cd server && npx tsx src/app.ts",
-    "server:dev": "cd server && npx tsx watch src/app.ts",
+    "server": "cd server && npx tsx --env-file=.env src/app.ts",
+    "server:dev": "cd server && npx tsx watch --env-file=../.env --env-file=.env src/app.ts",
     "dev": "concurrently \"npm run server:dev\" \"npm start\"",
     "build:server": "cd server && tsc",
     "check:auth": "node debug-auth.js"
