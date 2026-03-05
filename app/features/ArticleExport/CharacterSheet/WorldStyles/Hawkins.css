@@ -199,7 +199,6 @@
   }
 
   ul {
-    list-style-type: none;
     margin-block-start: 0.75em;
     margin-block-end: 0.75em;
   }
@@ -215,8 +214,6 @@
     color: black;
     line-height: 1.15;
     break-inside: avoid;
-    margin-left: 30px;
-    margin-bottom: .5em;
   }
   
   hr {
@@ -275,6 +272,11 @@
    margin-bottom: 0px;
   }
 
+  .goals li {
+    margin-left: 30px;
+    margin-bottom: .5em;
+  }
+
   .goals li:last-child {
     margin-bottom: 0px;
    }
@@ -308,6 +310,7 @@
   
   .notes p {
     margin-left: 20px;
+    margin-bottom: 0px;
   }
 
   .notes ul {
