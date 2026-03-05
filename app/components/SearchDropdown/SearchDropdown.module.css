@@ -1,3 +1,12 @@
+/* Label styles */
+.label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #333;
+}
+
 /* Styles for the main container of react-select */
 .container {
   width: 200px;

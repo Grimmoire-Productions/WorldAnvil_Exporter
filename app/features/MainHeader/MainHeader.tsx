@@ -97,6 +97,8 @@ function MainHeader() {
             <SearchDropdown
               id="select-world"
               className="select-world"
+              label=""
+              ariaLabel="world selection"
               placeholder="--Choose a World--"
               items={worldDropdownOptions(user.worlds)}
               isMultiSelect={false}
@@ -111,6 +113,7 @@ function MainHeader() {
                     }
                   : undefined
               }
+              isDisabled={!user?.worlds}
             />
           ) : isLoggedIn ? (
             <div>Loading worlds...</div>

@@ -2,19 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router';
 import type { MultiValue } from 'react-select';
 import ExportHeader from '~/features/ArticleExport/ExportHeader/ExportHeader';
-import { ArticleContext } from '~/context/ArticleContext';
 import { WorldContext } from '~/context/WorldContext';
-import type { ArticleContextType, WorldContextType, DropdownOption, CharacterSheet } from '~/utils/types';
+import type { WorldContextType, DropdownOption, CharacterSheet } from '~/utils/types';
 
 export default function ExportWrapper() {
-  const { worldId } = useParams<{ worldId?: string }>();
+  const { worldId, articleId } = useParams<{ worldId?: string; articleId?: string }>();
   const navigate = useNavigate();
-
-  const {
-    articleId,
-    setArticleId,
-    setActiveCharacter
-  } = React.useContext(ArticleContext) as ArticleContextType;
 
   const {
     selectedWorld,
@@ -22,6 +15,7 @@ export default function ExportWrapper() {
     setSelectedTags,
     selectedRunTag,
     setSelectedRunTag,
+    worldIsLoading,
   } = React.useContext(WorldContext) as WorldContextType;
 
   const [articlesList, setArticlesList] = useState<DropdownOption[]>([]);
@@ -42,9 +36,8 @@ export default function ExportWrapper() {
 
   const handleArticleChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
     const selectedOption = options as DropdownOption;
-    setArticleId(selectedOption.id);
 
-    // Navigate to character sheet route
+    // Navigate to character sheet route (URL is source of truth)
     if (worldId && selectedOption.id) {
       navigate(`/worlds/${worldId}/export/${selectedOption.id}`);
     }
@@ -119,11 +112,13 @@ export default function ExportWrapper() {
         selectedRunTag={selectedRunTag}
         articlesList={articlesList}
         articleId={articleId}
+        worldId={worldId}
         runDropdownOptions={runDropdownOptions}
         tagDropdownOptions={tagDropdownOptions}
         onSelectedTagChange={handleSelectedTagChange}
         onSelectedRunTagChange={handleSelectedRunTagChange}
         onArticleChange={handleArticleChange}
+        isLoading={worldIsLoading}
       />
       <Outlet />
     </>

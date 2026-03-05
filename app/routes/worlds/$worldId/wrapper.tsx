@@ -1,15 +1,16 @@
-import ArticleProvider from "../../../context/ArticleContext";
-import { UserContext } from "../../../context/UserContext";
-import { WorldContext } from "../../../context/WorldContext";
-import { ROUTE_PATHS } from "../../../routes";
+import ArticleProvider from "~/context/ArticleContext";
+import { UserContext } from "~/context/UserContext";
+import { WorldContext } from "~/context/WorldContext";
+import { ROUTE_PATHS } from "~/routes";
 import type {
   ArticleInitialValues,
   UserContextType,
   WorldContextType,
-} from "../../../utils/types";
+} from "~/utils/types";
 import React, { useEffect, useRef } from "react";
 import { Outlet, useNavigate, useParams } from "react-router";
 import backendAPI from "~/utils/backendAPI";
+import LoadingAnimation from "~/components/LoadingAnimation/LoadingAnimation";
 
 export default function WorldProtectedRoute() {
   const { user, isLoggedIn, isAutoLoginPending, isAutoLoginInProgress } = React.useContext(UserContext) as UserContextType;
@@ -91,7 +92,12 @@ export default function WorldProtectedRoute() {
 
   // Show loading while auto-login pending/in progress or if redirecting
   if (isAutoLoginPending || isAutoLoginInProgress || !user || !isLoggedIn || !selectedWorld || worldIsLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
+        <LoadingAnimation />
+        <p style={{ marginTop: '1rem', color: '#666' }}>Loading world data...</p>
+      </div>
+    );
   }
   
   const articleInitialValues: ArticleInitialValues = {

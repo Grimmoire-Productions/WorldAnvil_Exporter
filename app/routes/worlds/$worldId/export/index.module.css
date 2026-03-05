@@ -4,21 +4,6 @@
   min-height: auto;
 }
 
-.ExportHeader {
-  display: flex;
-  justify-content: space-around;
-  align-items:center;
-  background-color: darkslategrey;
-  color: black;
-  padding-top: 10px;
-  padding-bottom: 10px;
-
-  p,
-  label {
-    color: white;
-  }
-}
-
 .CharacterSheet {
   margin-left: 20px;
   margin-right: 20px;
@@ -72,10 +57,4 @@
 .exportInstructions p {
   font-size: 1.1rem;
   line-height: 1.5;
-}
-
-@media print {
-  .ExportHeader {
-    display: none;
-  }
 }

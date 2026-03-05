@@ -34,6 +34,7 @@ describe("SearchDropdown", () => {
   const defaultProps = {
     id: "test-dropdown",
     className: "test-class",
+    label: "Test Label",
     placeholder: "Select an option",
     items: mockItems,
     isMultiSelect: false,

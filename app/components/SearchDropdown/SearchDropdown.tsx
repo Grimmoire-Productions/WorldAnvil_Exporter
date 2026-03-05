@@ -6,23 +6,29 @@ import styles from "./SearchDropdown.module.css";
 type SearchDropdownProps = {
   id: string;
   className: string;
+  label: string;
+  ariaLabel?: string;
   placeholder: string;
   items: DropdownOption[];
   isMultiSelect: boolean;
   error: string;
   handleChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
   currentSelection?: DropdownOption | MultiValue<DropdownOption>;
+  isDisabled?: boolean;
 };
 
 function SearchDropdown({
   id,
   className,
+  label,
+  ariaLabel,
   placeholder,
   items,
   isMultiSelect,
   error,
   handleChange,
   currentSelection,
+  isDisabled = false,
 }: SearchDropdownProps) {
   const handleSelectionChange = (
     options: DropdownOption | MultiValue<DropdownOption> | null,
@@ -60,8 +66,14 @@ function SearchDropdown({
 
   return (
     <div data-testid={id}>
+      {label && (
+        <label htmlFor={id} className={styles.label}>
+          {label}
+        </label>
+      )}
       {isMultiSelect ? (
         <Select<DropdownOption, true>
+          inputId={id}
           className={className}
           classNames={customClassNames}
           placeholder={placeholder}
@@ -71,9 +83,12 @@ function SearchDropdown({
           isSearchable={true}
           isMulti
           noOptionsMessage={() => error}
+          aria-label={ariaLabel || label}
+          isDisabled={isDisabled}
         />
       ) : (
         <Select<DropdownOption>
+          inputId={id}
           className={className}
           classNames={customClassNames}
           placeholder={placeholder}
@@ -82,6 +97,8 @@ function SearchDropdown({
           options={items}
           isSearchable={true}
           noOptionsMessage={() => error}
+          aria-label={ariaLabel || label}
+          isDisabled={isDisabled}
         />
       )}
     </div>
