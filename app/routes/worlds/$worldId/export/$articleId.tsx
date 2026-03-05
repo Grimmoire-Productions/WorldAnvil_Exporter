@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import CharacterSheet from '~/components/CharacterSheet/CharacterSheet';
+import CharacterSheet from '~/features/ArticleExport/CharacterSheet/CharacterSheet';
 import LoadingAnimation from '~/components/LoadingAnimation/LoadingAnimation';
 import { ArticleContext } from '~/context/ArticleContext';
 import { WorldContext } from '~/context/WorldContext';
@@ -10,7 +10,7 @@ export default function CharacterSheetPage() {
   const { worldId, articleId } = useParams<{ worldId: string; articleId: string }>();
   const navigate = useNavigate();
   const lastFetchedRef = useRef<string>('');
-  
+
   const {
     activeCharacter,
     isArticleLoading,
@@ -22,7 +22,7 @@ export default function CharacterSheetPage() {
   const { selectedWorld } = React.useContext(WorldContext) as WorldContextType;
 
   useEffect(() => {
-    // If articleId from URL doesn't match current articleId, fetch the character
+    // If articleId from URL doesn't match current articleId, sync it
     if (articleId && articleId !== currentArticleId) {
       setArticleId(articleId);
     }
@@ -32,7 +32,7 @@ export default function CharacterSheetPage() {
     // Fetch character data when articleId and selectedWorld are available
     if (articleId && selectedWorld && !isArticleLoading) {
       const fetchKey = `${articleId}-${selectedWorld.cssClassName || "default"}`;
-      
+
       // Prevent duplicate requests for the same character
       if (lastFetchedRef.current !== fetchKey) {
         lastFetchedRef.current = fetchKey;

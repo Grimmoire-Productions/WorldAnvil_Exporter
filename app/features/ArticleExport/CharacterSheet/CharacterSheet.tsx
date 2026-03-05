@@ -1,5 +1,5 @@
 import React from 'react';
-import type { World } from '../../utils/types';
+import type { World } from '~/utils/types';
 
 type CharacterSheetProps = {
   activeCharacter: string;

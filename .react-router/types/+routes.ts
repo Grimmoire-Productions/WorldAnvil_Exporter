@@ -77,6 +77,10 @@ type RouteFiles = {
     id: "routes/worlds/$worldId/index";
     page: "/worlds/:worldId";
   };
+  "routes/worlds/$worldId/export/wrapper.tsx": {
+    id: "routes/worlds/$worldId/export/wrapper";
+    page: "/worlds/:worldId/export" | "/worlds/:worldId/export/:articleId";
+  };
   "routes/worlds/$worldId/export/index.tsx": {
     id: "routes/worlds/$worldId/export/index";
     page: "/worlds/:worldId/export";

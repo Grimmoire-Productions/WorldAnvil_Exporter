@@ -52,6 +52,12 @@
   text-decoration: underline;
 }
 
+@media print {
+  .mainHeader {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .mainHeader {
     padding: 1rem;

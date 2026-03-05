@@ -19,6 +19,9 @@ type Matches = [{
   id: "routes/worlds/$worldId/wrapper";
   module: typeof import("../../wrapper.js");
 }, {
+  id: "routes/worlds/$worldId/export/wrapper";
+  module: typeof import("../wrapper.js");
+}, {
   id: "routes/worlds/$worldId/export/index";
   module: typeof import("../index.js");
 }];
