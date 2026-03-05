@@ -20,19 +20,37 @@
 
   @media print {
     header,
-    .header-space {
+    .header-space,
+    header.center,
+    footer.center {
       height: 100px;
-      padding: 10pt auto;
-      margin: 10pt auto;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 0 0 1rem 0;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 100%;
     }
     footer,
     .footer-space {
       height: 100px;
-      padding: 10pt;
-      margin: auto 10pt;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 1.5rem 0 0 0;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    header img,
+    footer img {
+      max-width: 95%;
+      height: auto;
     }
   }
-  
+
   header,
   footer {
     text-align: center;
@@ -42,7 +60,7 @@
     flex-direction: column-reverse;
     justify-content: space-around;
   }
-  
+
   img {
     max-inline-size: 100%;
   }
