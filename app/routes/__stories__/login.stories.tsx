@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import LoginPage from "../auth/login";
-import { UserContext } from "../../context/UserContext";
-import type { UserContextType } from '../../utils/types';
-import backendAPI from '../../utils/backendAPI';
+import { UserContext } from "~/context/UserContext";
+import type { UserContextType } from '~/utils/types';
+import backendAPI from '~/utils/backendAPI';
 
 const mockUserContext: UserContextType = {
   accessToken: '',
@@ -17,7 +17,11 @@ const mockUserContext: UserContextType = {
   expiresAt: null,
   setExpiresAt: () => {},
   applicationKey: '',
-  setApplicationKey: () => {}
+  setApplicationKey: () => {},
+  isAutoLoginPending: false,
+  setIsAutoLoginPending: () => {},
+  isAutoLoginInProgress: false,
+  setIsAutoLoginInProgress: () => {}
 };
 
 const LoginContainerWithContext = ({ userContext = mockUserContext }) => (
@@ -53,9 +57,8 @@ export const WithBackendApplicationKey: Story = {
   decorators: [
     (Story) => {
       // Override the checkCredentials method before component renders
-      const _originalCheckCredentials = backendAPI.checkCredentials;
       backendAPI.checkCredentials = () => Promise.resolve({ hasAppKey: true });
-      
+
       return (
         <div style={{ width: "100%", minHeight: "200px" }}>
           <Story />

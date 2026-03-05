@@ -1,165 +1,282 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
+import React from 'react';
+import { MemoryRouter } from 'react-router';
 import ExportHeader from './ExportHeader';
-import { ArticleContext } from '../../../context/ArticleContext';
-import { UserContext } from '../../../context/UserContext';
-import { WorldContext } from '../../../context/WorldContext';
-import { mockUser } from '../../../context/__mocks__/mockUserData';
-import type { ArticleContextType, UserContextType, WorldContextType } from '../../../utils/types';
+import type { DropdownOption, World } from '../../../utils/types';
 
-const mockArticleContext: ArticleContextType = {
-  articleId: '',
-  setArticleId: () => {},
-  activeCharacter: '',
-  setActiveCharacter: () => {},
-  fetchAndProcessCharacter: () => {},
-  errorMessage: null,
-  setErrorMessage: () => {},
-  isArticleLoading: false,
-  setIsArticleLoading: () => {}
+const mockWorld: World = {
+  id: "world-1",
+  title: "Test World",
+  cssClassName: "test-world",
+  characterSheets: [
+    {
+      articleId: "char-1",
+      title: "Test Character Run 1 pc",
+      tags: ["Run:1", "pc"],
+    },
+    {
+      articleId: "char-2",
+      title: "Test Character Run 1 npc",
+      tags: ["Run:1", "npc"],
+    },
+    {
+      articleId: "char-3",
+      title: "Test Character Run 2 pc",
+      tags: ["run_2", "pc"],
+    },
+    {
+      articleId: "char-4",
+      title: "Test Character Run 2 npc",
+      tags: ["run_2", "npc"],
+    },
+  ],
+  tags: ["Run:1", "run_2", "npc", "pc"],
 };
 
-const mockUserContext: UserContextType = {
-  accessToken: 'mock-token',
-  setAccessToken: () => {},
-  user: mockUser,
-  setUser: () => {},
-  isLoggedIn: true,
-  setIsLoggedIn: () => {},
-  expiresAt: null,
-  setExpiresAt: () => { },
-  applicationKey: null,
-  setApplicationKey: () => { }
-};
-
-const mockWorldContext: WorldContextType = {
-  worldIsLoading: false,
-  setWorldIsLoading: () => {},
-  selectedWorld: null,
-  setSelectedWorld: () => {},
-  selectedTags: null,
-  setSelectedTags: () => {},
-  selectedRunTag: null,
-  setSelectedRunTag: () => {}
-};
-
-const mockWorldContextWithSelectedWorld: WorldContextType = {
-  ...mockWorldContext,
-  selectedWorld: {
-    id: "world-1",
-    title: "Test World",
-    cssClassName: "test-world",
-    characterSheets: [
-      {
-        articleId: "char-1",
-        title: "Test Character Run 1 pc",
-        tags: ["Run:1", "pc"],
-      },
-      {
-        articleId: "char-2",
-        title: "Test Character Run 1 npc",
-        tags: ["Run:1", "npc"],
-      },
-      {
-        articleId: "char-3",
-        title: "Test Character Run 2 pc",
-        tags: ["run_2", "pc"],
-      },
-      {
-        articleId: "char-4",
-        title: "Test Character Run 2 npc",
-        tags: ["run_2", "npc"],
-      },
-    ],
-    tags: ["Run:1", "run_2", "npc", "pc"],
-  },
-};
-
-const mockWorldContextLoading: WorldContextType = {
-  ...mockWorldContext,
-  worldIsLoading: true,
-  selectedWorld: {
-    id: 'world-1',
-    title: 'Test World',
-    cssClassName: 'test-world',
-    characterSheets: null,
-    tags: null
+const runDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
+  const options: DropdownOption[] = [];
+  if (tags) {
+    tags.filter(tag => tag.toLowerCase().includes('run')).forEach((tag: string) => {
+      options.push({
+        value: tag,
+        id: tag,
+        label: tag
+      });
+    });
   }
+  return options;
 };
 
-const ExportHeaderWithContext = ({ 
-  articleContext = mockArticleContext,
-  userContext = mockUserContext,
-  worldContext = mockWorldContext
-}) => (
-  <ArticleContext.Provider value={articleContext}>
-    <UserContext.Provider value={userContext}>
-      <WorldContext.Provider value={worldContext}>
-        <ExportHeader />
-      </WorldContext.Provider>
-    </UserContext.Provider>
-  </ArticleContext.Provider>
-);
+const tagDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
+  const options: DropdownOption[] = [];
+  if (tags) {
+    tags.filter(tag => !tag.toLowerCase().includes('run') && !tag.toLowerCase().includes('character_sheet')).forEach((tag: string) => {
+      options.push({
+        value: tag,
+        id: tag,
+        label: tag
+      });
+    });
+  }
+  return options;
+};
+
+const articlesList: DropdownOption[] = [
+  { id: "char-1", value: "Test Character Run 1 pc", label: "Test Character Run 1 pc" },
+  { id: "char-2", value: "Test Character Run 1 npc", label: "Test Character Run 1 npc" },
+  { id: "char-3", value: "Test Character Run 2 pc", label: "Test Character Run 2 pc" },
+  { id: "char-4", value: "Test Character Run 2 npc", label: "Test Character Run 2 npc" },
+];
 
 const meta = {
-  title: 'Containers/ExportHeader',
-  component: ExportHeaderWithContext,
+  title: 'Features/ArticleExport/ExportHeader',
+  component: ExportHeader,
   parameters: {
     layout: 'fullscreen',
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '100%', minHeight: '200px' }}>
-        <Story />
-      </div>
+      <MemoryRouter>
+        <div style={{ width: '100%', minHeight: '200px' }}>
+          <Story />
+        </div>
+      </MemoryRouter>
     ),
   ],
-} satisfies Meta<typeof ExportHeaderWithContext>;
+  argTypes: {
+    onSelectedTagChange: { action: 'tag selected' },
+    onSelectedRunTagChange: { action: 'run tag selected' },
+    onArticleChange: { action: 'article selected' },
+  },
+} satisfies Meta<typeof ExportHeader>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+export const NoWorldSelected: Story = {
+  args: {
+    selectedWorld: null,
+    selectedTags: [],
+    selectedRunTag: null,
+    articlesList: [],
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Displays a message when no world has been selected yet.',
+      },
+    },
+  },
+};
+
 export const Default: Story = {
-  args: {}
+  args: {
+    selectedWorld: mockWorld,
+    selectedTags: [],
+    selectedRunTag: null,
+    articlesList,
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default state with a selected world and all character sheets available.',
+      },
+    },
+  },
 };
 
-export const WithSelectedWorld: Story = {
+export const WithWorldId: Story = {
   args: {
-    worldContext: mockWorldContextWithSelectedWorld
-  }
+    selectedWorld: mockWorld,
+    selectedTags: [],
+    selectedRunTag: null,
+    articlesList,
+    worldId: "world-1",
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Shows the back button when worldId is provided.',
+      },
+    },
+  },
 };
 
-export const LoadingWorld: Story = {
+export const WithArticleSelected: Story = {
   args: {
-    worldContext: mockWorldContextLoading,
+    selectedWorld: mockWorld,
+    selectedTags: [],
+    selectedRunTag: null,
+    articlesList,
+    articleId: "char-1",
+    worldId: "world-1",
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Shows a selected character with back button to export page.',
+      },
+    },
   },
 };
 
 export const WithRun1TagSelected: Story = {
   args: {
-    worldContext: {
-      ...mockWorldContextWithSelectedWorld,
-      selectedRunTag: { id: "Run:1", value: "Run:1", label: "Run:1" },
+    selectedWorld: mockWorld,
+    selectedTags: [],
+    selectedRunTag: { id: "Run:1", value: "Run:1", label: "Run:1" },
+    articlesList: [
+      { id: "char-1", value: "Test Character Run 1 pc", label: "Test Character Run 1 pc" },
+      { id: "char-2", value: "Test Character Run 1 npc", label: "Test Character Run 1 npc" },
+    ],
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Filters character list by Run:1 tag.',
+      },
     },
   },
 };
 
 export const WithNpcTagSelected: Story = {
   args: {
-    worldContext: {
-      ...mockWorldContextWithSelectedWorld,
-      selectedTags: [{ id: "npc", value: "npc", label: "npc" }],
+    selectedWorld: mockWorld,
+    selectedTags: [{ id: "npc", value: "npc", label: "npc" }],
+    selectedRunTag: null,
+    articlesList: [
+      { id: "char-2", value: "Test Character Run 1 npc", label: "Test Character Run 1 npc" },
+      { id: "char-4", value: "Test Character Run 2 npc", label: "Test Character Run 2 npc" },
+    ],
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Filters character list by npc tag.',
+      },
     },
   },
 };
 
 export const WithRun2AndPCTagsSelected: Story = {
   args: {
-    worldContext: {
-      ...mockWorldContextWithSelectedWorld,
-      selectedTags: [{ id: "pc", value: "pc", label: "pc" }],
-      selectedRunTag: { id: "run_2", value: "run_2", label: "run_2" },
+    selectedWorld: mockWorld,
+    selectedTags: [{ id: "pc", value: "pc", label: "pc" }],
+    selectedRunTag: { id: "run_2", value: "run_2", label: "run_2" },
+    articlesList: [
+      { id: "char-3", value: "Test Character Run 2 pc", label: "Test Character Run 2 pc" },
+    ],
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Filters character list by both run_2 and pc tags.',
+      },
+    },
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    selectedWorld: mockWorld,
+    selectedTags: [],
+    selectedRunTag: null,
+    articlesList,
+    runDropdownOptions,
+    tagDropdownOptions,
+    onSelectedTagChange: () => {},
+    onSelectedRunTagChange: () => {},
+    onArticleChange: () => {},
+    isLoading: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'All dropdowns are disabled while loading.',
+      },
     },
   },
 };
