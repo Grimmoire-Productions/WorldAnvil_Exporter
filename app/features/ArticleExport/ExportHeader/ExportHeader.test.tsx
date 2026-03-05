@@ -2,9 +2,9 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ExportHeader from "./ExportHeader"
-import { ArticleContext } from "../../../context/ArticleContext";
-import { UserContext } from "../../../context/UserContext";
-import { WorldContext } from "../../../context/WorldContext";
+import { ArticleContext } from "../../../context/ArticleContext/ArticleContext";
+import { UserContext } from "../../../context/UserContext/UserContext";
+import { WorldContext } from "../../../context/WorldContext/WorldContext";
 import type { ArticleContextType, UserContextType, WorldContextType, DropdownOption } from "../../../utils/types";
 
 // Mock the SearchDropdown component

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { UserContext } from '~/context/UserContext';
+import { UserContext } from '~/context/UserContext/UserContext';
 import type { User, UserContextType } from '~/utils/types';
 import backendAPI from '~/utils/backendAPI';
 import { setUserToken } from '~/utils/userToken';

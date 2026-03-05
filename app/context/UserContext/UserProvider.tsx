@@ -1,7 +1,6 @@
-import { createContext, useState, type ReactNode } from 'react';
-import type { UserContextType, UserInitialValues } from '../utils/types';
-
-export const UserContext = createContext<UserContextType | null>(null);
+import { useState, type ReactNode } from 'react';
+import { UserContext } from './UserContext';
+import type { UserInitialValues } from '~/utils/types';
 
 const UserProvider = ({ initialValues, children }: {
   initialValues: UserInitialValues;

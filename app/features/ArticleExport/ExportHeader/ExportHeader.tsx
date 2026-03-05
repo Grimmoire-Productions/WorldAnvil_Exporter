@@ -3,7 +3,7 @@ import type { DropdownOption, World } from '~/utils/types';
 import SearchDropdown from '~/components/SearchDropdown/SearchDropdown';
 import styles from './ExportHeader.module.css';
 import { Link } from 'react-router';
-import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 
 interface ExportHeaderProps {
   selectedWorld: World | null;

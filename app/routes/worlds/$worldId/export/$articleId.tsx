@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import CharacterSheet from '~/features/ArticleExport/CharacterSheet/CharacterSheet';
 import LoadingAnimation from '~/components/LoadingAnimation/LoadingAnimation';
-import { ArticleContext } from '~/context/ArticleContext';
-import { WorldContext } from '~/context/WorldContext';
+import { ArticleContext } from '~/context/ArticleContext/ArticleContext';
+import { WorldContext } from '~/context/WorldContext/WorldContext';
 import type { ArticleContextType, WorldContextType } from '~/utils/types';
 
 export default function CharacterSheetPage() {

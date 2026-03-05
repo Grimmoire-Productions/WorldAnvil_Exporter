@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import LoginPage from '../login';
-import UserProvider from '../../../context/UserContext';
+import UserProvider from '../../../context/UserContext/UserProvider';
 import '@testing-library/jest-dom';
 import type { UserInitialValues } from '../../../utils/types';
 

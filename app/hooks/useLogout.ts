@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { UserContext } from '~/context/UserContext';
-import { WorldContext } from '~/context/WorldContext';
+import { UserContext } from '~/context/UserContext/UserContext';
+import { WorldContext } from '~/context/WorldContext/WorldContext';
 import type { UserContextType, WorldContextType } from '~/utils/types';
 import backendAPI from '~/utils/backendAPI';
 import { clearUserToken } from '~/utils/userToken';
@@ -18,8 +18,6 @@ export const useLogout = () => {
 
   const {
     setSelectedWorld,
-    setSelectedTags,
-    setSelectedRunTag,
     setWorldIsLoading,
   } = useContext(WorldContext) as WorldContextType;
 
@@ -42,16 +40,14 @@ export const useLogout = () => {
 
       // Reset all WorldContext state to initial values
       setSelectedWorld(null);
-      setSelectedTags(null);
-      setSelectedRunTag(null);
       setWorldIsLoading(false);
 
       return { success: true };
     } catch (error) {
       console.error('Logout failed:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Logout failed' 
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Logout failed'
       };
     }
   };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { UserContext } from '~/context/UserContext';
+import { UserContext } from '~/context/UserContext/UserContext';
 import type { UserContextType } from '~/utils/types';
 import backendAPI from '~/utils/backendAPI';
 import { useLogin } from '~/hooks/useLogin';

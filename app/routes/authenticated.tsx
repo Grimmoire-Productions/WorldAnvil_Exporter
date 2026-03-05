@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router';
 import styles from './authenticated.module.css';
 import MainHeader from '~/features/MainHeader/MainHeader';
-import WorldProvider from '~/context/WorldContext';
+import WorldProvider from '~/context/WorldContext/WorldProvider';
 import type { WorldInitialValues } from '~/utils/types';
 
 export default function AuthenticatedRoute() {

@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router";
 import Root from "../root";
 import LoginPage from "../routes/auth/login";
-import UserProvider from "../context/UserContext";
+import UserProvider from "../context/UserContext/UserProvider";
 import type { UserInitialValues } from "../utils/types";
 import React from "react";
 

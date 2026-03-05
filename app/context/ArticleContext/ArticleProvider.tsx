@@ -1,15 +1,11 @@
-import React, { createContext, useState, useCallback } from 'react';
-
-import backendAPI from "../utils/backendAPI";
-import { ProcessArticle } from "../utils/processArticle"
-
+import React, { useState, useCallback } from 'react';
+import { ArticleContext } from './ArticleContext';
+import backendAPI from '~/utils/backendAPI';
+import { ProcessArticle } from '~/utils/processArticle';
 import type {
   ArticleResponse,
-  ArticleContextType,
   ArticleInitialValues,
-} from '../utils/types'
-
-export const ArticleContext = createContext<ArticleContextType | null>(null);
+} from '~/utils/types';
 
 const ArticleProvider: React.FC<{
   initialValues: ArticleInitialValues;
@@ -21,7 +17,7 @@ const ArticleProvider: React.FC<{
     initialValues.errorMessage
   );
   const [articleId, setArticleId] = useState(initialValues.articleId);
-  const [isArticleLoading, setIsArticleLoading] = useState(initialValues.isArticleLoading)
+  const [isArticleLoading, setIsArticleLoading] = useState(initialValues.isArticleLoading);
 
   const fetchAndProcessCharacter = useCallback(async (
     articleId: string,
@@ -29,7 +25,7 @@ const ArticleProvider: React.FC<{
   ) => {
     setIsArticleLoading(true);
     setErrorMessage(null);
-    
+
     try {
       const results: ArticleResponse = await backendAPI.fetchCharacter(articleId);
 
@@ -47,7 +43,7 @@ const ArticleProvider: React.FC<{
       setIsArticleLoading(false);
     }
   }, []);
-  
+
   return (
     <ArticleContext.Provider
       value={{

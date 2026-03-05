@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { useLogin } from '../../app/hooks/useLogin';
-import UserProvider from '../../app/context/UserContext';
+import UserProvider from '../../app/context/UserContext/UserProvider';
 import type { UserInitialValues, User } from '../../../app/utils/types';
 import { setUserToken } from '../../app/utils/userToken';
 

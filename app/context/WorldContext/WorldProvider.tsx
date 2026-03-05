@@ -1,7 +1,6 @@
-import React, { createContext, useState } from 'react';
-import type { WorldContextType, WorldInitialValues } from '../utils/types';
-
-export const WorldContext = createContext<WorldContextType | null>(null);
+import React, { useState } from 'react';
+import { WorldContext } from './WorldContext';
+import type { WorldInitialValues } from '~/utils/types';
 
 const WorldProvider: React.FC<{
   initialValues: WorldInitialValues;

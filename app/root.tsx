@@ -6,8 +6,8 @@ import {
   ScrollRestoration,
 } from 'react-router';
 import { useEffect, useContext, useRef } from 'react';
-import UserProvider from '~/context/UserContext';
-import { UserContext } from '~/context/UserContext';
+import UserProvider from '~/context/UserContext/UserProvider';
+import { UserContext } from '~/context/UserContext/UserContext';
 import { useLogin } from '~/hooks/useLogin';
 import { getUserToken } from '~/utils/userToken';
 import type { UserInitialValues, UserContextType } from '~/utils/types';

@@ -1,6 +1,6 @@
-import ArticleProvider from "~/context/ArticleContext";
-import { UserContext } from "~/context/UserContext";
-import { WorldContext } from "~/context/WorldContext";
+import ArticleProvider from "~/context/ArticleContext/ArticleProvider";
+import { UserContext } from "~/context/UserContext/UserContext";
+import { WorldContext } from "~/context/WorldContext/WorldContext";
 import { ROUTE_PATHS } from "~/routes";
 import type {
   ArticleInitialValues,

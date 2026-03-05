@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import type { MultiValue } from 'react-select';
 import SearchDropdown from '~/components/SearchDropdown/SearchDropdown';
-import { UserContext } from '~/context/UserContext';
+import { UserContext } from '~/context/UserContext/UserContext';
 import type {
   UserContextType,
   DropdownOption,
@@ -10,7 +10,7 @@ import type {
   WorldContextType,
 } from "~/utils/types";
 import styles from './MainHeader.module.css';
-import { WorldContext } from '~/context/WorldContext';
+import { WorldContext } from '~/context/WorldContext/WorldContext';
 import { useLogout } from '~/hooks/useLogout';
 import { useWorldFromUrl } from '~/hooks/useWorldFromUrl';
 

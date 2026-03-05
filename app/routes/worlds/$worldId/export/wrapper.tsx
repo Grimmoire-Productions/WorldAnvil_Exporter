@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router';
 import type { MultiValue } from 'react-select';
 import ExportHeader from '~/features/ArticleExport/ExportHeader/ExportHeader';
-import { WorldContext } from '~/context/WorldContext';
+import { WorldContext } from '~/context/WorldContext/WorldContext';
 import type { WorldContextType, DropdownOption } from '~/utils/types';
 
 export default function ExportWrapper() {
