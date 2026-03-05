@@ -25,9 +25,10 @@
     "noUncheckedSideEffectImports": true,
 
     "paths": {
-      "shared/*": ["./shared/*"]
+      "shared/*": ["./shared/*"],
+      "~/*": ["./app/*"]
     }
   },
-  "include": ["src", "shared"],
+  "include": ["app", "shared"],
   "exclude": ["**/*.stories.tsx", "**/*.stories.ts", "**/*.test.tsx", "**/*.test.ts", "**/*.test.jsx", "**/*.test.js", "tests/**/*"]
 }

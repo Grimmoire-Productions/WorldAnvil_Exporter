@@ -38,7 +38,7 @@ router.get('/:userId', requireAuth, async (req, res) => {
     console.error('Error details:', {
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
-      response: (error as any).response
+      response: (error as { response?: unknown }).response
     });
     res.status(500).json({ error: 'Failed to fetch worlds' });
   }

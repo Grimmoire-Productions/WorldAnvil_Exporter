@@ -6,12 +6,18 @@
     { "path": "./tsconfig.test.json" }
   ],
   "compilerOptions": {
-    "module": "esnext",
+    "module": "ES2022",
+    "types": ["node", "vite/client"],
     "baseUrl": ".",
     "moduleResolution": "bundler",
+    "rootDirs": [".", "./.react-router/types"],
+    "esModuleInterop": true,
     "resolvePackageJsonImports": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
     "paths": {
-      "shared/*": ["./shared/*"]
+      "shared/*": ["./shared/*"],
+      "~/*": ["./app/*"]
     }
   }
 }

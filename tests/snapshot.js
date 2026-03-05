@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
-import App from '../src/App'
+import Root from '../app/root'
  
 it('renders main page unchanged', () => {
-  const { container } = render(<App />)
+  const { container } = render(<Root />)
   expect(container).toMatchSnapshot()
 })

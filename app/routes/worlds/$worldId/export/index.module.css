@@ -1,0 +1,60 @@
+.Exporter {
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+}
+
+.CharacterSheet {
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
+  justify-content: center; /* Centers children horizontally */
+  align-items: center;     /* Centers children vertically */
+  min-height: 100px;
+}
+
+.LoadingArticleContainer {
+  width: 60%;
+  height: 200px;
+  margin-left:20%;
+  margin-right:20%;
+
+  /* Declare this element as a container */
+  container-type: size;
+
+  /* Add centering for the ellipsis within this container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.LoadingWorldContainer {
+    width: 50%;
+    height: 30px;
+  
+    /* Declare this element as a container */
+    container-type: size;
+  
+    /* Add centering for the ellipsis within this container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.exportInstructions {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+}
+
+.exportInstructions h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.exportInstructions p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}

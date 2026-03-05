@@ -26,8 +26,9 @@ export abstract class WorldAnvilBaseService {
 
   protected getHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
-      'Content-Type': API_HEADERS.CONTENT_TYPE,
-      'Accept': API_HEADERS.ACCEPT,
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Accept': 'application/json',
+      'User-Agent': 'WorldAnvilExporter/0.1.0',
     };
 
     if (this.userToken) {
@@ -70,8 +71,8 @@ export abstract class WorldAnvilBaseService {
   }
 
   // Abstract methods that must be implemented by platform-specific services
-  protected abstract logError(message: string, ...args: any[]): void;
-  protected abstract onTokenRefresh?(token: string): void;
+  protected abstract logError(message: string, ...args: unknown[]): void;
+  protected abstract onTokenRefresh?(_token: string): void;
 
   // Shared API call methods
   async fetchUserIdentity(): Promise<UserIdentityResponse> {

@@ -1,0 +1,335 @@
+/* Hawkins Fonts */
+
+/* Libre Baskerville latin */
+@font-face {
+  font-family: "Libre Baskerville";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v14/kmKnZrc3Hgbbcjq75U4uslyuy4kn0qNZaxMaC82U.woff2);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Libre Baskerville";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v14/kmKiZrc3Hgbbcjq75U4uslyuy4kn0qviTgY3KcC-wLOj.woff2);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Libre Baskerville";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v14/kmKhZrc3Hgbbcjq75U4uslyuy4kn0qNcWxEQDO-Wyrs.woff2);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Kalam latin */
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/kalam/v16/YA9Qr0Wd4kDdMtD6GjLMkiQqtbGs.woff2);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/kalam/v16/YA9dr0Wd4kDdMthROCfhsCkA.woff2);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/kalam/v16/YA9Qr0Wd4kDdMtDqHTLMkiQqtbGs.woff2);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ebgaramond/v31/SlGWmQSNjdsmc35JDF1K5GRweDU1ZyHKpWiGIg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ebgaramond/v31/SlGWmQSNjdsmc35JDF1K5GRweDs1ZyHKpWg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ebgaramond/v31/SlGUmQSNjdsmc35JDF1K5GR7SDk_YAPIlWk.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ebgaramond/v31/SlGUmQSNjdsmc35JDF1K5GR1SDk_YAPI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Hawkins styling */
+.Hawkins {
+  --grey-text-color: #cdd6dd;
+  --main-background-color: RGBA(11, 15, 18, 1);
+  --medium-background-color: RGB(46, 56, 65);
+  --dark-red: RGB(81, 18, 12);
+  --red-text-color: #dd1d0a;
+  --transparent-background: RGBA(11, 15, 18, 0.8);
+  --red-link-glow: 1px 1px 1px #a31b0a, -1px -1px 1px #a31b0a,
+    1px 1px 8px #ed2b12, -1px -1px 8px #ed2b12;
+  --red-text-glow: -0.05rem -0.05rem 1px #ed2b12, 0.05rem -0.05rem 1px #ed2b12,
+    -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
+    0 0 20px #450100;
+  --red-panel-glow: -0.05rem -0.05rem 1px #ed2b12, 0.05rem -0.05rem 10px #ed2b12,
+    -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
+    0 0 20px #450100;
+  
+  @media print {
+    header,
+    .header-space {
+      height: 100px;
+      margin-top: 10pt;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 0pt;
+    }
+  }
+
+  header,
+  footer {
+    text-align: center;
+    max-width: 95%;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-around;
+  }
+
+  body {
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  img {
+    max-inline-size: 100%;
+  }
+
+  h1 {
+    text-transform: none;
+    font-variant: small-caps;
+    font-family: Libre Baskerville, serif;
+    break-after: avoid;
+    font-size: 22pt;
+    line-height: 1.15;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  h2 {
+    text-transform: none;
+    font-family: Libre Baskerville, serif;
+    color: black;
+    font-size: 16pt;
+    break-after: avoid;
+    font-weight: 700;
+    font-variant: small-caps;
+    text-align: center;
+  }
+  
+  h3 {
+    font-family: Libre Baskerville, serif;
+    font-size: 14pt;
+    color: black;
+    break-after: avoid;
+    font-weight: 700;
+  }
+  
+  p {
+    font-family: "EB Garamond", serif;
+    color: black;
+    font-size: 13pt;
+    line-height: 1.5;
+    orphans: 2;
+    widows: 2;
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
+    font-weight: 400;
+  }
+
+  ul {
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
+  }
+
+  ol {
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
+  }
+  
+  li {
+    font-family: "EB Garamond", serif;
+    text-align: justify;
+    color: black;
+    line-height: 1.15;
+    break-inside: avoid;
+  }
+  
+  hr {
+    margin: 20px 0 20px 0;
+    break-before: avoid;
+    color: var(--red-text-color);
+  }
+  
+  /* Custom Class Styling */
+
+  .name {
+    h2 {
+     border: none;
+     font-size: 24px;
+   }
+  }
+
+  .center {
+    text-align: center;
+    max-width: 95%;
+    margin: 0px auto;
+  }
+
+  .tagline {
+    font-style: italic;
+  }
+  
+  .goals {
+    orphans: 3;
+    widows: 3;
+    break-inside: avoid;
+  }
+  
+  .subtitle p {
+    font-style: italic;
+    text-align: justify;
+  }
+  
+  .plots p,
+  .summary p,
+  .goals p {
+    /* text-indent: 30px; */
+    text-align: justify;
+  }
+  
+  .plots li {
+    margin-left: 30px;
+    margin-bottom: .5em;
+  }
+
+  .plots h2{
+    padding-top: 1.25em;
+  }
+  
+  .plots li:last-child {
+   margin-bottom: 0px;
+  }
+
+  .goals li {
+    margin-left: 30px;
+    margin-bottom: .5em;
+  }
+
+  .goals li:last-child {
+    margin-bottom: 0px;
+   }
+
+  .goals li::before {
+    /* margin-left: -18pt; */
+    white-space: nowrap;
+    display: inline-block;
+    /* min-width: 18pt; */
+    /* content: "\00301C "; */
+  }
+
+  .song {
+    color: black;
+    font-family: "Kalam", cursive;
+    font-weight: 300;
+    padding: 20px;
+    margin: 10px;
+    font-size: 14pt;
+    text-align: center;
+    font-style: italic;
+    break-inside: avoid;
+  }
+  
+  blockquote .author {
+    font-family: "Kalam", cursive;
+    font-weight: 300;
+    padding: 0.5em;
+    font-size: 0.8em;
+  }
+  
+  .notes p {
+    margin-left: 20px;
+    margin-bottom: 0px;
+  }
+
+  .notes ul {
+    margin-left: 60px;
+    margin-block-start: 0.25em;
+  }
+
+  .notes li {
+    margin-bottom: .5em;
+  }
+
+  .notes li::before {
+    margin-left: -18pt;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: 18pt;
+  }
+
+  .notes li:last-child {
+    margin-bottom: 0px;
+  }
+}

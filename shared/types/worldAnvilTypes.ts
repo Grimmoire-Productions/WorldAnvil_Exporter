@@ -23,6 +23,12 @@ export interface CharacterSheet {
   tags: string[];
 }
 
+export interface Article {
+  articleId: string;
+  title: string;
+  tags: string[];
+}
+
 // World Anvil API Response types
 export interface UserIdentityResponse {
   username: string;
@@ -37,12 +43,7 @@ export interface UserWorldsResponse {
 }
 
 export interface WorldArticlesResponse {
-  entities: Array<{
-    id: string;
-    title: string;
-    tags?: string;
-    customArticleTemplate?: string;
-  }>;
+  entities: Array<ArticleResponse>;
 }
 
 export interface ArticleResponse {
@@ -50,6 +51,8 @@ export interface ArticleResponse {
   title: string;
   content: string;
   footnotes?: string;
+  customArticleTemplate?: string;
+  tags?: string;
 }
 
 export interface SecretResponse {

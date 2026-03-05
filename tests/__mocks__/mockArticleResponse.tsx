@@ -1,4 +1,4 @@
-import type { ArticleResponse } from "../../src/utils/types";
+import type { ArticleResponse } from "../../app/utils/types";
 
 export const mockLiesAndLiabilityArticleResponse = {
   id: "49170f44-a961-45ed-b860-bcf612b4d55d",
