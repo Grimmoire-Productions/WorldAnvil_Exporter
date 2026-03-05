@@ -15,21 +15,13 @@ export default function CharacterSheetPage() {
     activeCharacter,
     isArticleLoading,
     fetchAndProcessCharacter,
-    articleId: currentArticleId,
-    setArticleId,
   } = React.useContext(ArticleContext) as ArticleContextType;
 
   const { selectedWorld } = React.useContext(WorldContext) as WorldContextType;
 
+  // Fetch character data when articleId and selectedWorld are available
+  // URL param is the source of truth - no need to sync to context state
   useEffect(() => {
-    // If articleId from URL doesn't match current articleId, sync it
-    if (articleId && articleId !== currentArticleId) {
-      setArticleId(articleId);
-    }
-  }, [articleId, currentArticleId, setArticleId]);
-
-  useEffect(() => {
-    // Fetch character data when articleId and selectedWorld are available
     if (articleId && selectedWorld && !isArticleLoading) {
       const fetchKey = `${articleId}-${selectedWorld.cssClassName || "default"}`;
 

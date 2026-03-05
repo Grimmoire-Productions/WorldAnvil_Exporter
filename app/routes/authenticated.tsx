@@ -8,8 +8,6 @@ export default function AuthenticatedRoute() {
   const worldInitialValues: WorldInitialValues = {
     worldIsLoading: false,
     selectedWorld: null,
-    selectedTags: [],
-    selectedRunTag: null,
   };
 
   return (

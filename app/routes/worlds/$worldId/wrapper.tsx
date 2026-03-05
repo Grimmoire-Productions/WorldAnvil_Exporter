@@ -11,6 +11,7 @@ import React, { useEffect, useRef } from "react";
 import { Outlet, useNavigate, useParams } from "react-router";
 import backendAPI from "~/utils/backendAPI";
 import LoadingAnimation from "~/components/LoadingAnimation/LoadingAnimation";
+import { useWorldFromUrl } from "~/hooks/useWorldFromUrl";
 
 export default function WorldProtectedRoute() {
   const { user, isLoggedIn, isAutoLoginPending, isAutoLoginInProgress } = React.useContext(UserContext) as UserContextType;
@@ -19,15 +20,15 @@ export default function WorldProtectedRoute() {
   const navigate = useNavigate();
   const loadingWorldRef = useRef<string>('');
 
-  // Try to set selectedWorld from URL if we have user data (backup to MainHeader logic)
+  // Derive world from URL - MainHeader will sync to context
+  const worldFromUrl = useWorldFromUrl(worldId, user?.worlds);
+
+  // Sync context only when URL-derived world differs from context
   useEffect(() => {
-    if (worldId && user?.worlds) {
-      const world = user.worlds.find(w => w.id === worldId);
-      if (world) {
-        setSelectedWorld(world);
-      }
+    if (worldFromUrl?.id !== selectedWorld?.id) {
+      setSelectedWorld(worldFromUrl);
     }
-  }, [worldId, user?.worlds, setSelectedWorld]);
+  }, [worldFromUrl, selectedWorld?.id, setSelectedWorld]);
 
   // Load character sheets and tags if not already loaded
   useEffect(() => {

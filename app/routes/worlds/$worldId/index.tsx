@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { WorldContext } from '~/context/WorldContext';
 import type { WorldContextType } from '~/utils/types';
@@ -7,17 +7,7 @@ import styles from './index.module.css';
 export default function WorldIdPage() {
   const { worldId } = useParams<{ worldId: string }>();
   const navigate = useNavigate();
-  const {
-    selectedWorld,
-    setSelectedTags,
-    setSelectedRunTag,
-  } = React.useContext(WorldContext) as WorldContextType;
-
-  useEffect(() => {
-    // Clear previous tag selections when entering this page
-    setSelectedTags([]);
-    setSelectedRunTag(null);
-  }, [setSelectedTags, setSelectedRunTag]);
+  const { selectedWorld } = React.useContext(WorldContext) as WorldContextType;
 
   const handleExportClick = () => {
     if (worldId) {

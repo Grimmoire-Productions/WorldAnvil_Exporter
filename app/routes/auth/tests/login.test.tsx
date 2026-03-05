@@ -41,4 +41,4 @@ describe('LoginPage', () => {
     expect(screen.getByPlaceholderText(/Enter Your User API Token/i)).toBeInTheDocument();
   });
 });
-/* eslint-enable no-empty-function, @typescript-eslint/no-empty-function */
+ 

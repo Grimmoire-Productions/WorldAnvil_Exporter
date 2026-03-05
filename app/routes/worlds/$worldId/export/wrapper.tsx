@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router';
 import type { MultiValue } from 'react-select';
 import ExportHeader from '~/features/ArticleExport/ExportHeader/ExportHeader';
 import { WorldContext } from '~/context/WorldContext';
-import type { WorldContextType, DropdownOption, CharacterSheet } from '~/utils/types';
+import type { WorldContextType, DropdownOption } from '~/utils/types';
 
 export default function ExportWrapper() {
   const { worldId, articleId } = useParams<{ worldId?: string; articleId?: string }>();
@@ -11,34 +11,33 @@ export default function ExportWrapper() {
 
   const {
     selectedWorld,
-    selectedTags,
-    setSelectedTags,
-    selectedRunTag,
-    setSelectedRunTag,
     worldIsLoading,
   } = React.useContext(WorldContext) as WorldContextType;
 
-  const [articlesList, setArticlesList] = useState<DropdownOption[]>([]);
+  // Local state for tag filtering (scoped to export context only)
+  // Automatically resets when component unmounts - no cleanup Effect needed!
+  const [selectedTags, setSelectedTags] = useState<DropdownOption[]>([]);
+  const [selectedRunTag, setSelectedRunTag] = useState<DropdownOption | null>(null);
 
-  useEffect(() => {
-    if (selectedWorld) {
-      setArticleDropdownOptions(selectedWorld.characterSheets);
-    }
-  }, [selectedWorld, selectedTags, selectedRunTag]);
-
-  const handleSelectedTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
-    setSelectedTags(options as DropdownOption[]);
+  const handleSelectedTagChange = (options: DropdownOption | MultiValue<DropdownOption> | null) => {
+    setSelectedTags((options as DropdownOption[]) || []);
   };
 
-  const handleSelectedRunTagChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
-    setSelectedRunTag(options as DropdownOption);
+  const handleSelectedRunTagChange = (options: DropdownOption | MultiValue<DropdownOption> | null) => {
+    setSelectedRunTag((options as DropdownOption) || null);
   };
 
-  const handleArticleChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
+  const handleArticleChange = (options: DropdownOption | MultiValue<DropdownOption> | null) => {
     const selectedOption = options as DropdownOption;
 
+    // If cleared, navigate back to export page without article
+    if (!selectedOption && worldId) {
+      navigate(`/worlds/${worldId}/export`);
+      return;
+    }
+
     // Navigate to character sheet route (URL is source of truth)
-    if (worldId && selectedOption.id) {
+    if (worldId && selectedOption?.id) {
       navigate(`/worlds/${worldId}/export/${selectedOption.id}`);
     }
   };
@@ -73,8 +72,10 @@ export default function ExportWrapper() {
     return options;
   };
 
-  const setArticleDropdownOptions = (characterSheets: CharacterSheet[] | undefined | null) => {
+  // Compute filtered articles list based on selected tags
+  const articlesList = useMemo(() => {
     const options: DropdownOption[] = [];
+    const characterSheets = selectedWorld?.characterSheets;
 
     if (characterSheets) {
       characterSheets.filter((character) => {
@@ -101,8 +102,9 @@ export default function ExportWrapper() {
         });
       });
     }
-    setArticlesList(options);
-  };
+
+    return options;
+  }, [selectedWorld?.characterSheets, selectedTags, selectedRunTag]);
 
   return (
     <>

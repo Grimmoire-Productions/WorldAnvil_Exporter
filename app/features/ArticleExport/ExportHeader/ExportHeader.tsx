@@ -14,9 +14,9 @@ interface ExportHeaderProps {
   worldId?: string;
   runDropdownOptions: (tags: string[] | undefined | null) => DropdownOption[];
   tagDropdownOptions: (tags: string[] | undefined | null) => DropdownOption[];
-  onSelectedTagChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
-  onSelectedRunTagChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
-  onArticleChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
+  onSelectedTagChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
+  onSelectedRunTagChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
+  onArticleChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
   isLoading?: boolean;
 }
 
@@ -70,6 +70,7 @@ function ExportHeader({
         placeholder="Choose a run"
         items={runDropdownOptions(selectedWorld.tags)}
         isMultiSelect={false}
+        isClearable={true}
         error="No run tags available for the selected world."
         handleChange={onSelectedRunTagChange}
         currentSelection={selectedRunTag as DropdownOption}
@@ -94,6 +95,7 @@ function ExportHeader({
         placeholder="Select a Character"
         items={articlesList}
         isMultiSelect={false}
+        isClearable={true}
         error="Cannot find character sheets"
         handleChange={onArticleChange}
         currentSelection={

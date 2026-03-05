@@ -81,8 +81,6 @@ export interface World {
 export interface WorldInitialValues {
   worldIsLoading: boolean;
   selectedWorld: World | null;
-  selectedTags: DropdownOption[] | null;
-  selectedRunTag: DropdownOption | null;
 }
 
 export interface WorldContextType {
@@ -90,14 +88,6 @@ export interface WorldContextType {
   setWorldIsLoading: (value: React.SetStateAction<boolean>) => void;
   selectedWorld: World | null;
   setSelectedWorld: (value: React.SetStateAction<World | null>) => void;
-  selectedTags: DropdownOption[] | null;
-  setSelectedTags: (
-    value: React.SetStateAction<DropdownOption[] | null>,
-  ) => void;
-  selectedRunTag: DropdownOption | null;
-  setSelectedRunTag: (
-    value: React.SetStateAction<DropdownOption | null>,
-  ) => void;
 }
 
 // World Anvil API Response Data

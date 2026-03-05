@@ -12,9 +12,10 @@ type SearchDropdownProps = {
   items: DropdownOption[];
   isMultiSelect: boolean;
   error: string;
-  handleChange: (options: DropdownOption | MultiValue<DropdownOption>) => void;
+  handleChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
   currentSelection?: DropdownOption | MultiValue<DropdownOption>;
   isDisabled?: boolean;
+  isClearable?: boolean;
 };
 
 function SearchDropdown({
@@ -29,13 +30,13 @@ function SearchDropdown({
   handleChange,
   currentSelection,
   isDisabled = false,
+  isClearable = false,
 }: SearchDropdownProps) {
   const handleSelectionChange = (
     options: DropdownOption | MultiValue<DropdownOption> | null,
   ) => {
-    if (options) {
-      handleChange(options);
-    }
+    // Always call handleChange, even for null (when clearing)
+    handleChange(options);
   };
 
   const customClassNames = {
@@ -82,6 +83,7 @@ function SearchDropdown({
           options={items}
           isSearchable={true}
           isMulti
+          isClearable={isClearable}
           noOptionsMessage={() => error}
           aria-label={ariaLabel || label}
           isDisabled={isDisabled}
@@ -96,6 +98,7 @@ function SearchDropdown({
           onChange={handleSelectionChange}
           options={items}
           isSearchable={true}
+          isClearable={isClearable}
           noOptionsMessage={() => error}
           aria-label={ariaLabel || label}
           isDisabled={isDisabled}
