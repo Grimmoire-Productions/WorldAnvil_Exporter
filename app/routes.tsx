@@ -30,8 +30,8 @@ export default [
     // Individual world routes
     route("worlds/:worldId", "routes/worlds/$worldId/wrapper.tsx", [
       index("routes/worlds/$worldId/index.tsx"),
-      route(":export", "routes/worlds/$worldId/export.tsx"),
-      route("export/:articleId", "routes/worlds/$worldId/$articleId.tsx"),
+      route("export", "routes/worlds/$worldId/export/index.tsx"),
+      route("export/:articleId", "routes/worlds/$worldId/export/$articleId.tsx"),
     ])
   ]),
 ] satisfies RouteConfig;

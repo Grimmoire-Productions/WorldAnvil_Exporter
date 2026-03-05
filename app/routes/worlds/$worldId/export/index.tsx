@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import type { MultiValue } from 'react-select';
-import ExportHeader from '../../../containers/ExportToolContainer/ExportHeader/ExportHeader';
-import { ArticleContext } from '../../../context/ArticleContext';
-import { WorldContext } from '../../../context/WorldContext';
-import type { ArticleContextType, WorldContextType, DropdownOption, CharacterSheet } from '../../../utils/types';
-import styles from './export.module.css';
+import ExportHeader from '../../../../containers/ExportToolContainer/ExportHeader/ExportHeader';
+import { ArticleContext } from '../../../../context/ArticleContext';
+import { WorldContext } from '../../../../context/WorldContext';
+import type { ArticleContextType, WorldContextType, DropdownOption, CharacterSheet } from '../../../../utils/types';
+import styles from './index.module.css';
 
 export default function ExportPage() {
   const { worldId } = useParams<{ worldId?: string }>();
@@ -35,7 +35,7 @@ export default function ExportPage() {
 
   useEffect(() => {
     if (selectedWorld?.id && selectedWorld.id !== worldId) {
-      navigate(`/authenticated/worlds/${selectedWorld.id}/export`, { replace: true });
+      navigate(`/worlds/${selectedWorld.id}/export`, { replace: true });
     }
   }, [selectedWorld, worldId, navigate]);
 
@@ -70,10 +70,10 @@ export default function ExportPage() {
   const handleArticleChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
     const selectedOption = options as DropdownOption;
     setArticleId(selectedOption.id);
-    
+
     // Navigate to character sheet route
     if (worldId && selectedOption.id) {
-      navigate(`/authenticated/worlds/${worldId}/${selectedOption.id}`);
+      navigate(`/worlds/${worldId}/export/${selectedOption.id}`);
     }
   };
 

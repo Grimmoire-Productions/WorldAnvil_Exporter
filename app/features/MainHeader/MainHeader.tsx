@@ -25,13 +25,16 @@ function MainHeader() {
   } = React.useContext(WorldContext) as WorldContextType;
 
   useEffect(() => {
-    if (worldId && user?.worlds && !selectedWorld) {
+    if (worldId && user?.worlds) {
       const world = user.worlds.find(w => w.id === worldId);
       if (world) {
         setSelectedWorld(world);
       }
+    } else if (!worldId && selectedWorld) {
+      // Clear selectedWorld if there's no worldId in URL
+      setSelectedWorld(null);
     }
-  }, [worldId, user?.worlds, selectedWorld, setSelectedWorld]);
+  }, [worldId, user?.worlds, setSelectedWorld]);
 
   const handleSelectedWorldChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
     const selectedOption = options as DropdownOption;

@@ -2,7 +2,7 @@ import React from 'react';
 import type { MultiValue } from 'react-select';
 import type { DropdownOption, World } from '../../../utils/types';
 import SearchDropdown from '../../../components/SearchDropdown/SearchDropdown';
-import styles from '../../../routes/worlds/$worldId/export.module.css';
+import styles from '../../../routes/worlds/$worldId/export/index.module.css';
 
 interface ExportHeaderProps {
   selectedWorld: World | null;

@@ -27,10 +27,9 @@ type Pages = {
       "worldId": string;
     };
   };
-  "/worlds/:worldId/:export": {
+  "/worlds/:worldId/export": {
     params: {
       "worldId": string;
-      "export": string;
     };
   };
   "/worlds/:worldId/export/:articleId": {
@@ -44,7 +43,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/auth/login" | "/auth/unauthorized" | "/worlds" | "/worlds/:worldId" | "/worlds/:worldId/:export" | "/worlds/:worldId/export/:articleId";
+    page: "/" | "/auth/login" | "/auth/unauthorized" | "/worlds" | "/worlds/:worldId" | "/worlds/:worldId/export" | "/worlds/:worldId/export/:articleId";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -60,7 +59,7 @@ type RouteFiles = {
   };
   "routes/authenticated.tsx": {
     id: "routes/authenticated";
-    page: "/" | "/worlds" | "/worlds/:worldId" | "/worlds/:worldId/:export" | "/worlds/:worldId/export/:articleId";
+    page: "/" | "/worlds" | "/worlds/:worldId" | "/worlds/:worldId/export" | "/worlds/:worldId/export/:articleId";
   };
   "routes/worlds/wrapper.tsx": {
     id: "routes/worlds/wrapper";
@@ -72,18 +71,18 @@ type RouteFiles = {
   };
   "routes/worlds/$worldId/wrapper.tsx": {
     id: "routes/worlds/$worldId/wrapper";
-    page: "/worlds/:worldId" | "/worlds/:worldId/:export" | "/worlds/:worldId/export/:articleId";
+    page: "/worlds/:worldId" | "/worlds/:worldId/export" | "/worlds/:worldId/export/:articleId";
   };
   "routes/worlds/$worldId/index.tsx": {
     id: "routes/worlds/$worldId/index";
     page: "/worlds/:worldId";
   };
-  "routes/worlds/$worldId/export.tsx": {
-    id: "routes/worlds/$worldId/export";
-    page: "/worlds/:worldId/:export";
+  "routes/worlds/$worldId/export/index.tsx": {
+    id: "routes/worlds/$worldId/export/index";
+    page: "/worlds/:worldId/export";
   };
-  "routes/worlds/$worldId/$articleId.tsx": {
-    id: "routes/worlds/$worldId/$articleId";
+  "routes/worlds/$worldId/export/$articleId.tsx": {
+    id: "routes/worlds/$worldId/export/$articleId";
     page: "/worlds/:worldId/export/:articleId";
   };
 };

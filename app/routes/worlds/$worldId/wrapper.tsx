@@ -7,24 +7,63 @@ import type {
   UserContextType,
   WorldContextType,
 } from "../../../utils/types";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Outlet, useNavigate, useParams } from "react-router";
+import backendAPI from "~/utils/backendAPI";
 
 export default function WorldProtectedRoute() {
   const { user, isLoggedIn, isAutoLoginPending, isAutoLoginInProgress } = React.useContext(UserContext) as UserContextType;
-  const { selectedWorld, setSelectedWorld } = React.useContext(WorldContext) as WorldContextType;
+  const { selectedWorld, setSelectedWorld, worldIsLoading, setWorldIsLoading } = React.useContext(WorldContext) as WorldContextType;
   const { worldId } = useParams<{ worldId: string }>();
   const navigate = useNavigate();
+  const loadingWorldRef = useRef<string>('');
 
   // Try to set selectedWorld from URL if we have user data (backup to MainHeader logic)
   useEffect(() => {
-    if (worldId && user?.worlds && !selectedWorld) {
+    if (worldId && user?.worlds) {
       const world = user.worlds.find(w => w.id === worldId);
       if (world) {
         setSelectedWorld(world);
       }
     }
-  }, [worldId, user?.worlds, selectedWorld, setSelectedWorld]);
+  }, [worldId, user?.worlds, setSelectedWorld]);
+
+  // Load character sheets and tags if not already loaded
+  useEffect(() => {
+    if (!worldId || !selectedWorld) return;
+
+    // Prevent concurrent loading of the same world
+    if (loadingWorldRef.current === worldId) return;
+
+    // Check if we need to load character sheets
+    if (!selectedWorld.characterSheets || !selectedWorld.tags) {
+      loadingWorldRef.current = worldId;
+      setWorldIsLoading(true);
+
+      const loadCharacterSheets = async () => {
+        try {
+          const results = await backendAPI.getCharacterSheets(selectedWorld.id);
+          if (results.length > 0) {
+            const tagSet = new Set(results.map((sheet) => sheet.tags).flat());
+
+            // Update world with character sheets and tags
+            setSelectedWorld({
+              ...selectedWorld,
+              characterSheets: results,
+              tags: [...tagSet]
+            });
+          }
+        } catch (error) {
+          console.error("Failed to load world data:", error);
+        } finally {
+          setWorldIsLoading(false);
+          loadingWorldRef.current = "";
+        }
+      };
+
+      loadCharacterSheets();
+    }
+  }, [worldId, selectedWorld, setWorldIsLoading, setSelectedWorld]);
 
   useEffect(() => {
     // Don't redirect while auto-login is pending or in progress
@@ -51,7 +90,7 @@ export default function WorldProtectedRoute() {
   }, [isAutoLoginPending, isAutoLoginInProgress, isLoggedIn, user, selectedWorld, navigate, worldId]);
 
   // Show loading while auto-login pending/in progress or if redirecting
-  if (isAutoLoginPending || isAutoLoginInProgress || !user || !isLoggedIn || !selectedWorld) {
+  if (isAutoLoginPending || isAutoLoginInProgress || !user || !isLoggedIn || !selectedWorld || worldIsLoading) {
     return <div>Loading...</div>;
   }
   

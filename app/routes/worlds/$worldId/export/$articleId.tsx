@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import CharacterSheet from '../../../components/CharacterSheet/CharacterSheet';
-import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation';
-import { ArticleContext } from '../../../context/ArticleContext';
-import { WorldContext } from '../../../context/WorldContext';
-import type { ArticleContextType, WorldContextType } from '../../../utils/types';
+import CharacterSheet from '~/components/CharacterSheet/CharacterSheet';
+import LoadingAnimation from '~/components/LoadingAnimation/LoadingAnimation';
+import { ArticleContext } from '~/context/ArticleContext';
+import { WorldContext } from '~/context/WorldContext';
+import type { ArticleContextType, WorldContextType } from '~/utils/types';
 
 export default function CharacterSheetPage() {
   const { worldId, articleId } = useParams<{ worldId: string; articleId: string }>();
@@ -45,7 +45,7 @@ export default function CharacterSheetPage() {
   useEffect(() => {
     // Redirect to world page if no articleId
     if (!articleId && worldId) {
-      navigate(`/authenticated/worlds/${worldId}`);
+      navigate(`/worlds/${worldId}`);
     }
   }, [articleId, worldId, navigate]);
 
