@@ -1,98 +1,96 @@
+@import "tailwindcss";
+
 :root {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --brand-surface: oklch(0.72 0.11 178);
+  --brand-text: oklch(27.8% 0.033 256.848);
 }
 
-body {
-  margin: 0;
-}
-
-html,
-body {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-div#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  flex: 1 0 auto;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+    --brand-surface: #1e293b; 
+    --brand-text: #f8fafc;
   }
 }
 
-.App {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  align-items: stretch;
+@theme inline {
+  --color-surface: var(--brand-surface);
+  --color-text-main: var(--brand-text);
 }
 
-/* Print specific styling */
-@media print {
-  #exportHeader {
-    display: none;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
   }
 
-  header,
-  .header-space {
-    width: 100%;
-  }
-  footer,
-  .footer-space {
-    width: 100%;
+  body {
+    @apply bg-surface text-text-main; 
   }
 
-  header {
-    position: fixed;
-    top: 0;
+  html,
+  body {
+    @apply flex flex-col h-full;
   }
 
-  footer {
-    position: fixed;
-    bottom: 0;
+  div#root {
+    @apply min-h-screen flex flex-col items-stretch flex-[1_0_auto];
   }
 
-  thead {
-    display: table-header-group;
-  }
-
-  tfoot {
-    display: table-footer-group;
+  .App {
+    @apply flex flex-col grow items-stretch;
   }
 
   .characterSheetContent {
-    margin-left: 0.5in !important;
-    margin-right: 0.5in !important;
+    @apply mx-13;
   }
 
-  @page {
-    size: portrait;
-    margin: 0;
+  .blueButton {
+    @apply inline-block cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-4 hover:brightness-110 hover:-translate-y-1 hover:border-b-6 active:border-b-2 active:brightness-90 active:translate-y-2;
   }
 
-}
+  /* Print specific styling */
+  @media print {
+    #exportHeader {
+      display: none;
+    }
 
-.characterSheetContent {
-  margin-left: 50px;
-  margin-right: 50px;
+    header,
+    .header-space {
+      width: 100%;
+    }
+    footer,
+    .footer-space {
+      width: 100%;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tfoot {
+      display: table-footer-group;
+    }
+
+    .characterSheetContent {
+      margin-left: 0.5in !important;
+      margin-right: 0.5in !important;
+    }
+
+    @page {
+      size: portrait;
+      margin: 0;
+    }
+  }
 }

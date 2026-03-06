@@ -15,9 +15,19 @@ export default function HomePage() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div>
-      <h1>World Anvil Tool</h1>
-      <button> <a href={ROUTE_PATHS.login}>Sign In</a></button>
+    <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div className="text-center">
+          <h1 className="text-5xl font-semibold tracking-tight text-balance sm:text-7xl">
+            World Anvil Tool
+          </h1>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <a href={ROUTE_PATHS.login} className="blueButton">
+              Sign In
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

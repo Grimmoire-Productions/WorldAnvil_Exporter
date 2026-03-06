@@ -42,7 +42,7 @@ function LoginBar({
         onChange={onUpdateAccessToken}
       />
       <button
-        className={styles.btn}
+        className="blueButton"
         onClick={onLogin}
         data-testid="login-button"
       >

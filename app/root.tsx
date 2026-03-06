@@ -11,7 +11,10 @@ import { UserContext } from '~/context/UserContext/UserContext';
 import { useLogin } from '~/hooks/useLogin';
 import { getUserToken } from '~/utils/userToken';
 import type { UserInitialValues, UserContextType } from '~/utils/types';
-import './root.css';
+
+import stylesheet from "./root.css?url";
+
+export const links = () => [{ rel: "stylesheet", href: stylesheet }];
 
 function AppWithAutoLogin({ children }: { children: React.ReactNode }) {
   const { user, accessToken, expiresAt, applicationKey, isLoggedIn, setIsLoggedIn, setAccessToken, setUser, setExpiresAt, isAutoLoginPending, setIsAutoLoginPending, isAutoLoginInProgress, setIsAutoLoginInProgress } = useContext(UserContext) as UserContextType;
@@ -98,12 +101,14 @@ export default function App() {
   };
 
   return (
-    <UserProvider initialValues={userInitialValues}>
-      <AppWithAutoLogin>
-        <div className="App">
-          <Outlet />
-        </div>
-      </AppWithAutoLogin>
-    </UserProvider>
+    <div className="flex flex-col grow items-stretch">
+      <UserProvider initialValues={userInitialValues}>
+        <AppWithAutoLogin>
+          <div className="App">
+            <Outlet />
+          </div>
+        </AppWithAutoLogin>
+      </UserProvider>
+    </div>
   );
 }
