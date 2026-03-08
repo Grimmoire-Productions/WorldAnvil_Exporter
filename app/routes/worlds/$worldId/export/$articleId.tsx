@@ -19,6 +19,16 @@ export default function CharacterSheetPage() {
 
   const { selectedWorld } = React.useContext(WorldContext) as WorldContextType;
 
+  // Update page title based on the selected character
+  if (selectedWorld?.characterSheets && articleId) {
+    const character = selectedWorld.characterSheets.find(
+      (sheet) => sheet.articleId === articleId
+    );
+    if (character) {
+      document.title = `${character.title} - WorldAnvil Exporter`;
+    }
+  }
+
   // Fetch character data when articleId and selectedWorld are available
   // URL param is the source of truth - no need to sync to context state
   useEffect(() => {
