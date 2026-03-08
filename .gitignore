@@ -534,3 +534,6 @@ CLAUDE.md
 # Storybook
 *storybook.log
 storybook-static
+
+# Faker db for local dev only
+/server/local_dev_fake_db

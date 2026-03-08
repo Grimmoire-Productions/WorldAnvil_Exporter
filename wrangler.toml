@@ -1,0 +1,6 @@
+name = "worldanvil-proxy"
+main = "cloudflare-worker.js"
+compatibility_date = "2024-01-01"
+
+# When running locally with `wrangler dev`, the worker will be available at http://localhost:8787
+# This allows your local app to make API calls through the worker running on your machine
