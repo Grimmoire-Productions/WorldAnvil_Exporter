@@ -1,7 +1,7 @@
-export * from '../../../shared/types/worldAnvilTypes.js';
+export * from "../../../shared/types/worldAnvilTypes.js";
 
 // Session types
-declare module 'express-session' {
+declare module "express-session" {
   interface SessionData {
     userToken?: string;
     appKey?: string;

@@ -1,4 +1,7 @@
-import type { ArticleResponse, CharacterSheet } from "shared/types/worldAnvilTypes";
+import type {
+  ArticleResponse,
+  CharacterSheet,
+} from "shared/types/worldAnvilTypes";
 
 export const mockArticle: ArticleResponse = {
   id: "2490bf16-bc70-4de5-9634-5e7d8a227850",

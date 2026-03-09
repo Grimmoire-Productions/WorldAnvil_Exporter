@@ -1,1 +1,1 @@
-export const TOKEN_EXPIRATION_SECONDS = 24 * 60 * 60
+export const TOKEN_EXPIRATION_SECONDS = 24 * 60 * 60;

@@ -149,7 +149,7 @@ export default function ExportWrapper() {
         isLoading={worldIsLoading}
         showCharacterDropdown={false}
       />
-      <Outlet context={{articlesList}}/>
+      <Outlet context={{ articlesList }} />
     </>
   );
 }

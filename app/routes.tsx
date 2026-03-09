@@ -14,13 +14,14 @@ export const ROUTE_PATHS = Object.freeze({
   worldExport: "/worlds/:worldId/export",
   worldBatchExport: "/worlds/:worldId/batch_export",
   characterSheet: "/worlds/:worldId/export/:articleId",
+  generatePdf: "pdf/generate",
 });
 
 export type RoutePath = (typeof ROUTE_PATHS)[keyof typeof ROUTE_PATHS];
 
 export default [
   index("routes/home.tsx"),
-  route("api/generate-pdf", "routes/api.generate-pdf.ts"),
+  route("pdf/generate", "routes/pdf/generate.ts"),
   ...prefix("auth", [
     route("login", "routes/auth/login.tsx"),
     route("unauthorized", "routes/auth/unauthorized.tsx"),

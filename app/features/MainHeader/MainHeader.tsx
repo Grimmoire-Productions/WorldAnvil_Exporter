@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import type { MultiValue } from 'react-select';
-import SearchDropdown from '~/components/SearchDropdown/SearchDropdown';
-import { UserContext } from '~/context/UserContext/UserContext';
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
+import type { MultiValue } from "react-select";
+import SearchDropdown from "~/components/SearchDropdown/SearchDropdown";
+import { UserContext } from "~/context/UserContext/UserContext";
 import type {
   UserContextType,
   DropdownOption,
   World,
   WorldContextType,
 } from "~/utils/types";
-import styles from './MainHeader.module.css';
-import { WorldContext } from '~/context/WorldContext/WorldContext';
-import { useLogout } from '~/hooks/useLogout';
-import { useWorldFromUrl } from '~/hooks/useWorldFromUrl';
+import styles from "./MainHeader.module.css";
+import { WorldContext } from "~/context/WorldContext/WorldContext";
+import { useLogout } from "~/hooks/useLogout";
+import { useWorldFromUrl } from "~/hooks/useWorldFromUrl";
 
 function MainHeader() {
   const { user, isLoggedIn } = React.useContext(UserContext) as UserContextType;
@@ -21,10 +21,9 @@ function MainHeader() {
   const { worldId } = useParams<{ worldId?: string }>();
   const { logout } = useLogout();
 
-  const {
-    selectedWorld,
-    setSelectedWorld,
-  } = React.useContext(WorldContext) as WorldContextType;
+  const { selectedWorld, setSelectedWorld } = React.useContext(
+    WorldContext,
+  ) as WorldContextType;
 
   // Derive world from URL instead of using Effect
   const worldFromUrl = useWorldFromUrl(worldId, user?.worlds);
@@ -36,7 +35,9 @@ function MainHeader() {
     }
   }, [worldFromUrl, selectedWorld?.id, setSelectedWorld]);
 
-  const handleSelectedWorldChange = (options: DropdownOption | MultiValue<DropdownOption>) => {
+  const handleSelectedWorldChange = (
+    options: DropdownOption | MultiValue<DropdownOption>,
+  ) => {
     const selectedOption = options as DropdownOption;
 
     // Only proceed if a different world is selected
@@ -50,12 +51,12 @@ function MainHeader() {
       );
 
       if (worldIndex >= 0) {
-        const world = user.worlds[worldIndex]
+        const world = user.worlds[worldIndex];
 
         setSelectedWorld(world);
         navigate(`/worlds/${world.id}`);
       }
-    } 
+    }
   };
 
   const worldDropdownOptions = (worlds: World[]): DropdownOption[] => {
@@ -64,7 +65,7 @@ function MainHeader() {
       options.push({
         value: world.title,
         id: world.id,
-        label: world.title
+        label: world.title,
       });
     });
     return options;
@@ -73,11 +74,11 @@ function MainHeader() {
   const handleLogout = async () => {
     const result = await logout();
     if (result.success) {
-      navigate('/auth/login');
+      navigate("/auth/login");
     } else {
-      console.error('Logout failed:', result.error);
+      console.error("Logout failed:", result.error);
       // Still navigate to login even if logout failed to avoid stuck state
-      navigate('/auth/login');
+      navigate("/auth/login");
     }
   };
 
@@ -120,8 +121,10 @@ function MainHeader() {
           ) : null}
 
           <div className={styles.userInfo}>
-            <span>Logged in as {user?.displayName || 'Loading...'}</span>
-            <span className={styles.logoutButton} onClick={handleLogout}>Logout</span>
+            <span>Logged in as {user?.displayName || "Loading..."}</span>
+            <span className={styles.logoutButton} onClick={handleLogout}>
+              Logout
+            </span>
           </div>
         </div>
       </div>

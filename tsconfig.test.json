@@ -2,12 +2,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": "../node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2022",
-    "lib": [
-      "ES2023",
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["ES2023", "dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "skipLibCheck": true,
     "incremental": true,
@@ -52,8 +47,5 @@
     "tests/**/*.tsx",
     "app/**/*.stories.tsx"
   ],
-  "exclude": [
-    "node_modules",
-    "app/utils/consts.ts"
-  ]
+  "exclude": ["node_modules", "app/utils/consts.ts"]
 }

@@ -12,10 +12,10 @@ describe("Root Layout", () => {
     render(
       <MemoryRouter>
         <Root />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     // Test that the root layout renders without crashing
-    expect(document.querySelector('.App')).toBeInTheDocument();
+    expect(document.querySelector(".App")).toBeInTheDocument();
   });
 });
 
@@ -23,7 +23,7 @@ describe("Login Page", () => {
   const userInit = {
     isLoggedIn: false,
     user: null,
-    accessToken: '',
+    accessToken: "",
     expiresAt: null,
     applicationKey: null,
     isAutoLoginPending: false,
@@ -36,21 +36,23 @@ describe("Login Page", () => {
         <UserProvider initialValues={userInit}>
           <LoginPage />
         </UserProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
-    const loginHelperText = screen.getByText(/If you do not have an API Token, contact the World owner to request one/i);
+    const loginHelperText = screen.getByText(
+      /If you do not have an API Token, contact the World owner to request one/i,
+    );
     expect(loginHelperText).toBeInTheDocument();
   });
 
-  it('renders the login page', () => {
+  it("renders the login page", () => {
     render(
       <MemoryRouter>
         <UserProvider initialValues={userInit}>
           <LoginPage />
         </UserProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     const loginPage = screen.queryByTestId("login-page");
     expect(loginPage).toBeInTheDocument();
-   })
+  });
 });

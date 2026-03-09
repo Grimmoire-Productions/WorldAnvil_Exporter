@@ -16,7 +16,8 @@
   line-height: 1.5;
 }
 
-.exportInstructions ul, ol {
+.exportInstructions ul,
+ol {
   margin-top: 1rem;
   width: fit-content;
   font-size: 1.1rem;

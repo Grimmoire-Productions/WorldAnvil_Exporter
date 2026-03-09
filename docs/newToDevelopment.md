@@ -59,7 +59,6 @@ If you see version numbers (like `v18.0.0`) for all four, skip to Step 3. Otherw
 1. **Node.js and npm**: Follow [these instructions](https://nodejs.org/en/download/) to install Node.js (npm comes with it)
 
 2. **Git**:
-
    - macOS: Usually pre-installed, but if missing, install from [git-scm.com](https://git-scm.com/download/mac)
    - Windows: Download and install from [git-scm.com](https://git-scm.com/download/win)
 
@@ -69,37 +68,35 @@ If you see version numbers (like `v18.0.0`) for all four, skip to Step 3. Otherw
 
    a. In your PowerShell window, type:
 
-      ```powershell
-      winget --version
-      ```
+   ```powershell
+   winget --version
+   ```
 
    b. **If you see a version number** (like `v1.4.10173`):
-
-      - Great! Skip to step (d) below.
+   - Great! Skip to step (d) below.
 
    c. **If you get an error** saying `'winget' is not recognized...`:
-
-      - Open the Microsoft Store (search for it in Start menu)
-      - Search for "App Installer"
-      - Click "Get" or "Install"
-      - Close and reopen PowerShell as Administrator
-      - Try `winget --version` again - it should now show a version number
+   - Open the Microsoft Store (search for it in Start menu)
+   - Search for "App Installer"
+   - Click "Get" or "Install"
+   - Close and reopen PowerShell as Administrator
+   - Try `winget --version` again - it should now show a version number
 
    d. Install Make by typing:
 
-      ```powershell
-      winget install -e --id GnuWin32.Make
-      ```
+   ```powershell
+   winget install -e --id GnuWin32.Make
+   ```
 
    e. **Important**: Close and reopen PowerShell to refresh your system
 
    f. Verify Make is installed by typing:
 
-      ```powershell
-      make -v
-      ```
+   ```powershell
+   make -v
+   ```
 
-      You should see version information for GNU Make!
+   You should see version information for GNU Make!
 
 4. **Important**: Close and reopen your command line to refresh your system, following the same method as in [Step 1](#step-1-open-your-command-line)
 
@@ -155,11 +152,11 @@ This creates secure `.env` files that stay only on your computer.
 Before each work session:
 
 1. **With GitHub Desktop**:
-  a. Make sure "Current Branch" shows "main"
-  b. Click "Fetch origin" then "Pull origin"
+   a. Make sure "Current Branch" shows "main"
+   b. Click "Fetch origin" then "Pull origin"
 
 2. **With command line**:
-  a. Navigate to the project folder per [Step 3.2](#step-3-get-the-project-code)
+   a. Navigate to the project folder per [Step 3.2](#step-3-get-the-project-code)
 
    ```bash
    git checkout main

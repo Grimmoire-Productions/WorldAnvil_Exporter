@@ -12,7 +12,9 @@ type SearchDropdownProps = {
   items: DropdownOption[];
   isMultiSelect: boolean;
   error: string;
-  handleChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
+  handleChange: (
+    options: DropdownOption | MultiValue<DropdownOption> | null,
+  ) => void;
   currentSelection?: DropdownOption | MultiValue<DropdownOption>;
   isDisabled?: boolean;
   isClearable?: boolean;

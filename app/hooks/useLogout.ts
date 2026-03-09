@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import { UserContext } from '~/context/UserContext/UserContext';
-import { WorldContext } from '~/context/WorldContext/WorldContext';
-import type { UserContextType, WorldContextType } from '~/utils/types';
-import backendAPI from '~/utils/backendAPI';
-import { clearUserToken } from '~/utils/userToken';
+import { useContext } from "react";
+import { UserContext } from "~/context/UserContext/UserContext";
+import { WorldContext } from "~/context/WorldContext/WorldContext";
+import type { UserContextType, WorldContextType } from "~/utils/types";
+import backendAPI from "~/utils/backendAPI";
+import { clearUserToken } from "~/utils/userToken";
 
 export const useLogout = () => {
   const {
@@ -16,10 +16,9 @@ export const useLogout = () => {
     setIsAutoLoginInProgress,
   } = useContext(UserContext) as UserContextType;
 
-  const {
-    setSelectedWorld,
-    setWorldIsLoading,
-  } = useContext(WorldContext) as WorldContextType;
+  const { setSelectedWorld, setWorldIsLoading } = useContext(
+    WorldContext,
+  ) as WorldContextType;
 
   const logout = async (): Promise<{ success: boolean; error?: string }> => {
     try {
@@ -32,7 +31,7 @@ export const useLogout = () => {
       // Reset all UserContext state to initial values
       setIsLoggedIn(false);
       setUser(null);
-      setAccessToken('');
+      setAccessToken("");
       setExpiresAt(null);
       setApplicationKey(null);
       setIsAutoLoginPending(false);
@@ -44,10 +43,10 @@ export const useLogout = () => {
 
       return { success: true };
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Logout failed'
+        error: error instanceof Error ? error.message : "Logout failed",
       };
     }
   };

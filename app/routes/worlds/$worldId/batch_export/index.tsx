@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./index.module.css";
 
-
 import { useOutletContext } from "react-router";
 import type { DropdownOption } from "~/utils/types";
 

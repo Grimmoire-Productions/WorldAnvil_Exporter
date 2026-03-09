@@ -1,8 +1,8 @@
-import type { MultiValue } from 'react-select';
-import type { DropdownOption, World } from '~/utils/types';
-import SearchDropdown from '~/components/SearchDropdown/SearchDropdown';
-import styles from './ExportHeader.module.css';
-import { Link } from 'react-router';
+import type { MultiValue } from "react-select";
+import type { DropdownOption, World } from "~/utils/types";
+import SearchDropdown from "~/components/SearchDropdown/SearchDropdown";
+import styles from "./ExportHeader.module.css";
+import { Link } from "react-router";
 import { ArrowLeftIcon, DownloadSimpleIcon } from "@phosphor-icons/react";
 
 interface ExportHeaderProps {
@@ -14,9 +14,15 @@ interface ExportHeaderProps {
   worldId?: string;
   runDropdownOptions: (tags: string[] | undefined | null) => DropdownOption[];
   tagDropdownOptions: (tags: string[] | undefined | null) => DropdownOption[];
-  onSelectedTagChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
-  onSelectedRunTagChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
-  onArticleChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
+  onSelectedTagChange: (
+    options: DropdownOption | MultiValue<DropdownOption> | null,
+  ) => void;
+  onSelectedRunTagChange: (
+    options: DropdownOption | MultiValue<DropdownOption> | null,
+  ) => void;
+  onArticleChange: (
+    options: DropdownOption | MultiValue<DropdownOption> | null,
+  ) => void;
   isLoading?: boolean;
   showCharacterDropdown?: boolean;
 }
@@ -36,27 +42,26 @@ function ExportHeader({
   isLoading = false,
   showCharacterDropdown = true,
 }: ExportHeaderProps) {
-
   const handlePdfExport = async () => {
     if (!articleId || !worldId) {
-      console.error('Missing article ID or world ID');
+      console.error("Missing article ID or world ID");
       return;
     }
 
     // Get the selected character title for the filename
     const selectedArticle = articlesList.find((item) => item.id === articleId);
     const filename = selectedArticle?.label
-      ? `${selectedArticle.label.replace(/[^a-zA-Z0-9]/g, '')}.pdf`
-      : 'character_sheet.pdf';
+      ? `${selectedArticle.label.replace(/[^a-zA-Z0-9]/g, "")}.pdf`
+      : "character_sheet.pdf";
 
     // Build the full URL to the current article page
     const articleUrl = `${window.location.origin}/worlds/${worldId}/export/${articleId}`;
 
     // Get the user token from localStorage to pass to Puppeteer
-    const userTokenData = localStorage.getItem('WA_TOKEN');
+    const userTokenData = localStorage.getItem("WA_TOKEN");
 
     // Call the PDF generation API
-    const apiUrl = `/api/generate-pdf?url=${encodeURIComponent(articleUrl)}&filename=${encodeURIComponent(filename)}${userTokenData ? `&token=${encodeURIComponent(userTokenData)}` : ''}`;
+    const apiUrl = `/pdf/generate?url=${encodeURIComponent(articleUrl)}&filename=${encodeURIComponent(filename)}${userTokenData ? `&token=${encodeURIComponent(userTokenData)}` : ""}`;
 
     try {
       const response = await fetch(apiUrl);
@@ -68,7 +73,7 @@ function ExportHeader({
       // Download the PDF
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = filename;
       document.body.appendChild(a);
@@ -76,10 +81,10 @@ function ExportHeader({
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      console.log('PDF downloaded successfully:', filename);
+      console.log("PDF downloaded successfully:", filename);
     } catch (error) {
-      console.error('PDF export error:', error);
-      alert('Failed to generate PDF. Please try again.');
+      console.error("PDF export error:", error);
+      alert("Failed to generate PDF. Please try again.");
     }
   };
 
@@ -91,11 +96,12 @@ function ExportHeader({
     );
   }
 
-  const backPath = articleId && worldId
-    ? `/worlds/${worldId}/export`
-    : worldId
-    ? `/worlds/${worldId}`
-    : undefined;
+  const backPath =
+    articleId && worldId
+      ? `/worlds/${worldId}/export`
+      : worldId
+        ? `/worlds/${worldId}`
+        : undefined;
 
   return (
     <div className={styles.ExportHeader} id="exportHeader">

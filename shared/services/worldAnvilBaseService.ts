@@ -2,18 +2,18 @@
  * Base World Anvil API service with shared functionality
  */
 
-import { 
-  WORLD_ANVIL_BASE_URL, 
-  API_ENDPOINTS, 
-  API_HEADERS 
-} from '../constants/worldAnvilConstants';
-import type { 
-  UserIdentityResponse, 
-  UserWorldsResponse, 
-  WorldArticlesResponse, 
-  ArticleResponse, 
-  SecretResponse 
-} from '../types/worldAnvilTypes';
+import {
+  WORLD_ANVIL_BASE_URL,
+  API_ENDPOINTS,
+  API_HEADERS,
+} from "../constants/worldAnvilConstants";
+import type {
+  UserIdentityResponse,
+  UserWorldsResponse,
+  WorldArticlesResponse,
+  ArticleResponse,
+  SecretResponse,
+} from "../types/worldAnvilTypes";
 
 export abstract class WorldAnvilBaseService {
   protected userToken: string | null = null;
@@ -26,9 +26,9 @@ export abstract class WorldAnvilBaseService {
 
   protected getHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json;charset=UTF-8',
-      'Accept': 'application/json',
-      'User-Agent': 'WorldAnvilExporter/0.1.0',
+      "Content-Type": "application/json;charset=UTF-8",
+      Accept: "application/json",
+      "User-Agent": "WorldAnvilExporter/0.1.0",
     };
 
     if (this.userToken) {
@@ -42,7 +42,10 @@ export abstract class WorldAnvilBaseService {
     return headers;
   }
 
-  protected buildUrl(endpoint: string, params?: Record<string, string>): string {
+  protected buildUrl(
+    endpoint: string,
+    params?: Record<string, string>,
+  ): string {
     const url = new URL(WORLD_ANVIL_BASE_URL + endpoint);
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -55,15 +58,17 @@ export abstract class WorldAnvilBaseService {
   protected async handleApiResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      this.logError(`API error - Status: ${response.status} ${response.statusText}`);
+      this.logError(
+        `API error - Status: ${response.status} ${response.statusText}`,
+      );
       this.logError(`URL: ${response.url}`);
       if (errorData?.error) {
-        this.logError('API error:', errorData.error);
+        this.logError("API error:", errorData.error);
       } else if (errorData?.value) {
         this.logError(`${errorData.summary}; ${errorData.value.status}`);
         this.logError(errorData.value.error);
       } else {
-        this.logError('Error response body:', errorData);
+        this.logError("Error response body:", errorData);
       }
       throw new Error(`API error: ${response.status} ${response.statusText}`);
     }
@@ -78,10 +83,10 @@ export abstract class WorldAnvilBaseService {
   async fetchUserIdentity(): Promise<UserIdentityResponse> {
     const url = this.buildUrl(API_ENDPOINTS.IDENTITY);
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: this.getHeaders(),
     });
-    
+
     const result = await this.handleApiResponse<UserIdentityResponse>(response);
     this.onTokenRefresh?.(this.userToken!);
     return result;
@@ -89,59 +94,65 @@ export abstract class WorldAnvilBaseService {
 
   async fetchUserWorlds(userId: string): Promise<UserWorldsResponse> {
     const url = this.buildUrl(API_ENDPOINTS.USER_WORLDS, { id: userId });
-    
+
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: this.getHeaders(),
       body: JSON.stringify({
         limit: "50",
-        offset: "0"
-      })
+        offset: "0",
+      }),
     });
-    
+
     const result = await this.handleApiResponse<UserWorldsResponse>(response);
     this.onTokenRefresh?.(this.userToken!);
     return result;
   }
 
-  async fetchWorldArticles(worldId: string, offset: number = 0): Promise<WorldArticlesResponse> {
+  async fetchWorldArticles(
+    worldId: string,
+    offset: number = 0,
+  ): Promise<WorldArticlesResponse> {
     const url = this.buildUrl(API_ENDPOINTS.WORLD_ARTICLES, { id: worldId });
-    
+
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: this.getHeaders(),
       body: JSON.stringify({
         limit: "50",
-        offset: offset.toString()
-      })
+        offset: offset.toString(),
+      }),
     });
-    
+
     return this.handleApiResponse<WorldArticlesResponse>(response);
   }
 
-  async fetchArticle(articleId: string, granularity: number = 2): Promise<ArticleResponse> {
-    const url = this.buildUrl(API_ENDPOINTS.ARTICLE, { 
-      id: articleId, 
-      granularity: granularity.toString() 
+  async fetchArticle(
+    articleId: string,
+    granularity: number = 2,
+  ): Promise<ArticleResponse> {
+    const url = this.buildUrl(API_ENDPOINTS.ARTICLE, {
+      id: articleId,
+      granularity: granularity.toString(),
     });
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: this.getHeaders(),
     });
-    
+
     return this.handleApiResponse<ArticleResponse>(response);
   }
 
   async fetchSecret(secretId: string): Promise<SecretResponse> {
-    const url = this.buildUrl(API_ENDPOINTS.SECRET, { 
-      id: secretId, 
-      granularity: '0' 
+    const url = this.buildUrl(API_ENDPOINTS.SECRET, {
+      id: secretId,
+      granularity: "0",
     });
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: this.getHeaders(),
     });
-    
+
     return this.handleApiResponse<SecretResponse>(response);
   }
 }

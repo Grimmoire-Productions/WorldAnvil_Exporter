@@ -9,15 +9,15 @@
   margin-right: 20px;
   display: flex;
   justify-content: center; /* Centers children horizontally */
-  align-items: center;     /* Centers children vertically */
+  align-items: center; /* Centers children vertically */
   min-height: 100px;
 }
 
 .LoadingArticleContainer {
   width: 60%;
   height: 200px;
-  margin-left:20%;
-  margin-right:20%;
+  margin-left: 20%;
+  margin-right: 20%;
 
   /* Declare this element as a container */
   container-type: size;
@@ -30,17 +30,17 @@
 }
 
 .LoadingWorldContainer {
-    width: 50%;
-    height: 30px;
-  
-    /* Declare this element as a container */
-    container-type: size;
-  
-    /* Add centering for the ellipsis within this container */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
+  width: 50%;
+  height: 30px;
+
+  /* Declare this element as a container */
+  container-type: size;
+
+  /* Add centering for the ellipsis within this container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .exportInstructions {

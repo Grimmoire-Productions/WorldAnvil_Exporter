@@ -79,7 +79,6 @@ npm run build:server # Build server TypeScript
 npm run preview     # Preview production build
 ```
 
-
 ## Testing
 
 Test with these article IDs:
@@ -90,7 +89,7 @@ Test with these article IDs:
 ## Project Structure
 
 - `/src/containers/` - Main application containers
-- `/src/components/` - Reusable UI components  
+- `/src/components/` - Reusable UI components
 - `/src/context/` - React Context providers
 - `/src/utils/` - API utilities and helpers
 - `/src/assets/` - Theme-specific assets

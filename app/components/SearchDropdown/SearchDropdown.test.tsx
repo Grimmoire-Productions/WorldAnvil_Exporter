@@ -1,9 +1,4 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import SearchDropdown from "./SearchDropdown";
 import type { DropdownOption } from "../../utils/types";
@@ -64,7 +59,6 @@ describe("SearchDropdown", () => {
         <SearchDropdown {...defaultProps} handleChange={mockHandleChange} />,
       );
 
-      
       const dropdown = screen.getByRole("combobox");
       await user.click(dropdown);
 

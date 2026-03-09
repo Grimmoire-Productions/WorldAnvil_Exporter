@@ -1,12 +1,12 @@
-import { WorldAnvilBaseService } from '../../shared/services/worldAnvilBaseService';
-import { TOKEN_EXPIRATION_SECONDS } from '../../shared/constants/worldAnvilConstants';
-import { setUserToken } from './userToken.ts';
+import { WorldAnvilBaseService } from "../../shared/services/worldAnvilBaseService";
+import { TOKEN_EXPIRATION_SECONDS } from "../../shared/constants/worldAnvilConstants";
+import { setUserToken } from "./userToken.ts";
 import type {
   User,
   World,
   ArticleResponse,
   CharacterSheet,
-} from '../../shared/types/worldAnvilTypes';
+} from "../../shared/types/worldAnvilTypes";
 
 class WorldAnvilAPIService extends WorldAnvilBaseService {
   private appKey: string;
@@ -36,14 +36,14 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
 
     try {
       const jsonResponse = await this.fetchUserIdentity();
-      
+
       return {
         displayName: jsonResponse.username,
         id: jsonResponse.id,
-        worlds: null
+        worlds: null,
       };
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
       throw error;
     }
   }
@@ -51,14 +51,14 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
   async getWorlds(userId: string): Promise<World[]> {
     try {
       const jsonResponse = await this.fetchUserWorlds(userId);
-      
+
       return jsonResponse.entities.map((world) => ({
         id: world.id,
         title: world.title,
-        cssClassName: world.title.replaceAll(/\s/g, "").replace('&', 'And')
+        cssClassName: world.title.replaceAll(/\s/g, "").replace("&", "And"),
       }));
     } catch (error) {
-      console.error('Failed to fetch worlds:', error);
+      console.error("Failed to fetch worlds:", error);
       throw error;
     }
   }
@@ -72,16 +72,19 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
     const fetchPage = async (): Promise<CharacterSheet[]> => {
       const jsonResponse = await this.fetchWorldArticles(worldId, offset);
       const numArticlesInResponse = jsonResponse.entities.length;
-      
+
       const currentArticles: CharacterSheet[] = jsonResponse.entities
-        .filter((article) => 
-          article.tags?.includes("character_sheet") || 
-          article.customArticleTemplate?.toLowerCase().includes("character sheet")
+        .filter(
+          (article) =>
+            article.tags?.includes("character_sheet") ||
+            article.customArticleTemplate
+              ?.toLowerCase()
+              .includes("character sheet"),
         )
         .map((article) => ({
           articleId: article.id,
           title: article.title,
-          tags: article.tags?.split(',') || []
+          tags: article.tags?.split(",") || [],
         }));
 
       if (currentArticles && currentArticles.length > 0) {

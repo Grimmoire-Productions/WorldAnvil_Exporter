@@ -1,8 +1,8 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router';
-import { WorldContext } from '~/context/WorldContext/WorldContext';
-import type { WorldContextType } from '~/utils/types';
-import styles from './index.module.css';
+import React from "react";
+import { useParams, useNavigate } from "react-router";
+import { WorldContext } from "~/context/WorldContext/WorldContext";
+import type { WorldContextType } from "~/utils/types";
+import styles from "./index.module.css";
 
 export default function WorldIdPage() {
   const { worldId } = useParams<{ worldId: string }>();

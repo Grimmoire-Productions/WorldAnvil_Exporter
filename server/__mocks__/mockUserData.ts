@@ -1,6 +1,4 @@
-import type {
-  User,
-} from "../../shared/types/worldAnvilTypes.js";
+import type { User } from "../../shared/types/worldAnvilTypes.js";
 
 export const mockUser: User = {
   displayName: "Storybook User",

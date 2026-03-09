@@ -1,16 +1,15 @@
-import { WorldAnvilBaseService } from '../../../shared/services/worldAnvilBaseService.js';
-import type { 
-  User, 
+import { WorldAnvilBaseService } from "../../../shared/services/worldAnvilBaseService.js";
+import type {
+  User,
   World,
   Article,
   ArticleResponse,
-  CharacterSheet
-} from '../../../shared/types/worldAnvilTypes.js';
+  CharacterSheet,
+} from "../../../shared/types/worldAnvilTypes.js";
 // import { mockUser } from '../../__mocks__/mockUserData'
 import { mockCharacterSheet } from "../../__mocks__/mockArticleData";
 
-
-const APPLICATION_KEY = process.env.WA_API_KEY || '';
+const APPLICATION_KEY = process.env.WA_API_KEY || "";
 
 class WorldAnvilAPIService extends WorldAnvilBaseService {
   private appKey: string;
@@ -131,7 +130,9 @@ class WorldAnvilAPIService extends WorldAnvilBaseService {
     let offset = 0;
     let hasMore = true;
 
-    if (process.env.MOCK_API) {console.log("MOCK_API ", process.env.MOCK_API)}
+    if (process.env.MOCK_API) {
+      console.log("MOCK_API ", process.env.MOCK_API);
+    }
     if (process.env.MOCK_API === "true") {
       return [mockCharacterSheet];
     }
