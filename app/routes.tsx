@@ -20,6 +20,7 @@ export type RoutePath = (typeof ROUTE_PATHS)[keyof typeof ROUTE_PATHS];
 
 export default [
   index("routes/home.tsx"),
+  route("api/generate-pdf", "routes/api.generate-pdf.ts"),
   ...prefix("auth", [
     route("login", "routes/auth/login.tsx"),
     route("unauthorized", "routes/auth/unauthorized.tsx"),

@@ -3,7 +3,7 @@ import type { DropdownOption, World } from '~/utils/types';
 import SearchDropdown from '~/components/SearchDropdown/SearchDropdown';
 import styles from './ExportHeader.module.css';
 import { Link } from 'react-router';
-import { ArrowLeftIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, DownloadSimpleIcon } from "@phosphor-icons/react";
 
 interface ExportHeaderProps {
   selectedWorld: World | null;
@@ -36,6 +36,52 @@ function ExportHeader({
   isLoading = false,
   showCharacterDropdown = true,
 }: ExportHeaderProps) {
+
+  const handlePdfExport = async () => {
+    if (!articleId || !worldId) {
+      console.error('Missing article ID or world ID');
+      return;
+    }
+
+    // Get the selected character title for the filename
+    const selectedArticle = articlesList.find((item) => item.id === articleId);
+    const filename = selectedArticle?.label
+      ? `${selectedArticle.label.replace(/[^a-zA-Z0-9]/g, '')}.pdf`
+      : 'character_sheet.pdf';
+
+    // Build the full URL to the current article page
+    const articleUrl = `${window.location.origin}/worlds/${worldId}/export/${articleId}`;
+
+    // Get the user token from localStorage to pass to Puppeteer
+    const userTokenData = localStorage.getItem('WA_TOKEN');
+
+    // Call the PDF generation API
+    const apiUrl = `/api/generate-pdf?url=${encodeURIComponent(articleUrl)}&filename=${encodeURIComponent(filename)}${userTokenData ? `&token=${encodeURIComponent(userTokenData)}` : ''}`;
+
+    try {
+      const response = await fetch(apiUrl);
+
+      if (!response.ok) {
+        throw new Error(`PDF generation failed: ${response.statusText}`);
+      }
+
+      // Download the PDF
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      console.log('PDF downloaded successfully:', filename);
+    } catch (error) {
+      console.error('PDF export error:', error);
+      alert('Failed to generate PDF. Please try again.');
+    }
+  };
 
   if (!selectedWorld) {
     return (
@@ -107,6 +153,17 @@ function ExportHeader({
             }
             isDisabled={isLoading}
           />
+          {articleId && (
+            <button
+              onClick={handlePdfExport}
+              className={styles.pdfButton}
+              aria-label="Export as PDF"
+              disabled={isLoading}
+            >
+              <DownloadSimpleIcon className={styles.pdfIcon} weight="bold" />
+              <span>Export PDF</span>
+            </button>
+          )}
         </>
       )}
     </div>
