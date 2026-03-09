@@ -536,4 +536,11 @@ CLAUDE.md
 storybook-static
 
 # Faker db for local dev only
-/server/local_dev_fake_db
+/server/__mocks__/mock_services
+
+# Wrangler (Cloudflare Workers)
+.wrangler/
+
+# React Router generated types (optional - some projects commit these)
+ .react-router/
+
