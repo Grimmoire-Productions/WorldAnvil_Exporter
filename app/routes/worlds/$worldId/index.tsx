@@ -17,7 +17,7 @@ export default function WorldIdPage() {
 
   const handleBatchExportClick = () => {
     if (worldId) {
-      navigate(`/worlds/${worldId}/batchExport`);
+      navigate(`/worlds/${worldId}/batch_export`);
     }
   };
 

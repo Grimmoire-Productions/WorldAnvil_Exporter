@@ -542,5 +542,5 @@ storybook-static
 .wrangler/
 
 # React Router generated types (optional - some projects commit these)
- .react-router/
+.react-router/
 

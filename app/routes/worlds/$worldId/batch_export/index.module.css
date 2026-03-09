@@ -1,0 +1,25 @@
+.exportInstructions {
+  padding: 3rem 2rem;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.exportInstructions h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.exportInstructions p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.exportInstructions ul, ol {
+  margin-top: 1rem;
+  width: fit-content;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  text-align: left;
+}

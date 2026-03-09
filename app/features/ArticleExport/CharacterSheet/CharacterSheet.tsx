@@ -1,4 +1,5 @@
 import React from 'react';
+import parse from 'html-react-parser';
 import type { World } from '~/utils/types';
 
 type CharacterSheetProps = {
@@ -8,18 +9,15 @@ type CharacterSheetProps = {
 
 function CharacterSheet({ activeCharacter, cssClassName = 'default' }: CharacterSheetProps) {
 
-  function createHtml(htmlString: string) {
-    return { __html: htmlString }
-  }
-
   React.useEffect(() => {
     // Dynamically import the CSS file
-    import(`./WorldStyles/${cssClassName}.css`); 
+    import(`./WorldStyles/${cssClassName}.css`);
     console.log(cssClassName)
   }, [cssClassName]);
 
   return (
-    <div className={cssClassName} dangerouslySetInnerHTML={createHtml(activeCharacter)}>
+    <div className={cssClassName}>
+      {parse(activeCharacter)}
     </div>
   );
 }

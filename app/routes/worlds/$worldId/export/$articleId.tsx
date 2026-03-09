@@ -25,7 +25,7 @@ export default function CharacterSheetPage() {
       (sheet) => sheet.articleId === articleId
     );
     if (character) {
-      document.title = `${character.title} - WorldAnvil Exporter`;
+      document.title = `${character.title}`;
     }
   }
 

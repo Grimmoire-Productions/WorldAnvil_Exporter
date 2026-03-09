@@ -10,10 +10,12 @@ export function getExpiresAt(seconds: number) {
 }
 
 export function setUserToken(userToken: string, seconds: number) {
+  // Only run on client side
+  if (typeof window === 'undefined') return;
 
   // `item` is an object which contains the original value
   // as well as the time when it's supposed to expire
-  
+
   const item = {
     value: userToken,
     expiry: getExpiresAt(seconds)
@@ -23,6 +25,9 @@ export function setUserToken(userToken: string, seconds: number) {
 }
 
 export function getUserToken(): UserToken | null {
+  // Only run on client side
+  if (typeof window === 'undefined') return null;
+
   const now = new Date()
   const itemStr = localStorage.getItem(WA_TOKEN)
 
@@ -43,5 +48,8 @@ export function getUserToken(): UserToken | null {
 }
 
 export function clearUserToken(): void {
+  // Only run on client side
+  if (typeof window === 'undefined') return;
+
   localStorage.removeItem(WA_TOKEN)
 }

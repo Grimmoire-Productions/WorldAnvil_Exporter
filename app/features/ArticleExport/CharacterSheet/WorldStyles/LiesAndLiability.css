@@ -193,6 +193,10 @@
     font-size: 0.8em;
   }
   
+  .notes {
+    break-inside: avoid;
+  }
+  
   .notes p {
     margin-left: 20px;
   }

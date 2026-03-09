@@ -12,6 +12,7 @@ export const ROUTE_PATHS = Object.freeze({
   worlds: "/worlds",
   worldDetail: "/worlds/:worldId",
   worldExport: "/worlds/:worldId/export",
+  worldBatchExport: "/worlds/:worldId/batch_export",
   characterSheet: "/worlds/:worldId/export/:articleId",
 });
 
@@ -34,6 +35,9 @@ export default [
         index("routes/worlds/$worldId/export/index.tsx"),
         route(":articleId", "routes/worlds/$worldId/export/$articleId.tsx"),
       ]),
-    ])
+      route("batch_export", "routes/worlds/$worldId/batch_export/wrapper.tsx", [
+        index("routes/worlds/$worldId/batch_export/index.tsx"),
+      ]),
+    ]),
   ]),
 ] satisfies RouteConfig;

@@ -18,6 +18,7 @@ interface ExportHeaderProps {
   onSelectedRunTagChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
   onArticleChange: (options: DropdownOption | MultiValue<DropdownOption> | null) => void;
   isLoading?: boolean;
+  showCharacterDropdown?: boolean;
 }
 
 function ExportHeader({
@@ -33,6 +34,7 @@ function ExportHeader({
   onSelectedRunTagChange,
   onArticleChange,
   isLoading = false,
+  showCharacterDropdown = true,
 }: ExportHeaderProps) {
 
   if (!selectedWorld) {
@@ -51,18 +53,16 @@ function ExportHeader({
 
   return (
     <div className={styles.ExportHeader} id="exportHeader">
-        {backPath && (
-          <Link
-            to={backPath}
-            className={styles.backButton}
-            aria-label={
-              articleId ? "Back to export page" : "Back to world page"
-            }
-          >
-            <ArrowLeftIcon className={styles.backIcon} weight="bold" />
-            <span>{articleId ? "Export" : "World"}</span>
-          </Link>
-        )}
+      {backPath && (
+        <Link
+          to={backPath}
+          className={styles.backButton}
+          aria-label={articleId ? "Back to export page" : "Back to world page"}
+        >
+          <ArrowLeftIcon className={styles.backIcon} weight="bold" />
+          <span>{articleId ? "Export" : "World"}</span>
+        </Link>
+      )}
       <SearchDropdown
         id="select-run-tag"
         className="select-run-tag"
@@ -88,23 +88,27 @@ function ExportHeader({
         currentSelection={selectedTags as MultiValue<DropdownOption>}
         isDisabled={isLoading}
       />
-      <SearchDropdown
-        id="select-article"
-        className="select-article"
-        label="Character"
-        placeholder="Select a Character"
-        items={articlesList}
-        isMultiSelect={false}
-        isClearable={true}
-        error="Cannot find character sheets"
-        handleChange={onArticleChange}
-        currentSelection={
-          articleId
-            ? articlesList.find((item) => item.id === articleId)
-            : undefined
-        }
-        isDisabled={isLoading}
-      />
+      {showCharacterDropdown && (
+        <>
+          <SearchDropdown
+            id="select-article"
+            className="select-article"
+            label="Character"
+            placeholder="Select a Character"
+            items={articlesList}
+            isMultiSelect={false}
+            isClearable={true}
+            error="Cannot find character sheets"
+            handleChange={onArticleChange}
+            currentSelection={
+              articleId
+                ? articlesList.find((item) => item.id === articleId)
+                : undefined
+            }
+            isDisabled={isLoading}
+          />
+        </>
+      )}
     </div>
   );
 }
