@@ -10,19 +10,6 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
     let newString = str;
 
     if (hasFootnote) {
-      const superscript = getOriginalSuperscript(newString);
-
-      if (typeof superscript === 'string') {
-
-      let footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
-      
-      if (footnoteIdx < 0) {
-        arrayFootnotes.push(`<p><sup>${footnoteNum}</sup> TK</p>`)
-        footnoteIdx = arrayFootnotes.length - 1;
-      }
-      
-      const footnoteHasParagraphTags = arrayFootnotes[footnoteIdx].includes('<p>') && arrayFootnotes[footnoteIdx].includes('</p>')
-
       const hasVariableBeforeFootnote = hasVariable && str.indexOf('[var:') < str.indexOf('[sup]');
 
       /*
@@ -57,14 +44,27 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
         }
       }
 
-      /* Update footnote superscript */
-      newString = newString.replace(superscript, `<sup>${footnoteNum}</sup>`)
-      arrayFootnotes[footnoteIdx] = arrayFootnotes[footnoteIdx].replace(superscript, `<sup>${footnoteNum}</sup>`)
+      /* Process all footnotes on this line */
+      const superscripts = getAllSuperscripts(newString);
 
-      /* Add missing paragraph tags */
-      if (!footnoteHasParagraphTags) {
-        arrayFootnotes[footnoteIdx] = '<p>'.concat(arrayFootnotes[footnoteIdx], '</p>')
-      }
+      for (const superscript of superscripts) {
+        let footnoteIdx = arrayFootnotes.findIndex((note) => note.includes(superscript))
+
+        if (footnoteIdx < 0) {
+          arrayFootnotes.push(`<p><sup>${footnoteNum}</sup> TK</p>`)
+          footnoteIdx = arrayFootnotes.length - 1;
+        }
+
+        const footnoteHasParagraphTags = arrayFootnotes[footnoteIdx].includes('<p>') && arrayFootnotes[footnoteIdx].includes('</p>')
+
+        /* Update footnote superscript */
+        newString = newString.replace(superscript, `<sup>${footnoteNum}</sup>`)
+        arrayFootnotes[footnoteIdx] = arrayFootnotes[footnoteIdx].replace(superscript, `<sup>${footnoteNum}</sup>`)
+
+        /* Add missing paragraph tags */
+        if (!footnoteHasParagraphTags) {
+          arrayFootnotes[footnoteIdx] = '<p>'.concat(arrayFootnotes[footnoteIdx], '</p>')
+        }
         footnoteNum += 1;
       }
     } else if (hasVariable) {
@@ -97,8 +97,8 @@ export function processFootnotes(arrayContent: string[], arrayFootnotes: string[
   }
 }
 
-function getOriginalSuperscript(text: string) {
-  return text.match(/(\[sup\][0-9]+\[\/sup\])/g)?.toString()
+function getAllSuperscripts(text: string): string[] {
+  return text.match(/(\[sup\][0-9]+\[\/sup\])/g) || []
 }
 
 function getVarData(varName: string, varsArray: typeof LIES_VARS) {
