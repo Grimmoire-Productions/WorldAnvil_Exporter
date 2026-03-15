@@ -30,5 +30,13 @@
     }
   },
   "include": ["app", "shared"],
-  "exclude": ["**/*.stories.tsx", "**/*.stories.ts", "**/*.test.tsx", "**/*.test.ts", "**/*.test.jsx", "**/*.test.js", "tests/**/*"]
+  "exclude": [
+    "**/*.stories.tsx",
+    "**/*.stories.ts",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/*.test.jsx",
+    "**/*.test.js",
+    "tests/**/*"
+  ]
 }

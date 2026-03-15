@@ -14,11 +14,13 @@ import LoadingAnimation from "~/components/LoadingAnimation/LoadingAnimation";
 import { useWorldFromUrl } from "~/hooks/useWorldFromUrl";
 
 export default function WorldProtectedRoute() {
-  const { user, isLoggedIn, isAutoLoginPending, isAutoLoginInProgress } = React.useContext(UserContext) as UserContextType;
-  const { selectedWorld, setSelectedWorld, worldIsLoading, setWorldIsLoading } = React.useContext(WorldContext) as WorldContextType;
+  const { user, isLoggedIn, isAutoLoginPending, isAutoLoginInProgress } =
+    React.useContext(UserContext) as UserContextType;
+  const { selectedWorld, setSelectedWorld, worldIsLoading, setWorldIsLoading } =
+    React.useContext(WorldContext) as WorldContextType;
   const { worldId } = useParams<{ worldId: string }>();
   const navigate = useNavigate();
-  const loadingWorldRef = useRef<string>('');
+  const loadingWorldRef = useRef<string>("");
 
   // Derive world from URL - MainHeader will sync to context
   const worldFromUrl = useWorldFromUrl(worldId, user?.worlds);
@@ -52,7 +54,7 @@ export default function WorldProtectedRoute() {
             setSelectedWorld({
               ...selectedWorld,
               characterSheets: results,
-              tags: [...tagSet]
+              tags: [...tagSet],
             });
           }
         } catch (error) {
@@ -72,13 +74,13 @@ export default function WorldProtectedRoute() {
     if (isAutoLoginPending || isAutoLoginInProgress) {
       return;
     }
-    
+
     // Redirect to login if not logged in
     if (!isLoggedIn || !user) {
       navigate(ROUTE_PATHS.login);
       return;
     }
-    
+
     // Only redirect to /worlds if user is loaded AND world truly doesn't exist
     if (user && !selectedWorld) {
       // Give it a moment for MainHeader or our backup logic to set selectedWorld
@@ -89,18 +91,43 @@ export default function WorldProtectedRoute() {
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [isAutoLoginPending, isAutoLoginInProgress, isLoggedIn, user, selectedWorld, navigate, worldId]);
+  }, [
+    isAutoLoginPending,
+    isAutoLoginInProgress,
+    isLoggedIn,
+    user,
+    selectedWorld,
+    navigate,
+    worldId,
+  ]);
 
   // Show loading while auto-login pending/in progress or if redirecting
-  if (isAutoLoginPending || isAutoLoginInProgress || !user || !isLoggedIn || !selectedWorld || worldIsLoading) {
+  if (
+    isAutoLoginPending ||
+    isAutoLoginInProgress ||
+    !user ||
+    !isLoggedIn ||
+    !selectedWorld ||
+    worldIsLoading
+  ) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "400px",
+        }}
+      >
         <LoadingAnimation />
-        <p style={{ marginTop: '1rem', color: '#666' }}>Loading world data...</p>
+        <p style={{ marginTop: "1rem", color: "#666" }}>
+          Loading world data...
+        </p>
       </div>
     );
   }
-  
+
   const articleInitialValues: ArticleInitialValues = {
     errorMessage: null,
     articleId: "",
@@ -109,8 +136,8 @@ export default function WorldProtectedRoute() {
   };
 
   return (
-      <ArticleProvider initialValues={articleInitialValues}>
-        <Outlet />
-      </ArticleProvider>
+    <ArticleProvider initialValues={articleInitialValues}>
+      <Outlet />
+    </ArticleProvider>
   );
 }

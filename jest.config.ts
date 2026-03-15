@@ -1,6 +1,6 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 
-import { createJsWithTsEsmPreset, type JestConfigWithTsJest } from 'ts-jest'
+import { createJsWithTsEsmPreset, type JestConfigWithTsJest } from "ts-jest";
 
 const presetConfig = createJsWithTsEsmPreset({
   tsconfig: "./tsconfig.test.json",
@@ -13,8 +13,10 @@ const presetConfig = createJsWithTsEsmPreset({
         path: "ts-jest-mock-import-meta", // or, alternatively, 'ts-jest-mock-import-meta' directly, without node_modules.
         options: {
           metaObjectReplacement: {
-            url: "https://www.url.com", env: {
-            } } },
+            url: "https://www.url.com",
+            env: {},
+          },
+        },
       },
     ],
   },
@@ -27,14 +29,15 @@ const jestConfig: JestConfigWithTsJest = {
   roots: ["<rootDir>/app/"],
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tests/__mocks__/fileMock.ts",
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+      "<rootDir>/tests/__mocks__/fileMock.ts",
     "^.+\\.svg$": "jest-transformer-svg",
     "^~/(.*)$": "<rootDir>/app/$1",
     "app/(.*)": "<rootDir>/app/$1",
     "^shared/(.*)$": "<rootDir>/shared/$1",
-    "^[\\w./]*consts$": "<rootDir>/app/utils/tests/__mocks__/consts.ts" // Or .js if you prefer
+    "^[\\w./]*consts$": "<rootDir>/app/utils/tests/__mocks__/consts.ts", // Or .js if you prefer
   },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts", '@testing-library/jest-dom/'],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts", "@testing-library/jest-dom/"],
 };
 
-export default jestConfig
+export default jestConfig;

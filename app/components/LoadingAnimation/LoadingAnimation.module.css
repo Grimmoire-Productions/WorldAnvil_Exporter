@@ -1,4 +1,3 @@
-
 .ldsEllipsis,
 .ldsEllipsis div {
   box-sizing: border-box;
@@ -14,7 +13,9 @@
   position: absolute;
   /* Convert pixel values to cqw/cqh based on the ldsEllipsis's intended base size */
   /* Assuming a base ldsEllipsis size of 80px */
-  top: calc(33.33333 / 80 * 10cqw); /* (33.33333 / 80) * the ldsEllipsis's cqw size */
+  top: calc(
+    33.33333 / 80 * 10cqw
+  ); /* (33.33333 / 80) * the ldsEllipsis's cqw size */
   width: calc(13.33333 / 80 * 10cqw);
   height: calc(13.33333 / 80 * 10cqw);
   border-radius: 50%;

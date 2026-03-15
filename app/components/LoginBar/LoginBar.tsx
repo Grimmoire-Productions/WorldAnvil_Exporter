@@ -1,6 +1,6 @@
-import React from 'react';
-import type { UserContextType } from '../../utils/types';
-import styles from './LoginBar.module.css';
+import React from "react";
+import type { UserContextType } from "../../utils/types";
+import styles from "./LoginBar.module.css";
 
 type LoginBarProps = {
   accessToken: UserContextType["accessToken"];

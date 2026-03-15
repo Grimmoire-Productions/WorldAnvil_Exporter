@@ -1,4 +1,4 @@
-import styles from './index.module.css';
+import styles from "./index.module.css";
 
 export default function HomePage() {
   return (
@@ -7,7 +7,8 @@ export default function HomePage() {
         <h2>Welcome to the World Anvil Exporter</h2>
         <h3>Get Started</h3>
         <p>
-          Select a world from the dropdown above to begin exporting your character sheets
+          Select a world from the dropdown above to begin exporting your
+          character sheets
         </p>
       </main>
 

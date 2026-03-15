@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import type { World } from '~/utils/types';
+import { useMemo } from "react";
+import type { World } from "~/utils/types";
 
 /**
  * Derives the selected world from URL worldId parameter and available worlds.
@@ -8,10 +8,10 @@ import type { World } from '~/utils/types';
  */
 export const useWorldFromUrl = (
   worldId: string | undefined,
-  worlds: World[] | undefined | null
+  worlds: World[] | undefined | null,
 ): World | null => {
   return useMemo(() => {
     if (!worldId || !worlds) return null;
-    return worlds.find(w => w.id === worldId) || null;
+    return worlds.find((w) => w.id === worldId) || null;
   }, [worldId, worlds]);
 };

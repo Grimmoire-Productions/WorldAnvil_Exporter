@@ -1,11 +1,16 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ExportHeader from "./ExportHeader"
+import ExportHeader from "./ExportHeader";
 import { ArticleContext } from "../../../context/ArticleContext/ArticleContext";
 import { UserContext } from "../../../context/UserContext/UserContext";
 import { WorldContext } from "../../../context/WorldContext/WorldContext";
-import type { ArticleContextType, UserContextType, WorldContextType, DropdownOption } from "../../../utils/types";
+import type {
+  ArticleContextType,
+  UserContextType,
+  WorldContextType,
+  DropdownOption,
+} from "../../../utils/types";
 
 // Mock the SearchDropdown component
 jest.mock("../../app/components/SearchDropdown/SearchDropdown", () => {
@@ -36,7 +41,9 @@ jest.mock("../../app/components/SearchDropdown/SearchDropdown", () => {
               handleChange(isMultiSelect ? [selectedItem] : selectedItem);
             }
           }}
-          value={Array.isArray(currentSelection) ? "" : currentSelection?.value || ""}
+          value={
+            Array.isArray(currentSelection) ? "" : currentSelection?.value || ""
+          }
         >
           <option value="">{placeholder}</option>
           {items.map((item: DropdownOption) => (
@@ -58,7 +65,6 @@ jest.mock(
     Loading: "loading",
   }),
 );
-
 
 describe("ExportHeader", () => {
   // Mock context values
@@ -133,30 +139,42 @@ describe("ExportHeader", () => {
   } as UserContextType;
 
   // Helper functions that mirror the actual export page logic
-  const runDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
+  const runDropdownOptions = (
+    tags: string[] | undefined | null,
+  ): DropdownOption[] => {
     const options: DropdownOption[] = [];
     if (tags) {
-      tags.filter(tag => tag.toLowerCase().includes('run')).forEach((tag: string) => {
-        options.push({
-          value: tag,
-          id: tag,
-          label: tag
+      tags
+        .filter((tag) => tag.toLowerCase().includes("run"))
+        .forEach((tag: string) => {
+          options.push({
+            value: tag,
+            id: tag,
+            label: tag,
+          });
         });
-      });
     }
     return options;
   };
 
-  const tagDropdownOptions = (tags: string[] | undefined | null): DropdownOption[] => {
+  const tagDropdownOptions = (
+    tags: string[] | undefined | null,
+  ): DropdownOption[] => {
     const options: DropdownOption[] = [];
     if (tags) {
-      tags.filter(tag => !tag.toLowerCase().includes('run') && !tag.toLowerCase().includes('character_sheet')).forEach((tag: string) => {
-        options.push({
-          value: tag,
-          id: tag,
-          label: tag
+      tags
+        .filter(
+          (tag) =>
+            !tag.toLowerCase().includes("run") &&
+            !tag.toLowerCase().includes("character_sheet"),
+        )
+        .forEach((tag: string) => {
+          options.push({
+            value: tag,
+            id: tag,
+            label: tag,
+          });
         });
-      });
     }
     return options;
   };
@@ -167,17 +185,18 @@ describe("ExportHeader", () => {
     userContext = mockUserContext,
   ) => {
     // Create articlesList from selectedWorld's characterSheets
-    const articlesList: DropdownOption[] = worldContext.selectedWorld?.characterSheets?.map(sheet => ({
-      value: sheet.title,
-      id: sheet.articleId,
-      label: sheet.title
-    })) || [];
+    const articlesList: DropdownOption[] =
+      worldContext.selectedWorld?.characterSheets?.map((sheet) => ({
+        value: sheet.title,
+        id: sheet.articleId,
+        label: sheet.title,
+      })) || [];
 
     return render(
       <ArticleContext.Provider value={articleContext}>
         <WorldContext.Provider value={worldContext}>
           <UserContext.Provider value={userContext}>
-            <ExportHeader 
+            <ExportHeader
               selectedWorld={worldContext.selectedWorld}
               selectedTags={worldContext.selectedTags || []}
               selectedRunTag={worldContext.selectedRunTag}
@@ -187,7 +206,9 @@ describe("ExportHeader", () => {
               tagDropdownOptions={tagDropdownOptions}
               onSelectedTagChange={worldContext.setSelectedTags}
               onSelectedRunTagChange={worldContext.setSelectedRunTag}
-              onArticleChange={(option: DropdownOption) => articleContext.setArticleId(option.id)}
+              onArticleChange={(option: DropdownOption) =>
+                articleContext.setArticleId(option.id)
+              }
             />
           </UserContext.Provider>
         </WorldContext.Provider>
@@ -203,26 +224,26 @@ describe("ExportHeader", () => {
     it("renders placeholder message when no world is selected", () => {
       renderWithContexts();
 
-      expect(screen.getByText("Please select a world from the dropdown above to begin")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Please select a world from the dropdown above to begin",
+        ),
+      ).toBeInTheDocument();
     });
 
     it("renders run, tags, and character dropdowns when world is selected", () => {
       const worldContextWithSelection = {
         ...mockWorldContext,
-        selectedWorld: mockUserContext.user.worlds[0]
+        selectedWorld: mockUserContext.user.worlds[0],
       };
 
-      renderWithContexts(
-        mockArticleContext,
-        worldContextWithSelection
-      );
+      renderWithContexts(mockArticleContext, worldContextWithSelection);
 
       expect(screen.getByTestId("select-run-tag")).toBeInTheDocument();
       expect(screen.getByTestId("select-tags")).toBeInTheDocument();
       expect(screen.getByTestId("select-article")).toBeInTheDocument();
     });
   });
-
 
   describe("Tag Selection", () => {
     const selectedWorldContext = {
@@ -292,7 +313,7 @@ describe("ExportHeader", () => {
 
       // Should show the articles dropdown with characters from the selected world
       expect(screen.getByTestId("select-article")).toBeInTheDocument();
-      
+
       // Check that the select dropdown contains the expected options
       const articleSelect = screen.getByTestId("select-article-select");
       expect(articleSelect).toBeInTheDocument();
@@ -344,7 +365,6 @@ describe("ExportHeader", () => {
   });
 
   describe("Error Handling", () => {
-
     it("handles null user context", () => {
       const nullUserContext = {
         ...mockUserContext,

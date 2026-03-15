@@ -103,8 +103,8 @@ export interface ArticleResponse {
   tags: string | null;
   templateType: string;
   customArticleTemplate: {
-    id: string,
-    title: string,
+    id: string;
+    title: string;
   } | null;
   content: string;
   footnotes: string;

@@ -147,9 +147,9 @@ export default function ExportWrapper() {
         onSelectedRunTagChange={handleSelectedRunTagChange}
         onArticleChange={handleArticleChange}
         isLoading={worldIsLoading}
-        showCharacterDropdown={true}
+        showCharacterDropdown={false}
       />
-      <Outlet />
+      <Outlet context={{ articlesList }} />
     </>
   );
 }

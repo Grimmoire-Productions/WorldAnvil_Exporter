@@ -1,10 +1,6 @@
-import type {
-  User,
-  World,
-  CharacterSheet,
-} from './types';
+import type { User, World, CharacterSheet } from "./types";
 
-const baseURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+const baseURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3001";
 
 class BackendAPIService {
   private sessionId: string | null = null;

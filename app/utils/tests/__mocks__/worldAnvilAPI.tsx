@@ -9,8 +9,8 @@ const backendAPI = {
   fetchSecrets: jest.fn(),
   getUser: jest.fn(() => {
     Promise.resolve({
-      displayName: '',
-      id: '',
+      displayName: "",
+      id: "",
     });
   }),
   // getSearchEndpoint: jest.fn(() => ''),

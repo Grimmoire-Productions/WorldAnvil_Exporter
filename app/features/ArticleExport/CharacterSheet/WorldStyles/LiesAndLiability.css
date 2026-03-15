@@ -1,23 +1,21 @@
-
 /* Author permits use for commercial projects */
 @font-face {
-  font-family: 'Born';
-  src: url('../../../../assets/Born.otf') format('opentype');
+  font-family: "Born";
+  src: url("../../../../assets/Born.otf") format("opentype");
   font-weight: normal;
   font-size: normal;
 }
 
 /* Licensed under SIL Open Font License */
 @font-face {
-  font-family: 'Munson';
-  src: url('../../../../assets/Munson_Roman.otf') format('opentype');
+  font-family: "Munson";
+  src: url("../../../../assets/Munson_Roman.otf") format("opentype");
   font-weight: normal;
   font-size: normal;
 }
 
 /* Element styling */
 .LiesAndLiability {
-
   @media print {
     header,
     .header-space,
@@ -64,20 +62,20 @@
   img {
     max-inline-size: 100%;
   }
-  
+
   h1 {
     text-transform: none;
-    font-family: 'Munson';
+    font-family: "Munson";
     color: black;
     break-after: avoid;
     font-size: 22pt;
     line-height: 1.15;
     font-weight: 400;
   }
-  
+
   h2 {
     text-transform: none;
-    font-family: 'Munson';
+    font-family: "Munson";
     font-style: italic;
     color: black;
     font-size: 16pt;
@@ -85,17 +83,17 @@
     break-after: avoid;
     font-weight: 400;
   }
-  
+
   h3 {
-    font-family: 'Munson';
+    font-family: "Munson";
     font-size: 14pt;
     color: black;
     break-after: avoid;
     font-weight: 400;
   }
-  
+
   p {
-    font-family: 'Born';
+    font-family: "Born";
     color: black;
     font-size: 13pt;
     line-height: 1.5;
@@ -105,19 +103,19 @@
     margin-block-end: 0.75em;
     font-weight: 400;
   }
-  
+
   ul {
     list-style-type: none;
   }
-  
+
   li {
-    font-family: 'Born';
+    font-family: "Born";
     text-align: justify;
     color: black;
     line-height: 1.15;
     break-inside: avoid;
   }
-  
+
   li::before {
     margin-left: -18pt;
     white-space: nowrap;
@@ -125,59 +123,59 @@
     min-width: 18pt;
     content: "\002756 ";
   }
-  
+
   hr {
     margin: 20px 0 20px 0;
     break-before: avoid;
   }
-  
+
   /* Custom Class Styling */
   .center {
     text-align: center;
     max-width: 95%;
     margin: 0px auto;
   }
-  
+
   .mycvvsf {
     break-inside: avoid;
   }
-  
+
   .alittlebirdtoldme,
   .skillsSecretsWishes {
     orphans: 3;
     widows: 3;
   }
-  
+
   .subtitle p,
   .mycvvsf p,
   .skillsSecretsWishes p {
     font-style: italic;
     text-align: justify;
   }
-  
+
   .plots p,
   .summary p,
   .alittlebirdtoldme p {
     text-indent: 30px;
     text-align: justify;
   }
-  
+
   .plots li {
     margin-left: 30px;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
-  
+
   .plots li:last-child {
-   margin-bottom: 0px;
+    margin-bottom: 0px;
   }
-  
+
   .stats p {
     text-align: center;
     font-size: 14pt;
   }
-  
+
   .flavorQuote {
-    font-family: 'Born';
+    font-family: "Born";
     color: black;
     padding: 20px;
     margin: 10px;
@@ -186,13 +184,17 @@
     font-style: italic;
     break-inside: avoid;
   }
-  
+
   blockquote .author {
-    font-family: 'Born';
+    font-family: "Born";
     padding: 0.5em;
     font-size: 0.8em;
   }
-  
+
+  .notes {
+    break-inside: avoid;
+  }
+
   .notes p {
     margin-left: 20px;
   }

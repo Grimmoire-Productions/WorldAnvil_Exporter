@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React, { useEffect } from 'react';
-import { MemoryRouter } from 'react-router';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import React, { useEffect } from "react";
+import { MemoryRouter } from "react-router";
 
 import LoginPage from "../auth/login";
 import { UserContext } from "~/context/UserContext";
-import type { UserContextType } from '~/utils/types';
-import backendAPI from '~/utils/backendAPI';
+import type { UserContextType } from "~/utils/types";
+import backendAPI from "~/utils/backendAPI";
 
 const mockUserContext: UserContextType = {
-  accessToken: '',
+  accessToken: "",
   setAccessToken: () => {},
   user: null,
   setUser: () => {},
@@ -16,12 +16,12 @@ const mockUserContext: UserContextType = {
   setIsLoggedIn: () => {},
   expiresAt: null,
   setExpiresAt: () => {},
-  applicationKey: '',
+  applicationKey: "",
   setApplicationKey: () => {},
   isAutoLoginPending: false,
   setIsAutoLoginPending: () => {},
   isAutoLoginInProgress: false,
-  setIsAutoLoginInProgress: () => {}
+  setIsAutoLoginInProgress: () => {},
 };
 
 const LoginContainerWithContext = ({ userContext = mockUserContext }) => (
@@ -29,7 +29,6 @@ const LoginContainerWithContext = ({ userContext = mockUserContext }) => (
     <LoginPage />
   </UserContext.Provider>
 );
-
 
 const meta = {
   title: "Containers/LoginContainer",
@@ -51,7 +50,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
 
 export const WithBackendApplicationKey: Story = {
   decorators: [
@@ -82,14 +80,14 @@ export const WithoutBackendApplicationKey: Story = {
       // Override the checkCredentials method before component renders
       const originalCheckCredentials = backendAPI.checkCredentials;
       backendAPI.checkCredentials = () => Promise.resolve({ hasAppKey: false });
-      
+
       // Restore original method on cleanup
       useEffect(() => {
         return () => {
           backendAPI.checkCredentials = originalCheckCredentials;
         };
       }, [originalCheckCredentials]);
-      
+
       return (
         <div style={{ width: "100%", minHeight: "200px" }}>
           <Story />

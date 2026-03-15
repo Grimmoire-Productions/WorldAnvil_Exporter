@@ -1,23 +1,33 @@
-import React, { useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router';
-import CharacterSheet from '~/features/ArticleExport/CharacterSheet/CharacterSheet';
-import LoadingAnimation from '~/components/LoadingAnimation/LoadingAnimation';
-import { ArticleContext } from '~/context/ArticleContext/ArticleContext';
-import { WorldContext } from '~/context/WorldContext/WorldContext';
-import type { ArticleContextType, WorldContextType } from '~/utils/types';
+import React, { useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router";
+import CharacterSheet from "~/features/ArticleExport/CharacterSheet/CharacterSheet";
+import LoadingAnimation from "~/components/LoadingAnimation/LoadingAnimation";
+import { ArticleContext } from "~/context/ArticleContext/ArticleContext";
+import { WorldContext } from "~/context/WorldContext/WorldContext";
+import type { ArticleContextType, WorldContextType } from "~/utils/types";
 
 export default function CharacterSheetPage() {
-  const { worldId, articleId } = useParams<{ worldId: string; articleId: string }>();
+  const { worldId, articleId } = useParams<{
+    worldId: string;
+    articleId: string;
+  }>();
   const navigate = useNavigate();
-  const lastFetchedRef = useRef<string>('');
+  const lastFetchedRef = useRef<string>("");
 
-  const {
-    activeCharacter,
-    isArticleLoading,
-    fetchAndProcessCharacter,
-  } = React.useContext(ArticleContext) as ArticleContextType;
+  const { activeCharacter, isArticleLoading, fetchAndProcessCharacter } =
+    React.useContext(ArticleContext) as ArticleContextType;
 
   const { selectedWorld } = React.useContext(WorldContext) as WorldContextType;
+
+  // Update page title based on the selected character
+  if (selectedWorld?.characterSheets && articleId) {
+    const character = selectedWorld.characterSheets.find(
+      (sheet) => sheet.articleId === articleId,
+    );
+    if (character) {
+      document.title = `${character.title}`;
+    }
+  }
 
   // Fetch character data when articleId and selectedWorld are available
   // URL param is the source of truth - no need to sync to context state
@@ -43,18 +53,29 @@ export default function CharacterSheetPage() {
 
   if (isArticleLoading) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "400px",
+        }}
+      >
         <LoadingAnimation />
-        <p style={{ marginTop: '1rem', color: '#666' }}>Loading character sheet...</p>
+        <p style={{ marginTop: "1rem", color: "#666" }}>
+          Loading character sheet...
+        </p>
       </div>
     );
   }
 
   if (!activeCharacter) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <div style={{ color: '#666', fontSize: '1.2rem' }}>
-          No character data available. Please select a character from the export page.
+      <div style={{ padding: "2rem", textAlign: "center" }}>
+        <div style={{ color: "#666", fontSize: "1.2rem" }}>
+          No character data available. Please select a character from the export
+          page.
         </div>
       </div>
     );
